@@ -1,0 +1,119 @@
+/* Google Fonts (Roboto) 적용 */
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
+
+body, html {
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+  font-family: 'Roboto', sans-serif;
+  background: #ffffff;
+  color: #333;
+}
+
+/* 스크롤 컨테이너 */
+#smooth-scroll {
+  overflow: hidden;
+}
+
+/* 전체 패널 스타일 */
+.panel {
+  width: 100vw;
+  height: 100vh;
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  background: #ffffff;
+}
+
+.panel img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.panel h1, .panel p {
+  margin: 0.5em 0;
+  color: #333;
+}
+
+.panel h1 {
+  font-size: 1.8rem;
+}
+
+.panel p {
+  font-size: 1rem;
+}
+
+/* 우측 네비게이션 컨테이너 */
+.side-nav-container {
+  position: fixed;
+  top: 50%;
+  right: 20PX;
+  transform: translateY(-50%);
+  z-index: 2000;
+}
+
+/* 네비게이션 아이템 정렬 */
+.side-nav {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+}
+
+/* 네비게이션 아이템 */
+.nav-item {
+  position: relative;
+  width: 60px;
+  height: 4px;
+  background: #ccc;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.nav-item:hover {
+  background: #999;
+}
+
+/* 클릭 영역 확장 (투명) */
+.nav-item::before {
+  content: "";
+  position: absolute;
+  top: -10px;
+  bottom: -10px;
+  left: -20px;
+  right: -20px;
+}
+
+.social-links {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 40px; /* 아이콘 간격 */
+  padding: 40px 0;
+  position: absolute;
+  bottom: 40px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.social-links a img {
+  width: 20px;
+  height: 20px;
+  object-fit: contain; /* 이미지가 비율 유지하면서 잘 들어감 */
+  transition: transform 0.3s ease; /* 부드러운 hover 효과 */
+}
+
+.social-links a:nth-child(3) img {
+  width: 25px; /* 원하는 크기 */
+  height: 25px;
+}
+
+/* hover할 때 아이콘 살짝 커지기 */
+.social-links a img:hover {
+  transform: scale(1.1); /* 10% 커짐 */
+}
