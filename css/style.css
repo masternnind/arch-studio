@@ -117,3 +117,13 @@ body, html {
 .social-links a img:hover {
   transform: scale(1.1); /* 10% 커짐 */
 }
+
+#pacmanCanvas {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  pointer-events: none; /* 마우스 이벤트가 캔버스를 통과하도록 설정 (선택 사항) */
+  z-index: -1; /* 콘텐츠 아래로 캔버스를 배치하려면 이 값을 낮춰주세요 */
+}
