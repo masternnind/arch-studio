@@ -1,18 +1,11 @@
+// GSAP과 ScrollTrigger 등록
 gsap.registerPlugin(ScrollTrigger);
-document.addEventListener("keydown", function(e) {
-  const arrowKeys = ["ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight"];
-  if (arrowKeys.includes(e.key)) {
-    e.preventDefault();
-    // e.stopPropagation();       // 제거
-    // e.stopImmediatePropagation(); // 제거
-  }
-}, { capture: true, passive: false });
 
-// Locomotive Scroll 초기화 (inertia: 0.6)
+// Locomotive Scroll 초기화 (inertia: 0.5)
 const locoScroll = new LocomotiveScroll({
   el: document.querySelector("#smooth-scroll"),
   smooth: true,
-  inertia: 0.6,
+  inertia: 0.5,
 });
 
 locoScroll.on("scroll", ScrollTrigger.update);
@@ -70,7 +63,6 @@ document.querySelectorAll('.nav-item').forEach(item => {
   item.addEventListener('click', function(e) {
     e.preventDefault();
     const targetID = this.getAttribute('href');
-    // 홈 버튼인 경우 (첫 번째 섹션) 스크롤을 0으로 지정
     if (targetID === "#page1") {
       locoScroll.scrollTo(0, { duration: 800 });
     } else {
@@ -82,121 +74,99 @@ document.querySelectorAll('.nav-item').forEach(item => {
   });
 });
 
-document.addEventListener("DOMContentLoaded", () => {
-  const canvas = document.getElementById("pacmanCanvas");
-  const ctx = canvas.getContext("2d");
+// -----------------------------------------------------------------------------
+// 캔버스 효과: cover page(pensilCanvas)에서 점들을 연결하는 애니메이션 효과
+// -----------------------------------------------------------------------------
+
+// DOMContentLoaded 혹은 window load 이후에 캔버스 코드를 실행하여 요소들이 로드된 후 작업하도록 함
+window.addEventListener('load', () => {
+  const canvas = document.getElementById('pensilCanvas');
+  if (!canvas) return; // 캔버스 요소가 없으면 중단
+  const ctx = canvas.getContext('2d');
+
+  // cover 섹션 요소를 부모로 선택 (캔버스가 채워질 영역)
+  const coverSection = document.querySelector('.cover');
+  let width, height;
   
-  // 캔버스를 고해상도로 설정하는 함수
+  // 캔버스 리사이즈 함수: cover 섹션의 크기에 맞게 캔버스 크기를 지정
   function resizeCanvas() {
-    const dpr = window.devicePixelRatio || 1;
-    canvas.width = window.innerWidth * dpr;
-    canvas.height = window.innerHeight * dpr;
-    canvas.style.width = `${window.innerWidth}px`;
-    canvas.style.height = `${window.innerHeight}px`;
-    ctx.scale(dpr, dpr);
+    width = canvas.width = coverSection.offsetWidth;
+    height = canvas.height = coverSection.offsetHeight;
   }
-  
-  // 최초 로드 시 캔버스 크기 설정
+  // 초기화 및 창 크기 조정 시 재설정
   resizeCanvas();
-  
-  // 브라우저 창 크기가 변경될 때마다 캔버스 크기 업데이트
-  window.addEventListener("resize", resizeCanvas);
-  const pacman = {
-    x: 500,
-    y: 500,
-    size: 15,
-    speed: 3,
-    angle: 0.2,
-    direction: "random",
-  };
+  window.addEventListener('resize', resizeCanvas);
 
-  // Pac-Man의 초기 위치를 저장 (ESC를 누를 때 이 위치로 돌아감)
-  const pacmanInitial = { x: pacman.x, y: pacman.y, direction: pacman.direction };
+  // 점 객체 정의
+  class Point {
+    constructor(x, y, dx, dy, radius) {
+      this.x = x;
+      this.y = y;
+      this.dx = dx;
+      this.dy = dy;
+      this.radius = radius;
+    }
 
- // 랜덤 닷 생성 함수 (개수와 위치 랜덤)
-function createRandomDots(count) {
-  const dots = [];
-  for (let i = 0; i < count; i++) {
-    dots.push({
-      x: Math.random() * canvas.width,
-      y: Math.random() * canvas.height,
-    });
-  }
-  return dots;
-}
-
-// 최초 실행 시 랜덤으로 닷 생성 (예시: 50개 생성)
-let dots = createRandomDots(50);
-
-  function drawPacman() {
-    ctx.beginPath();
-    const startAngle = pacman.direction === "right" ? pacman.angle : Math.PI + pacman.angle;
-    const endAngle = pacman.direction === "right" ? 2 * Math.PI - pacman.angle : Math.PI - pacman.angle;
-    ctx.arc(pacman.x, pacman.y, pacman.size, startAngle, endAngle);
-    ctx.lineTo(pacman.x, pacman.y);
-    ctx.fillStyle = "yellow";
-    ctx.fill();
-    ctx.closePath();
-  }
-
-  function drawDots() {
-    dots.forEach(dot => {
+    draw() {
       ctx.beginPath();
-      ctx.arc(dot.x, dot.y, 3, 0, 2 * Math.PI);
-      ctx.fillStyle = "black";
+      ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2, false);
+      ctx.fillStyle = '#black'; // 점 색상
       ctx.fill();
-      ctx.closePath();
-    });
+    }
+
+    update() {
+      // 경계에 부딪힐 경우 방향 전환
+      if (this.x + this.radius > width || this.x - this.radius < 0) {
+        this.dx = -this.dx;
+      }
+      if (this.y + this.radius > height || this.y - this.radius < 0) {
+        this.dy = -this.dy;
+      }
+      this.x += this.dx;
+      this.y += this.dy;
+      this.draw();
+    }
   }
 
-  function movePacman() {
-    if (pacman.direction === "right") pacman.x += pacman.speed;
-    if (pacman.direction === "left") pacman.x -= pacman.speed;
-    if (pacman.direction === "up") pacman.y -= pacman.speed;
-    if (pacman.direction === "down") pacman.y += pacman.speed;
+  // 점 배열 생성 및 초기화
+  const points = [];
+  const numPoints = 100;  // 원하는 점 개수로 조정 가능
 
-    // Wrap around the canvas
-    if (pacman.x > canvas.width) pacman.x = 0;
-    if (pacman.x < 0) pacman.x = canvas.width;
-    if (pacman.y > canvas.height) pacman.y = 0;
-    if (pacman.y < 0) pacman.y = canvas.height;
+  for (let i = 0; i < numPoints; i++) {
+    const radius = 2;
+    const x = Math.random() * (width - radius * 2) + radius;
+    const y = Math.random() * (height - radius * 2) + radius;
+    const dx = (Math.random() - 0.5) * 1.5;
+    const dy = (Math.random() - 0.5) * 1.5;
+    points.push(new Point(x, y, dx, dy, radius));
   }
 
-  function checkCollision() {
-    for (let i = dots.length - 1; i >= 0; i--) {
-      const dot = dots[i];
-      const dist = Math.hypot(pacman.x - dot.x, pacman.y - dot.y);
-      if (dist < pacman.size) {
-        dots.splice(i, 1); // Remove the dot
+  // 인접한 점들을 선으로 연결하는 함수
+  function connectPoints() {
+    const maxDistance = 100; // 점들을 연결할 최대 거리
+    for (let a = 0; a < points.length; a++) {
+      for (let b = a + 1; b < points.length; b++) {
+        const dx = points[a].x - points[b].x;
+        const dy = points[a].y - points[b].y;
+        const distance = Math.sqrt(dx * dx + dy * dy);
+        if (distance < maxDistance) {
+          ctx.beginPath();
+          ctx.strokeStyle = `black, ${1 - distance / maxDistance})`;
+          ctx.lineWidth = 1;
+          ctx.moveTo(points[a].x, points[a].y);
+          ctx.lineTo(points[b].x, points[b].y);
+          ctx.stroke();
+        }
       }
     }
   }
 
-  function update() {
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    drawDots();
-    drawPacman();
-    movePacman();
-    checkCollision();
-    requestAnimationFrame(update);
+  // 캔버스 애니메이션 루프
+  function animateCanvas() {
+    ctx.clearRect(0, 0, width, height);  // 캔버스 초기화
+    points.forEach(point => point.update());  // 각 점 업데이트 및 그리기
+    connectPoints();  // 인접 점들 연결
+    requestAnimationFrame(animateCanvas);
   }
-
-  document.addEventListener("keydown", (e) => {
-    if (e.key === "d") pacman.direction = "right";
-    if (e.key === "a") pacman.direction = "left";
-    if (e.key === "w") pacman.direction = "up";
-    if (e.key === "s") pacman.direction = "down";
-
-    // ESC 키를 누르면 Pac-Man 초기 위치로 복귀
-    if (e.key === "Escape") {
-      pacman.x = pacmanInitial.x;
-      pacman.y = pacmanInitial.y;
-      pacman.direction = pacmanInitial.direction;
-
-      // 랜덤 닷 다시 생성 (예시: 50개)
-      dots = createRandomDots(50);
-    }
-  });
-  
-  update();
+  animateCanvas();
 });
