@@ -1,148 +1,123 @@
-/* Google Fonts (Roboto) 적용 */
+/* Google Fonts (Roboto) */
 @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
 
 body, html {
-  margin: 0;
-  padding: 0;
-  overflow-x: hidden;
-  font-family: 'Roboto', sans-serif;
-  background: #ffffff;
-  color: #333;
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+    font-family: 'Roboto', sans-serif;
+    background: #ffffff;
+    color: #333;
 }
 
-/* 스크롤 컨테이너 */
+/* Smooth Scroll Container */
 #smooth-scroll {
-  overflow: hidden;
+    overflow: hidden;
 }
 
-/* 전체 패널 스타일 */
+/* Panel Styling */
 .panel {
-  width: 100vw;
-  height: 100vh;
-  position: relative;
-  overflow: hidden;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
-  background: #ffffff;
+    width: 100vw;
+    height: 100vh;
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    background: #ffffff;
 }
 
 .panel img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
-.panel h1, .panel p {
-  margin: 0.5em 0;
-  color: #333;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
 }
 
 .panel h1 {
-  font-size: 1.8rem;
+    margin: 0.5em 0;
+    font-size: 1.8rem;
 }
 
 .panel p {
-  font-size: 1rem;
+    margin: 0.5em 0;
+    font-size: 1rem;
 }
 
-/* 우측 네비게이션 컨테이너 */
+/* Side Navigation */
 .side-nav-container {
-  position: fixed;
-  top: 50%;
-  right: 20PX;
-  transform: translateY(-50%);
-  z-index: 2000;
+    position: fixed;
+    top: 50%;
+    right: 20px;
+    transform: translateY(-50%);
+    z-index: 2000;
 }
 
-/* 네비게이션 아이템 정렬 */
 .side-nav {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
 }
 
-/* 네비게이션 아이템 */
 .nav-item {
-  position: relative;
-  width: 60px;
-  height: 4px;
-  background: #ccc;
-  border-radius: 4px;
-  cursor: pointer;
-  transition: background 0.3s ease;
+    position: relative;
+    width: 60px;
+    height: 4px;
+    background: #ccc;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background 0.3s ease;
 }
 
 .nav-item:hover {
-  background: #999;
+    background: #999;
 }
 
-/* 클릭 영역 확장 (투명) */
 .nav-item::before {
-  content: "";
-  position: absolute;
-  top: -10px;
-  bottom: -10px;
-  left: -20px;
-  right: -20px;
+    content: "";
+    position: absolute;
+    top: -10px;
+    bottom: -10px;
+    left: -20px;
+    right: -20px;
 }
 
+/* Social Links */
 .social-links {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 40px; /* 아이콘 간격 */
-  padding: 40px 0;
-  position: absolute;
-  bottom: 40px;
-  left: 50%;
-  transform: translateX(-50%);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 40px;
+    padding: 40px 0;
+    position: absolute;
+    bottom: 40px;
+    left: 50%;
+    transform: translateX(-50%);
 }
 
-.social-links a img {
-  width: 20px;
-  height: 20px;
-  object-fit: contain; /* 이미지가 비율 유지하면서 잘 들어감 */
-  transition: transform 0.3s ease; /* 부드러운 hover 효과 */
+social-links a img {
+    width: 20px;
+    height: 20px;
+    object-fit: contain;
+    transition: transform 0.3s ease;
 }
 
 .social-links a:nth-child(3) img {
-  width: 25px; /* 원하는 크기 */
-  height: 25px;
+    width: 25px;
+    height: 25px;
 }
 
-/* hover할 때 아이콘 살짝 커지기 */
 .social-links a img:hover {
-  transform: scale(1.1); /* 10% 커짐 */
+    transform: scale(1.1);
 }
 
-#pacmanCanvas {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  pointer-events: none; /* 마우스 이벤트가 캔버스를 통과하도록 설정 (선택 사항) */
-  z-index: -1; /* 콘텐츠 아래로 캔버스를 배치하려면 이 값을 낮춰주세요 */
-  display: block;
-  margin: 0 auto;
-  background-color: black;
-  border: 2px solid white;
-}
-
-/* style.css 내 추가 */
-.cover {
-  position: relative;
-  overflow: hidden;
-}
-
+/* Canvas Element */
 #pensilCanvas {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  z-index: 1; /* 필요한 경우 다른 콘텐츠와의 순서 조정 */
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
 }
