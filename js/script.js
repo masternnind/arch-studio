@@ -33,7 +33,8 @@ gsap.utils.toArray('.panel').forEach(panel => {
         pinSpacing: false,
         anticipatePin: 1
     });
-    const image = panel.querySelector('img');
+    // 직계 자식 img 요소만 선택: 연락처 페이지의 소셜 링크는 제외됨
+    const image = panel.querySelector(':scope > img');
     if (image) {
         gsap.fromTo(image,
             { scale: 1 },
