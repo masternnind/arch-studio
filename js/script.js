@@ -65,6 +65,19 @@ window.addEventListener('load', () => {
         const offscreen = canvas.transferControlToOffscreen();
         const worker = new Worker('js/canvas-worker.js');
         worker.postMessage({ canvas: offscreen, width: canvas.clientWidth, height: canvas.clientHeight }, [offscreen]);
+        
+        // cover 페이지(.cover)가 전혀 노출되지 않으면 캔버스 효과를 중단하도록 처리
+        const coverSection = document.querySelector('.cover');
+        if (coverSection) {
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    const shouldPause = entry.intersectionRatio === 0;
+                    console.log("cover pause 상태:", shouldPause);
+                    worker.postMessage({ pause: shouldPause });
+                });
+            }, { threshold: 0 });
+            observer.observe(coverSection);
+        }
     } else {
         // 브라우저에서 OffscreenCanvas를 지원하지 않을 경우 기존 코드 실행
         const ctx = canvas.getContext('2d');
