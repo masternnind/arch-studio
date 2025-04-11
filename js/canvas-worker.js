@@ -1,19 +1,20 @@
 let canvas, ctx, width, height;
-const points = [];
 const numPoints = 800;
+const points = [];
 let paused = false;
 
 self.onmessage = (e) => {
-    if (e.data.canvas) {
-        canvas = e.data.canvas;
+    const data = e.data;
+    if (data.canvas) {
+        canvas = data.canvas;
         ctx = canvas.getContext('2d');
-        width = canvas.width = e.data.width;
-        height = canvas.height = e.data.height;
+        width = canvas.width = data.width;
+        height = canvas.height = data.height;
         initPoints();
         animate();
     }
-    if (e.data.pause !== undefined) {
-        paused = e.data.pause;
+    if (data.pause !== undefined) {
+        paused = data.pause;
     }
 };
 
@@ -28,20 +29,17 @@ function initPoints() {
     }
 }
 
-function drawPoint(p) {
-    ctx.beginPath();
-    ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2, false);
-    ctx.fillStyle = 'black';
-    ctx.fill();
-}
-
 function updatePoints() {
     for (const p of points) {
         if (p.x + p.r > width || p.x - p.r < 0) p.dx = -p.dx;
         if (p.y + p.r > height || p.y - p.r < 0) p.dy = -p.dy;
         p.x += p.dx;
         p.y += p.dy;
-        drawPoint(p);
+        // Draw each point
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+        ctx.fillStyle = 'black';
+        ctx.fill();
     }
 }
 
