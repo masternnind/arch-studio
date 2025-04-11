@@ -83,13 +83,25 @@ window.addEventListener('load', () => {
         const ctx = canvas.getContext('2d');
         const coverSection = document.querySelector('.cover');
         let width, height;
-        
+        let canvasPaused = false; // cover가 완전히 가려지면 이 플래그로 애니메이션 중단
+
         function resizeCanvas() {
             width = canvas.width = coverSection.offsetWidth;
             height = canvas.height = coverSection.offsetHeight;
         }
         resizeCanvas();
         window.addEventListener('resize', resizeCanvas);
+
+        // Observer를 이용해 cover 요소의 노출 여부 감지
+        if (coverSection) {
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    canvasPaused = (entry.intersectionRatio === 0);
+                    console.log("Canvas paused:", canvasPaused);
+                });
+            }, { threshold: 0 });
+            observer.observe(coverSection);
+        }
 
         class Point {
             constructor(x, y, dx, dy, r) {
@@ -113,7 +125,7 @@ window.addEventListener('load', () => {
         }
 
         const points = [];
-        const numPoints = 999;
+        const numPoints = 800; // 필요에 따라 이 값을 줄여도 좋음
         for (let i = 0; i < numPoints; i++) {
             const r = 2;
             const x = Math.random() * (width - r * 2) + r;
@@ -144,8 +156,11 @@ window.addEventListener('load', () => {
 
         function animateCanvas() {
             ctx.clearRect(0, 0, width, height);
-            points.forEach(p => p.update());
-            connectPoints();
+            // canvasPaused가 true이면 계산 없이 화면 클리어만 수행하여 부담 줄임
+            if (!canvasPaused) {
+                points.forEach(p => p.update());
+                connectPoints();
+            }
             requestAnimationFrame(animateCanvas);
         }
         animateCanvas();
