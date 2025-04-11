@@ -129,10 +129,18 @@ window.addEventListener('load', () => {
             }
         }
 
+        // throttle 적용: connectPoints 함수를 30ms마다 실행
+        let lastConnectTime = 0;
+
         function animateCanvas() {
             ctx.clearRect(0, 0, width, height);
             points.forEach(p => p.update());
-            connectPoints();
+            
+            const currentTime = performance.now();
+            if (currentTime - lastConnectTime >= 30) {
+                connectPoints();
+                lastConnectTime = currentTime;
+            }
             requestAnimationFrame(animateCanvas);
         }
         animateCanvas();
