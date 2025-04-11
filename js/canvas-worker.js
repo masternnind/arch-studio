@@ -1,6 +1,7 @@
 let canvas, ctx, width, height;
 const points = [];
-const numPoints = 800; // 포인트 수를 유지하더라도 메인 스레드 부담 분산
+const numPoints = 800;
+let paused = false;
 
 self.onmessage = (e) => {
     if (e.data.canvas) {
@@ -10,6 +11,9 @@ self.onmessage = (e) => {
         height = canvas.height = e.data.height;
         initPoints();
         animate();
+    }
+    if (e.data.pause !== undefined) {
+        paused = e.data.pause;
     }
 };
 
@@ -62,7 +66,9 @@ function connectPoints() {
 
 function animate() {
     ctx.clearRect(0, 0, width, height);
-    updatePoints();
-    connectPoints();
+    if (!paused) {
+        updatePoints();
+        connectPoints();
+    }
     requestAnimationFrame(animate);
 }
