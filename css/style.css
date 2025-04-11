@@ -10,6 +10,14 @@ body, html {
     color: #333;
 }
 
+/* 변수 선언 (CSS Custom Properties) */
+:root {
+    --social-gap: 40px;
+    --social-padding: 40px;
+    --social-hover-scale: 1.1;
+    --transition-duration: 0.3s;
+}
+
 /* Smooth Scroll Container */
 #smooth-scroll {
     overflow: hidden;
@@ -88,10 +96,10 @@ body, html {
     display: flex;
     justify-content: center;
     align-items: center;
-    gap: 40px;
-    padding: 40px 0;
+    gap: var(--social-gap);
+    padding: var(--social-padding) 0;
     position: absolute;
-    bottom: 40px;
+    bottom: var(--social-gap);
     left: 50%;
     transform: translateX(-50%);
 }
@@ -100,7 +108,7 @@ body, html {
     width: 20px;
     height: 20px;
     object-fit: contain;
-    transition: transform 0.3s ease;
+    transition: transform var(--transition-duration) ease;
 }
 
 .social-links a:nth-child(3) img {
@@ -109,7 +117,7 @@ body, html {
 }
 
 .social-links a img:hover {
-    transform: scale(1.1);
+    transform: scale(var(--social-hover-scale));
 }
 
 /* Canvas Element */
