@@ -24,46 +24,33 @@ ScrollTrigger.addEventListener("refresh", () => locoScroll.update());
 ScrollTrigger.refresh();
 
 // 기존 패널 애니메이션 (패널 고정 및 이미지 줌)
-gsap.utils.toArray('.panel').forEach(panel => {
+gsap.utils.toArray('.panel').forEach((panel, index, panelsArr) => {
+    // 마지막 패널은 pin 효과 없이 스크롤하도록 처리
     ScrollTrigger.create({
         trigger: panel,
         scroller: "#smooth-scroll",
         start: "top top",
-        pin: true,
+        pin: index !== panelsArr.length - 1,
         pinSpacing: false,
         anticipatePin: 1
     });
-    // 직계 자식 img 요소만 선택: 연락처 페이지의 소셜 링크는 제외됨
-    const image = panel.querySelector(':scope > img');
-    if (image) {
-        gsap.fromTo(image,
-            { scale: 1 },
-            {
-                scale: 1.3,
-                ease: "none",
-                scrollTrigger: {
-                    trigger: panel,
-                    scroller: "#smooth-scroll",
-                    start: "top bottom",
-                    end: "bottom top",
-                    scrub: 1
-                }
-            }
-        );
-    }
 });
 
-// 네비게이션 막대 클릭 시 해당 섹션으로 이동
-document.querySelectorAll('.nav-item').forEach(item => {
+// 네비게이션 막대 클릭 시 해당 섹션으로 이동 (페이지 이미지가 전체화면으로 보이도록)
+const panels = document.querySelectorAll('.panel');
+const navItems = document.querySelectorAll('.nav-item');
+
+navItems.forEach((item) => {
     item.addEventListener('click', function (e) {
         e.preventDefault();
         const targetID = this.getAttribute('href');
-        if (targetID === "#page1") {
-            locoScroll.scrollTo(0, { duration: 800 });
-        } else {
-            const targetEl = document.querySelector(targetID);
-            if (targetEl) locoScroll.scrollTo(targetEl, { duration: 800 });
-        }
+        const targetEl = document.querySelector(targetID);
+        if (!targetEl) return;
+        // panels 배열에서 targetEl의 인덱스 계산 (각 패널이 100vh라고 가정)
+        const panelIndex = Array.from(panels).findIndex(panel => `#${panel.id}` === targetID);
+        // 계산된 인덱스에 따라 스크롤할 위치 결정
+        const targetPosition = panelIndex * window.innerHeight;
+        locoScroll.scrollTo(targetPosition, { duration: 800 });
     });
 });
 
