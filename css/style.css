@@ -1,17 +1,16 @@
 /* Google Fonts (Roboto) */
 @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
 
-/* 공통 스타일 */
 body, html {
     margin: 0;
     padding: 0;
-    overflow: hidden; /* 기본 스크롤바 숨기기 */
+    overflow-x: hidden;
     font-family: 'Roboto', sans-serif;
     background: #ffffff;
     color: #333;
 }
 
-/* CSS 변수 선언 */
+/* 변수 선언 (CSS Custom Properties) */
 :root {
     --social-gap: 40px;
     --social-padding: 40px;
@@ -25,21 +24,22 @@ body, html {
     --panel-text-color: #333;
 }
 
-#smooth-scroll::-webkit-scrollbar {
-    display: none; /* Chrome, Safari, Opera */
+/* Smooth Scroll Container */
+#smooth-scroll {
+    overflow: hidden;
 }
 
-/* 패널 스타일 */
+/* Panel Styling */
 .panel {
     width: 100vw;
     height: 100vh;
     position: relative;
+    overflow: hidden;
     display: flex;
     justify-content: center;
     align-items: center;
     text-align: center;
-    background: var(--panel-bg-color);
-    color: var(--panel-text-color);
+    background: #ffffff;
 }
 
 .panel img {
@@ -93,7 +93,7 @@ body, html {
     transform: scale(1.2); /* 활성화된 페이지는 더 크게 */
 }
 
-/* 소셜 링크 스타일 */
+/* Social Links */
 .social-links {
     display: flex;
     justify-content: center;
@@ -111,6 +111,11 @@ body, html {
     height: 20px;
     object-fit: contain;
     transition: transform var(--transition-duration) ease;
+}
+
+.social-links a:nth-child(3) img {
+    width: 25px;
+    height: 25px;
 }
 
 .social-links a img:hover {
