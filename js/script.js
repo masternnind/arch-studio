@@ -1,49 +1,50 @@
 // GSAP과 ScrollTrigger 등록
 gsap.registerPlugin(ScrollTrigger);
 
-// Locomotive Scroll 초기화
+// Locomotive Scroll 초기화 (inertia: 0.5)
 const locoScroll = new LocomotiveScroll({
     el: document.querySelector("#smooth-scroll"),
     smooth: true,
-    scrollbar: false, // 커스텀 스크롤바 비활성화
     inertia: 0.5,
 });
 locoScroll.on("scroll", ScrollTrigger.update);
 
 ScrollTrigger.scrollerProxy("#smooth-scroll", {
     scrollTop(value) {
-        return arguments.length
+        return arguments.length 
             ? locoScroll.scrollTo(value, 0, 0)
             : locoScroll.scroll.instance.scroll.y;
     },
     getBoundingClientRect() {
         return { top: 0, left: 0, width: window.innerWidth, height: window.innerHeight };
     },
-    pinType: document.querySelector("#smooth-scroll").style.transform ? "transform" : "fixed",
+    pinType: document.querySelector("#smooth-scroll").style.transform ? "transform" : "fixed"
 });
 ScrollTrigger.addEventListener("refresh", () => locoScroll.update());
 ScrollTrigger.refresh();
 
-// Locomotive Scroll 업데이트
-window.addEventListener("resize", () => locoScroll.update());
-
-// 패널 고정 설정
-document.querySelectorAll(".panel").forEach((panel, index, panels) => {
+// Panel pinning
+document.querySelectorAll('.panel').forEach((panel, index, panels) => {
     ScrollTrigger.create({
         trigger: panel,
         scroller: "#smooth-scroll",
         start: "top top",
-        pin: index !== panels.length - 1, // 마지막 패널은 고정하지 않음
+        pin: index !== panels.length - 1,
         pinSpacing: false,
+        anticipatePin: 1
     });
 });
 
-// 네비게이션 업데이트
-function updateNav(activePage) {
-    document.querySelectorAll(".nav-item").forEach((item) => {
-        item.classList.toggle("active", item.getAttribute("data-page") === activePage);
+// Navigation click scroll
+document.querySelectorAll('.nav-item').forEach(item => {
+    item.addEventListener('click', e => {
+        e.preventDefault();
+        const targetID = item.getAttribute('href');
+        const panels = document.querySelectorAll('.panel');
+        const panelIndex = [...panels].findIndex(panel => `#${panel.id}` === targetID);
+        locoScroll.scrollTo(panelIndex * window.innerHeight, { duration: 800 });
     });
-}
+});
 
 // 페이지 위치에 따라 네비게이션 업데이트
 document.querySelectorAll(".panel").forEach((panel) => {
@@ -57,37 +58,22 @@ document.querySelectorAll(".panel").forEach((panel) => {
     });
 });
 
-// 네비게이션 클릭 시 스크롤 이동
-document.querySelectorAll(".nav-item").forEach((item) => {
-    item.addEventListener("click", (e) => {
-        e.preventDefault();
-        const targetID = item.getAttribute("href");
-        locoScroll.scrollTo(targetID, { duration: 800 });
-    });
-});
-
-// GSAP 애니메이션 (커버 페이지)
-gsap.to(".cover .content", {
-    scale: window.innerWidth < 768 ? 0.8 : 1, // 작은 화면에서는 축소
-    duration: 1,
-    ease: "power2.out",
-});
 
 // -----------------------------------------------------------------------------
-// 캔버스 효과: 점 연결 애니메이션
+// 캔버스 효과: cover page(pensilCanvas)에서 점들을 연결하는 애니메이션 효과
 // -----------------------------------------------------------------------------
 
 function setupCanvasEffect(canvas, coverSection) {
-    const ctx = canvas.getContext("2d");
+    const ctx = canvas.getContext('2d');
     let width, height, paused = false;
-
+    
     function resizeCanvas() {
         width = canvas.width = coverSection.offsetWidth;
         height = canvas.height = coverSection.offsetHeight;
     }
     resizeCanvas();
-    window.addEventListener("resize", resizeCanvas);
-
+    window.addEventListener('resize', resizeCanvas);
+    
     const observer = new IntersectionObserver(entries => {
         entries.forEach(entry => (paused = entry.intersectionRatio === 0));
     }, { threshold: 0 });
@@ -112,35 +98,36 @@ function setupCanvasEffect(canvas, coverSection) {
             this.draw();
         }
     }
-
-    const points = Array.from({ length: 800 }, () => {
+    
+    const points = [];
+    for (let i = 0; i < 800; i++) {
         const r = 2;
         const x = Math.random() * (width - r * 2) + r;
         const y = Math.random() * (height - r * 2) + r;
         const dx = (Math.random() - 0.5) * 1.5;
         const dy = (Math.random() - 0.5) * 1.5;
-        return new Point(x, y, dx, dy, r);
-    });
-
+        points.push(new Point(x, y, dx, dy, r));
+    }
+    
     function connectPoints() {
         const maxDistance = 90;
-        points.forEach((p1, a) => {
-            points.slice(a + 1).forEach(p2 => {
-                const dx = p1.x - p2.x;
-                const dy = p1.y - p2.y;
+        for (let a = 0; a < points.length; a++) {
+            for (let b = a + 1; b < points.length; b++) {
+                const dx = points[a].x - points[b].x;
+                const dy = points[a].y - points[b].y;
                 const distance = Math.hypot(dx, dy);
                 if (distance < maxDistance) {
                     ctx.beginPath();
                     ctx.strokeStyle = `rgba(0, 0, 0, ${1 - distance / maxDistance})`;
                     ctx.lineWidth = 1;
-                    ctx.moveTo(p1.x, p1.y);
-                    ctx.lineTo(p2.x, p2.y);
+                    ctx.moveTo(points[a].x, points[a].y);
+                    ctx.lineTo(points[b].x, points[b].y);
                     ctx.stroke();
                 }
-            });
-        });
+            }
+        }
     }
-
+    
     function animateCanvas() {
         ctx.clearRect(0, 0, width, height);
         if (!paused) {
@@ -152,12 +139,23 @@ function setupCanvasEffect(canvas, coverSection) {
     animateCanvas();
 }
 
-// 캔버스 초기화
-window.addEventListener("load", () => {
-    const canvas = document.getElementById("pensilCanvas");
-    const coverSection = document.querySelector(".cover");
+window.addEventListener('load', () => {
+    const canvas = document.getElementById('pensilCanvas');
+    const coverSection = document.querySelector('.cover');
 
     if (canvas && coverSection) {
-        setupCanvasEffect(canvas, coverSection);
+        if (canvas.transferControlToOffscreen) {
+            const offscreen = canvas.transferControlToOffscreen();
+            const worker = new Worker('js/canvas-worker.js');
+            worker.postMessage({ canvas: offscreen, width: canvas.clientWidth, height: canvas.clientHeight }, [offscreen]);
+            
+            new IntersectionObserver(entries => {
+                entries.forEach(entry =>
+                    worker.postMessage({ pause: entry.intersectionRatio === 0 })
+                );
+            }, { threshold: 0 }).observe(coverSection);
+        } else {
+            setupCanvasEffect(canvas, coverSection);
+        }
     }
 });
