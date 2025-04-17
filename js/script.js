@@ -46,18 +46,28 @@ document.querySelectorAll('.nav-item').forEach(item => {
     });
 });
 
-// 페이지 위치에 따라 네비게이션 업데이트
-document.querySelectorAll(".panel").forEach((panel) => {
+// Function to activate the corresponding nav-item
+function activateNav(index) {
+    document.querySelectorAll('.side-nav .nav-item').forEach((navItem, i) => {
+        if (i === index) {
+            navItem.classList.add('active');
+        } else {
+            navItem.classList.remove('active');
+        }
+    });
+}
+
+// Create a ScrollTrigger for each section panel
+document.querySelectorAll('section.panel').forEach((panel, index) => {
     ScrollTrigger.create({
         trigger: panel,
-        scroller: "#smooth-scroll",
+        scroller: "#smooth-scroll", // 추가: locomotive-scroll 컨테이너 지정
         start: "top center",
         end: "bottom center",
-        onEnter: () => updateNav(panel.id),
-        onEnterBack: () => updateNav(panel.id),
+        onEnter: () => activateNav(index),
+        onEnterBack: () => activateNav(index)
     });
 });
-
 
 // -----------------------------------------------------------------------------
 // 캔버스 효과: cover page(pensilCanvas)에서 점들을 연결하는 애니메이션 효과
