@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Inspiration — YOUNGJAE KIM</title>
+  <!-- 공통 CSS -->
+  <link rel="stylesheet" href="../css/style.css"/>
+</head>
+<body>
+  <!-- 상단 메뉴 바 -->
+  <div class="menu-bar">
+    <span class="menu-title">Menu</span>
+    <ul class="menu-dropdown">
+      <li><a href="../index.html">Home</a></li>
+      <li><a href="about.html">About</a></li>
+      <li><a href="inspiration.html">Inspiration</a></li>
+      <li><a href="footprints.html">Footprints</a></li>
+    </ul>
+  </div>
+
+  <!-- 일반 스크롤 페이지 컨텐츠 -->
+  <div class="inspiration-page">
+    <section id="inspiration" class="inspiration-panel">
+      <div class="content">
+        <h1>Inspiration</h1>
+        <div class="inspiration-grid"><!-- JS가 여기 이미지 40개를 채웁니다 --></div>
+      </div>
+    </section>
+  </div>
+
+  <!-- 동적 그리드 생성 스크립트 -->
+  <script>
+    window.addEventListener('DOMContentLoaded', () => {
+      const grid = document.querySelector('.inspiration-grid');
+      if (!grid) return;
+
+      const total = 4 * 10;  // 4열 × 10행 = 40개
+      const imgFolder = '../assets/img/inspiration/';  // 이미지 폴더 경로
+      for (let i = 0; i < total; i++) {
+        const img = document.createElement('img');
+        img.src = `${imgFolder}img${i + 1}.jpg`;
+        img.alt = `Inspiration ${i + 1}`;
+        grid.appendChild(img);
+      }
+    });
+  </script>
+</body>
+</html>
