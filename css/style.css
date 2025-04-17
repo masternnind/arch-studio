@@ -146,6 +146,52 @@ body, html {
     font-size: 1.5rem;
 }
 
+/* 메뉴 바 스타일 */
+.menu-bar {
+    position: fixed;
+    top: 50px;
+    right: 50px;
+    z-index: 1000;
+    cursor: pointer;
+}
+
+.menu-title {
+    font-size: 18px;
+    font-weight: bold;
+    color: #333;
+}
+
+/* 드롭다운 메뉴 초기 상태 */
+.menu-dropdown {
+    list-style: none;
+    padding: 10px; /* 여백 추가 */
+    margin: 5px 0 0;
+    opacity: 0;
+    transform: translateY(-10px);
+    transition: opacity 0.3s ease, transform 0.3s ease;
+    pointer-events: none;
+    background-color: rgba(155, 155, 155, 0.8); /* 불투명한 배경 */
+    border-radius: 5px; /* 둥근 모서리 */
+}
+
+/* 드롭다운 메뉴 항목 */
+.menu-dropdown li {
+    margin: 5px 0;
+}
+
+.menu-dropdown li a {
+    text-decoration: none;
+    color: #fff; /* 흰색 글자 */
+    font-size: 14px;
+}
+
+/* 메뉴 바에 커서를 올리면 드롭다운 메뉴 보이기 */
+.menu-bar:hover .menu-dropdown {
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: auto;
+}
+
 /* 반응형 디자인 (모바일) */
 @media (max-width: 768px) {
     .cover .content {
