@@ -145,7 +145,7 @@ body, html {
 .cover p {
     font-size: 1.5rem;
 }
-
+  
 /* 메뉴 바 스타일 */
 .menu-bar {
     position: fixed;
@@ -211,3 +211,46 @@ body, html {
         height: auto;
     }
 }
+
+  /* ──────────────────────────────────────────────
+   Inspiration 페이지: 고정 투명 헤더 + 스크롤 그리드
+──────────────────────────────────────────────*/
+
+/* 1) content 영역에 상단 여유 공간 확보 */
+.inspiration-panel .content {
+    position: relative;   /* 자식 절대/고정 위치 기준 */
+    padding-top: 60px;    /* 헤더 높이만큼 패딩(조정 가능) */
+  }
+  
+  /* 2) h1을 fixed 헤더로 만들기 */
+  .inspiration-panel .content h1 {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    margin: 0;
+    padding: 16px 0;             /* 헤더 높이 = padding-top + padding-bottom */
+    text-align: center;
+    background: rgba(255, 255, 255, 0.6); /* 반투명 흰색 배경 */
+    backdrop-filter: blur(4px);  /* (선택) 유리느낌 블러 효과 */
+    z-index: 1000;               /* 이미지 위로 오도록 */
+    font-size: 1.5rem;
+  }
+  
+  /* 3) 그리드 자체는 원래대로 */
+  .inspiration-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 450px);
+    grid-auto-rows: 450px;
+    gap: 0;
+    justify-content: center;
+  }
+  
+  /* 4) 이미지 스타일 */
+  .inspiration-grid img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+  
