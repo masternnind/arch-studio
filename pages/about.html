@@ -4,43 +4,137 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>About — YOUNGJAE KIM</title>
-  <!-- 공통 CSS -->
   <link rel="stylesheet" href="../css/style.css"/>
+  <style>
+    body {
+      font-family: 'Noto Sans KR', sans-serif;
+      color: #232323;
+      background: #f8f9fa;
+      margin: 0;
+      padding: 0;
+    }
+    .about-hero {
+      background: url('../assets/img/about-hero.jpg') center/cover no-repeat;
+      min-height: 320px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      text-shadow: 0 2px 16px rgba(0,0,0,0.25);
+    }
+    .about-hero h1 {
+      font-size: 3rem;
+      font-weight: 700;
+      margin: 0;
+      letter-spacing: 2px;
+    }
+    .about-content {
+      max-width: 1500px;
+      margin: -100px auto 0 auto;
+      background: #fff;
+      border-radius: 18px;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.07);
+      padding: 48px 32px 32px 32px;
+      position: relative;
+      z-index: 2;
+    }
+    .about-section {
+      margin-bottom: 36px;
+    }
+    .about-section h2 {
+      font-size: 1.4rem;
+      font-weight: 600;
+      margin-bottom: 12px;
+      color: #3966a6;
+      letter-spacing: 1px;
+    }
+    .about-section p, .about-section ul {
+      font-size: 1.08rem;
+      line-height: 1.7;
+      margin: 0 0 12px 0;
+    }
+    .about-profile {
+      display: flex;
+      align-items: flex-start;
+      gap: 32px;
+      margin-bottom: 36px;
+    }
+    .about-profile img {
+      width: 140px;
+      height: 140px;
+      object-fit: cover;
+      border-radius: 50%;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.09);
+      background: #eaeaea;
+    }
+    .about-profile-info {
+      flex: 1;
+    }
+    @media (max-width: 700px) {
+      .about-content { padding: 32px 8vw 24px 8vw; }
+      .about-profile { flex-direction: column; gap: 16px; align-items: center; }
+      .about-profile img { width: 110px; height: 110px; }
+    }
+  </style>
 </head>
-<body>
-  <!-- 상단 메뉴 바 -->
-  <div class="menu-bar">
-    <span class="menu-title">Menu</span>
-    <ul class="menu-dropdown">
-      <li><a href="../index.html">Home</a></li>
-      <li><a href="about.html">About</a></li>
-      <li><a href="inspiration.html">Inspiration</a></li>
-      <li><a href="footprints.html">Footprints</a></li>
-    </ul>
+<body class="about-page">
+  <!-- 공통 Navbar 삽입 위치 -->
+  <div id="navbar-placeholder"></div>
+  <script src="../js/navbar-loader.js" defer></script>
+
+  <!-- 히어로 이미지 및 타이틀 -->
+  <div class="about-hero">
+    <h1>ABOUT ME</h1>
   </div>
 
-  <!-- 일반 스크롤 페이지 컨텐츠 -->
-  <div class="about-page">
-    <section id="about" class="about-panel">
-      <div class="content">
-        <h1>About</h1>
+  <!-- About 본문 -->
+  <div class="about-content">
+    <!-- 프로필 섹션 -->
+    <div class="about-profile">
+      <img src="../assets/img/profile.jpg" alt="Youngjae Kim 프로필 사진">
+      <div class="about-profile-info">
+        <h2>Youngjae Kim</h2>
         <p>
-          YOUNGJAE KIM 은 건축 디자이너로서 다양한 프로젝트를 통해
-          공간의 미학과 기능을 조화롭게 담아내고 있습니다.
+          Kent State University에서 건축학을 전공하고,<br>
+          현재 Worldbridge Industry Co.에서 Architectural Designer로 활동 중입니다.<br>
+          공간과 사람의 상호작용을 고려한 디자인으로 긍정적 변화를 추구합니다.
         </p>
         <p>
-          주요 경력:
-          <ul>
-            <li>서울대학교 건축학과 졸업</li>
-            <li>국내외 전시·공간 디자인 프로젝트 다수 참여</li>
-            <li>2023 한국건축문화대상 수상</li>
-          </ul>
+          월드브리지산업㈜ 설계엔지니어 (ADR 팀) — 1년 10개월 재직 :contentReference[oaicite:0]{index=0}&#8203;:contentReference[oaicite:1]{index=1}
         </p>
         <p>
-          연락처: masternnind@gmail.com / 010-3794-1934
+          주요 툴: Excel · Rhino 3D · SolidWorks · AutoCAD · Revit 등
         </p>
       </div>
-    </section>
+    </div>
+
+    <!-- 건축 철학 -->
+    <div class="about-section">
+      <h2>Philosophy</h2>
+      <p>
+        건축은 단순한 구조물이 아니라 사람과 환경, 도시와 자연을 연결하는 매개체입니다.<br>
+        기능성과 미학, 지속가능성을 통합하여 모두에게 열린 공간을 설계합니다. :contentReference[oaicite:2]{index=2}&#8203;:contentReference[oaicite:3]{index=3}
+      </p>
+    </div>
+
+    <!-- 경력 및 주요 경험 -->
+    <div class="about-section">
+      <h2>Experience</h2>
+      <ul>
+        <li>Worldbridge Industry Co. — Architectural Designer (2024.03 ~ 현재)</li>
+        <li>백양엔지니어링(주) — 건축안전기술사 (2023.03 ~ 2023.08)</li>
+        <li>Chung.M Art Company — Product Assistant (2023.10 ~ 2023.12)</li>
+      </ul>
+    </div>
+
+    <!-- 비전 및 목표 -->
+    <div class="about-section">
+      <h2>Vision</h2>
+      <p>
+        새로운 기술과 협업을 통해 사용자 경험을 풍부하게 하는 건축 솔루션을 제공하고,<br>
+        더 나은 건축적 미래를 만들어갑니다. :contentReference[oaicite:4]{index=4}&#8203;:contentReference[oaicite:5]{index=5}
+      </p>
+    </div>
   </div>
 </body>
 </html>
