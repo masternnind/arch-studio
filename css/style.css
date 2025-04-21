@@ -1,0 +1,654 @@
+/*──────────────────────────────────────────────
+  1. Global Reset & Base Styles
+──────────────────────────────────────────────*/
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
+
+html, body {
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+  font-family: 'Roboto', sans-serif;
+  background: #ffffff;
+  color: #333;
+}
+
+/*──────────────────────────────────────────────
+  2. CSS Custom Properties (Variables)
+──────────────────────────────────────────────*/
+:root {
+  --social-gap: 40px;
+  --social-padding: 40px;
+  --social-hover-scale: 1.1;
+  --transition-duration: 0.3s;
+  --nav-item-size: 10px;
+  --nav-item-color: #ccc;
+  --nav-item-hover-color: #999;
+  --nav-item-active-color: #000;
+  --panel-bg-color: #ffffff;
+  --panel-text-color: #333;
+}
+
+/*──────────────────────────────────────────────
+  3. Smooth Scroll Container
+──────────────────────────────────────────────*/
+#smooth-scroll {
+  overflow: hidden;
+}
+
+/*──────────────────────────────────────────────
+  4. Panel Styling
+──────────────────────────────────────────────*/
+.panel {
+  width: 100vw;
+  height: 100vh;
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  background: var(--panel-bg-color);
+  color: var(--panel-text-color);
+}
+
+.panel h1 {
+  margin: 0.5em 0;
+  font-size: 1.8rem;
+}
+
+.panel p {
+  margin: 0.5em 0;
+  font-size: 1rem;
+}
+
+.panel img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/*──────────────────────────────────────────────
+  5. Side Navigation (dots)
+──────────────────────────────────────────────*/
+.side-nav-container {
+  position: fixed;
+  top: 50%;
+  right: 30px;
+  transform: translateY(-50%);
+  z-index: 2000;
+}
+
+.side-nav {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+}
+
+.nav-item {
+  width: var(--nav-item-size);
+  height: var(--nav-item-size);
+  background: var(--nav-item-color);
+  border-radius: 50%;
+  cursor: pointer;
+  transition: background var(--transition-duration) ease,
+              transform var(--transition-duration) ease;
+}
+
+.nav-item:hover {
+  background: var(--nav-item-hover-color);
+  transform: scale(1.1);
+}
+
+.nav-item.active {
+  background: var(--nav-item-active-color);
+  transform: scale(1.2);
+}
+
+/*──────────────────────────────────────────────
+  6. Social Links (Footer of Contact)
+──────────────────────────────────────────────*/
+.social-links {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: var(--social-gap);
+  padding: var(--social-padding) 0;
+  position: absolute;
+  bottom: var(--social-gap);
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.social-links a img {
+  width: 20px;
+  height: 20px;
+  object-fit: contain;
+  transition: transform var(--transition-duration) ease;
+}
+
+.social-links a:nth-child(3) img {
+  width: 25px;
+  height: 25px;
+}
+
+.social-links a img:hover {
+  transform: scale(var(--social-hover-scale));
+}
+
+/*──────────────────────────────────────────────
+  7. Canvas (Cover Page Effect)
+──────────────────────────────────────────────*/
+#pensilCanvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+}
+
+/*──────────────────────────────────────────────
+  8. Cover Page Styles
+──────────────────────────────────────────────*/
+.cover .content {
+  text-align: center;
+  padding: 2rem;
+  position: relative;
+  z-index: 2;
+}
+
+.cover h1 {
+  font-size: 3rem;
+}
+
+.cover p {
+  font-size: 1.5rem;
+}
+
+/* 커버 페이지의 about 링크 스타일 */
+.cover .about-link {
+  font-size: 0.8rem;
+  margin-top: 10px;
+  cursor: pointer;
+  text-transform: lowercase;
+  color: #666;
+  transition: color 0.3s ease;
+}
+.cover .about-link:hover {
+  color: #3966a6;
+}
+
+/*──────────────────────────────────────────────
+  9. Menu Bar (Header)
+──────────────────────────────────────────────*/
+.menu-bar {
+  position: fixed !important;
+  top: 20px !important;
+  right: 50px !important;
+  z-index: 2000 !important;
+  cursor: pointer;
+}
+
+.menu-title {
+  font-size: 18px;
+  font-weight: bold;
+  color: #333;
+}
+
+.menu-dropdown {
+  list-style: none;
+  padding: 10px;
+  margin: 5px 0 0;
+  opacity: 0;
+  transform: translateY(-10px);
+  transition: opacity 0.3s ease,
+              transform 0.3s ease;
+  pointer-events: none;
+  background-color: rgba(155,155,155,0.8);
+  border-radius: 5px;
+}
+
+.menu-dropdown li {
+  margin: 5px 0;
+}
+
+.menu-dropdown li a {
+  text-decoration: none;
+  color: #fff;
+  font-size: 14px;
+}
+
+.menu-bar:hover .menu-dropdown {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+
+/*──────────────────────────────────────────────
+ 10. Responsive (Mobile)
+──────────────────────────────────────────────*/
+@media (max-width: 768px) {
+  .cover .content {
+    padding: 1rem;
+  }
+  .cover h1 {
+    font-size: 2rem;
+  }
+  .cover p {
+    font-size: 1rem;
+  }
+  #pensilCanvas {
+    width: 100%;
+    height: auto;
+  }
+}
+
+/*──────────────────────────────────────────────
+ 11. About Page Specific
+──────────────────────────────────────────────*/
+
+.about-hero {
+    background: url('../assets/img/about-hero.jpg') no-repeat center/cover;
+    padding: 120px 0;
+    text-align: center;
+    color: #fff;
+    position: relative;
+  }
+
+.about-hero::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: rgba(0,0,0,0.4);
+  }
+
+.about-hero .container {
+    position: relative;
+    z-index: 1;
+  }
+
+.about-hero h1 {
+    font-size: 3rem;
+    margin-bottom: 0.5rem;
+  }
+
+.about-hero p {
+    font-size: 1.2rem;
+  }
+  
+.profile-overview {
+    display: grid;
+    grid-template-columns: 140px 1fr;
+    gap: 32px;
+    align-items: center;
+    margin-bottom: 48px;
+  }
+
+.profile-overview .profile-image img {
+    width: 100%;
+    border-radius: 50%;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.1);
+  }
+
+.profile-overview .profile-info h2 {
+    margin: 0 0 12px;
+    font-size: 1.8rem;
+  }
+  
+.about-section {
+    margin-bottom: 48px;
+  }
+
+.about-section h2 {
+    font-size: 1.6rem;
+    color: #3966a6;
+    margin-bottom: 16px;
+  }
+
+.about-section p {
+    font-size: 1rem;
+    line-height: 1.6;
+  }
+.timeline ol {
+    list-style: none;
+    padding-left: 0;
+  }
+.timeline li {
+    display: flex;
+    gap: 16px;
+    margin-bottom: 12px;
+  }
+.timeline .year {
+    flex-shrink: 0;
+    width: 100px;
+    font-weight: bold;
+    color: #555;
+  }
+.timeline .detail {
+    flex: 1;
+  }
+  
+.vision {
+    background: #f1f5f9;
+    padding: 24px;
+    border-radius: 8px;
+  }
+  
+.about-footer {
+    text-align: center;
+    padding: 24px 0;
+    background: #f8f9fa;
+    margin-top: 48px;
+  }
+
+/* About Overlay */
+#about-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.8);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 100000;
+  transform: translateY(-100%);
+  transition: transform 0.5s ease;
+}
+
+#about-overlay.visible {
+  transform: translateY(0);
+}
+
+#about-content {
+  text-align: center;
+  max-width: 600px;
+  padding: 20px;
+  color: #fff;
+}
+
+#about-content h1 {
+  font-size: 2.5rem;
+  margin-bottom: 1rem;
+}
+
+#about-content p {
+  font-size: 1.2rem;
+  line-height: 1.6;
+  margin-bottom: 2rem;
+}
+
+#about-content button {
+  padding: 10px 20px;
+  font-size: 1rem;
+  background: #3966a6;
+  border: none;
+  border-radius: 5px;
+  color: #fff;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+#about-content button:hover {
+  background: #2c4f7c;
+}
+
+/*──────────────────────────────────────────────
+ 12. Inspiration Page Specific
+──────────────────────────────────────────────*/
+/* 12.1 여유 공간 확보 */
+.inspiration-panel .content {
+    position: relative;
+    padding-top: 60px;
+  }
+
+/* 12.2 고정형 투명 헤더 */
+.inspiration-panel .content h1 {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    margin: 0;
+    padding: 16px 0;
+    text-align: center;
+    background: rgba(255,255,255,0.6);
+    backdrop-filter: blur(4px);
+    z-index: 1000;
+    font-size: 1.5rem;
+  }
+
+  
+/*──────────────────────────────────────────────
+  Inspiration Page 3D Cube Styles
+──────────────────────────────────────────────*/
+:root {
+    --cube-size: 450px;
+    --cube-half: 225px; /* 반 길이 */
+  }
+  
+  /* 그리드 컨테이너에만 perspective */
+  .inspiration-page {
+    perspective: 1200px;
+  }
+  .inspiration-grid {
+    display: grid;
+    grid-template-columns: repeat(4, var(--cube-size));
+    grid-auto-rows:    var(--cube-size);
+    justify-content:   center;
+    gap:               0;
+    perspective:       inherit;
+  }
+  
+  /* 각 셀을 가득 채우는 3D 큐브 */
+  .cube {
+    position:         relative;
+    width:            100%;
+    height:           100%;
+    transform-style:  preserve-3d;
+    /* 축을 큐브 중앙(225,225,-225)으로 이동 */
+    transform-origin: 225px 225px -225px;
+    transition:       transform 0.6s ease;
+    cursor:           pointer;
+    overflow:         hidden;
+  }
+  
+  /* 면 공통 */
+  .face {
+    position:            absolute;
+    top:                 0;
+    left:                0;
+    width:               100%;
+    height:              100%;
+    backface-visibility: hidden;
+    background-repeat:   no-repeat;
+    background-position: center;
+    background-size:     cover;
+  }
+  
+  /* 앞면: 반만 밀어내서 정육면체 완성 */
+  .face.front {
+    transform: translateZ(var(--cube-half));
+  }
+  /* 윗면 */
+  .face.top {
+    transform:        rotateX(90deg) translateZ(var(--cube-half));
+    transform-origin: top center;
+  }
+  /* 우측면 */
+  .face.right {
+    transform:        rotateY(90deg) translateZ(var(--cube-half));
+    transform-origin: center right;
+  }
+  
+  /* 마우스 오버 → 위로 */
+  .cube:not(.show-right):hover {
+    transform: rotateX(-90deg);
+  }
+  /* 클릭 → 우측으로 */
+  .cube.show-right {
+    transform: rotateY(-90deg) !important;
+  }
+  
+/*──────────────────────────────────────────────
+ 13. Footprints Page Specific
+──────────────────────────────────────────────*/
+
+/* footprints.css */
+/* Body 전체 배경 없이 풀 너비 사용 */
+body.footprints-page {
+  margin: 0;
+  padding: 48px 16px;
+  font-family: 'Noto Sans KR', sans-serif;
+  background: none;
+}
+
+/* 중앙 수직선 */
+.timeline {
+  position: relative;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+}
+.timeline::before {
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: 0;
+  width: 2px;
+  height: 100%;
+  background: #b0b8c1;
+  transform: translateX(-50%);
+}
+
+/* 개별 아이템 풀 너비 배치 */
+.timeline-item {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  margin-bottom: 60px;
+  position: relative;
+}
+
+/* 기존 .year 정의를 아래로 교체 */
+.timeline-item .year {
+    position: absolute;
+    left: 50vw;                /* 뷰포트 폭의 50% */
+    transform: translateX(-50%);
+    background: #fff;
+    padding: 0 8px;
+    color: #3966a6;
+    font-weight: bold;
+    z-index: 2;
+  }
+  
+
+/* 월 레이블: 중앙선 기준 양측에 위치 */
+.timeline-item .month {
+  position: absolute;
+  top: 32px;
+  background: #fff;
+  padding: 0 6px;
+  color: #888;
+  font-size: 0.9rem;
+  z-index: 2;
+}
+.timeline-item:nth-child(odd) .month {
+  left: calc(50% - 250px); /* 이미지(180px) + 간격(32px) + 여유 */
+}
+.timeline-item:nth-child(even) .month {
+  left: calc(50% + 250px);
+}
+
+/* 이벤트 박스: 텍스트만 */
+.event-box {
+  flex: 1 1 40%;
+  background: none;
+  padding: 0;
+  text-align: center;
+}
+.event-box.right { text-align: left; }
+.event-box.left  { text-align: right; }
+.event-box h3 {
+  margin: 0 0 8px;
+  font-size: 1.2rem;
+  color: #232323;
+}
+.event-box p {
+  margin: 0;
+  font-size: 1rem;
+  color: #555;
+}
+
+/* 이미지: 박스 없이 */
+.image {
+  flex: 0 0 200px;
+  height: 140px;
+  margin: 0 24px;
+}
+.image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 4px;
+  box-shadow: none;
+}
+
+/* 홀짝 배치 */
+.timeline-item:nth-child(odd) {
+  justify-content: flex-start;
+}
+.timeline-item:nth-child(even) {
+  justify-content: flex-end;
+}
+
+/* 모바일 대응: 세로 스택 */
+@media (max-width: 800px) {
+  .timeline::before {
+    left: 24px;
+    width: 2px;
+    transform: none;
+  }
+  .timeline-item {
+    flex-direction: column;
+    align-items: flex-start;
+    padding-left: 32px;
+  }
+  .timeline-item .year {
+    left: 24px;
+    transform: none;
+  }
+  .timeline-item .month {
+    left: 24px;
+    transform: none;
+  }
+  .event-box, .image {
+    width: calc(100% - 32px);
+    margin: 8px 0;
+  }
+}
+
+/*──────────────────────────────────────────────
+ 14. Top Menu Styles
+──────────────────────────────────────────────*/
+/* 우측 상단 메뉴 스타일 */
+.top-menu {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  z-index: 1000;
+}
+
+.top-menu ul {
+  display: flex;
+  gap: 20px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.top-menu li a {
+  text-decoration: none;
+  color: #333;
+}
