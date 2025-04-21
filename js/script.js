@@ -91,103 +91,36 @@ if (scrollContainer) {
 //                                                          
 // DOMContentLoaded 이벤트 시 .inspiration-grid 존재 확인 후 실행
 // ────────────────────────────────────────────────────────────
-// Navbar 동적 로드
-window.addEventListener('DOMContentLoaded', () => {
-  const navbarPlaceholder = document.getElementById('navbar-placeholder');
-  if (navbarPlaceholder) {
-    fetch('./components/navbar.html')
-      .then(response => {
-        if (!response.ok) {
-          throw new Error('Navbar 로드 실패');
-        }
-        return response.text();
-      })
-      .then(data => {
-        navbarPlaceholder.innerHTML = data;
-
-        // 메뉴 클릭 시 스크롤 이동 (내부 링크 처리)
-        document.querySelectorAll('.top-menu a').forEach(menuItem => {
-          menuItem.addEventListener('click', e => {
-            const targetID = menuItem.getAttribute('href');
-            if (targetID.startsWith('#') && targetID !== "#about") {
-              // 오버레이가 아닌 내부 링크는 부드러운 스크롤 실행
-              e.preventDefault();
-              const targetElement = document.querySelector(targetID);
-              if (targetElement) {
-                targetElement.scrollIntoView({ behavior: 'smooth' });
-              }
-            }
-          });
-        });
-
-        // About 클릭 이벤트 추가 (모든 페이지에서 About 오버레이 활성화)
-        const aboutLink = document.querySelector('.top-menu a[href="#about"]');
-        const aboutOverlay = document.getElementById('about-overlay');
-        const closeAboutButton = document.getElementById('close-about');
-
-        if (aboutLink && aboutOverlay && closeAboutButton) {
-          aboutLink.addEventListener('click', (e) => {
-            e.preventDefault();
-            aboutOverlay.classList.add('visible');
-          });
-          closeAboutButton.addEventListener('click', () => {
-            aboutOverlay.classList.remove('visible');
-          });
-        }
-      })
-      .catch(err => console.error('Navbar 로드 실패:', err));
-  }
-});
 
 window.addEventListener('DOMContentLoaded', () => {
   const grid = document.querySelector('.inspiration-grid');
   if (!grid) return;
 
-  const total     = 4 * 10;                         // 40개
-  const imgFolder = '../assets/img/inspirations/';  // 경로 확인
+  const total     = 40;  // 총 이미지 수
+  const imgFolder = '../assets/img/inspirations/';
 
   for (let i = 1; i <= total; i++) {
     const src  = `${imgFolder}img${i}.jpg`;
+    const container = document.createElement('div');
+    container.className = 'cube-container';
+
     const cube = document.createElement('div');
     cube.className = 'cube';
 
-    // 각 면에 동일한 이미지 설정
+    // face 목록에 대해 모두 동일한 이미지를 적용
     ['front', 'top', 'right'].forEach(faceName => {
       const face = document.createElement('div');
       face.className = `face ${faceName}`;
+      // 윗 면과 앞 면 모두 같은 이미지를 사용함
       face.style.backgroundImage = `url(${src})`;
       cube.appendChild(face);
     });
 
-    grid.appendChild(cube);
+    container.appendChild(cube);
+    grid.appendChild(container);
 
-    // 클릭하면 show-right 클래스 추가 (토글 아님)
-    cube.addEventListener('click', () => {
-      cube.classList.add('show-right');
-    });
-    // 커서가 영역에서 벗어나면 앞면으로 복귀
     cube.addEventListener('mouseleave', () => {
       cube.classList.remove('show-right');
-    });
-  }
-});
-
-// About Overlay 동작
-document.addEventListener('DOMContentLoaded', () => {
-  const aboutLink = document.querySelector('.top-menu a[href="/pages/about.html"]');
-  const aboutOverlay = document.getElementById('about-overlay');
-  const closeAboutButton = document.getElementById('close-about');
-
-  if (aboutLink && aboutOverlay && closeAboutButton) {
-    // About 클릭 시 오버레이 표시
-    aboutLink.addEventListener('click', (e) => {
-      e.preventDefault();
-      aboutOverlay.classList.add('visible');
-    });
-
-    // Close 버튼 클릭 시 오버레이 숨기기
-    closeAboutButton.addEventListener('click', () => {
-      aboutOverlay.classList.remove('visible');
     });
   }
 });
