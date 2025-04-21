@@ -1,36 +1,81 @@
 <!DOCTYPE html>
 <html lang="ko">
-  
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>PORTFOLIO_YOUNGJAE.KIM</title>
   <link rel="stylesheet" href="css/style.css">
   <!-- Locomotive Scroll CSS -->
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/locomotive-scroll@4.1.3/dist/locomotive-scroll.min.css">
+  <link rel="stylesheet"
+        href="https://cdn.jsdelivr.net/npm/locomotive-scroll@4.1.3/dist/locomotive-scroll.min.css">
 </head>
 <body>
 
-  <!-- 우측 상단 메뉴 바 -->
-  <div class="menu-bar">
-    <span class="menu-title">Menu</span>
-    <ul class="menu-dropdown">
-      <li><a href="index.html">Home</a></li>
-      <li><a href="pages/about.html">About</a></li>
-      <li><a href="pages/inspiration.html">Inspiration</a></li>
-      <li><a href="pages/footprints.html">Footprints</a></li>
-    </ul>
+  <!-- Navbar Placeholder (오직 메뉴만 로드) -->
+  <div id="navbar-placeholder"></div>
+
+  <!-- About Overlay (최상위에 위치) -->
+  <div id="about-overlay">
+    <div id="about-content">
+      <h1>About Me</h1>
+      <p>
+        Youngjae Kim is an architectural designer with a passion for creating innovative and sustainable designs.
+        With a degree from Kent State University and experience at Worldbridge Industry Co., Youngjae brings a unique perspective to every project.
+      </p>
+      <button id="close-about">Close</button>
+    </div>
   </div>
+
+  <script>
+    // Navbar 동적 로드 (메뉴만 포함됨)
+    fetch('./components/navbar.html')
+      .then(response => response.text())
+      .then(data => {
+        // Navbar.html은 오버레이 없이 메뉴만 포함하도록 수정하세요.
+        document.getElementById('navbar-placeholder').innerHTML = data;
+  
+        // 메뉴 내부 링크 처리 (About은 커버 영역의 링크 처리)
+        document.querySelectorAll('.top-menu a').forEach(menuItem => {
+          menuItem.addEventListener('click', e => {
+            const targetID = menuItem.getAttribute('href');
+            if (targetID.startsWith('#') && targetID !== "#about") {
+              e.preventDefault();
+              const targetElement = document.querySelector(targetID);
+              if (targetElement) {
+                targetElement.scrollIntoView({ behavior: 'smooth' });
+              }
+            }
+          });
+        });
+      })
+      .catch(err => console.error('Navbar 로드 실패:', err));
+  
+    // 커버 페이지의 about 링크 이벤트 처리
+    const coverAboutLink = document.querySelector('.cover .about-link');
+    const aboutOverlay = document.getElementById('about-overlay');
+    const closeAboutButton = document.getElementById('close-about');
+  
+    if (coverAboutLink && aboutOverlay && closeAboutButton) {
+      coverAboutLink.addEventListener('click', (e) => {
+        e.preventDefault();
+        aboutOverlay.classList.add('visible');
+      });
+      closeAboutButton.addEventListener('click', () => {
+        aboutOverlay.classList.remove('visible');
+      });
+    }
+  </script>
 
   <!-- 메인 스크롤 컨테이너 -->
   <div id="smooth-scroll" data-scroll-container>
-    <!-- 홈 페이지 -->
+    <!-- 커버 페이지 -->
     <section id="page1" class="panel cover">
       <div class="content">
         <h1>YOUNGJAE KIM</h1>
         <p>| ARCHITECTURAL DESIGNER |</p>
+        <!-- 중앙의 소문자 about 링크 추가 -->
+        <p class="about-link" style="font-size: 0.8rem; margin-top: 10px; cursor: pointer; text-transform: lowercase; color: #666;">about</p>
       </div>
-      <!-- Pac-Man Canvas -->
       <canvas id="pensilCanvas"></canvas>
     </section>
 
@@ -53,17 +98,15 @@
       <div class="content">
         <h1>CONTACTS</h1>
         <p>E : masternnind@gmail.com</p>
-        <p>P : 010 3794 1934</p>
-        <p>A : 서울특별시 강남구 압구정로 2길 46</p>
-
-        <!-- Contact 페이지 안에 추가 -->
+        <p>P : 010 3794 1934</p>
+        <p>A : 서울특별시 강남구 압구정로 2길 46</p>
         <div class="social-links">
-          <a href="#" target="_blank"><img src="assets/img/facebook-icon.png" alt="Facebook"></a>
-          <a href="https://www.instagram.com/youngjae_imda" target="_blank"><img src="assets/img/Instagram_Glyph_Black.png" alt="Instagram"></a>
-          <a href="#" target="_blank"><img src="assets/img/youtube_social_squircle_dark.png" alt="YouTube"></a>
-          <a href="#" target="_blank"><img src="assets/img/pinterest-icon.png" alt="Pinterest"></a>
+          <a href="#" target="_blank"><img src="assets/img/links/facebook-icon.png" alt="Facebook"></a>
+          <a href="https://www.instagram.com/youngjae_imda" target="_blank"><img src="assets/img/links/Instagram_Glyph_Black.png" alt="Instagram"></a>
+          <a href="#" target="_blank"><img src="assets/img/links/youtube_social_squircle_dark.png" alt="YouTube"></a>
+          <a href="#" target="_blank"><img src="assets/img/links/pinterest-icon.png" alt="Pinterest"></a>
         </div>
-      </div>  
+      </div>
     </section>
   </div>
 
@@ -80,10 +123,9 @@
   </div>
 
   <!-- Scripts -->
-  <!-- Locomotive Scroll JS -->
   <script src="https://cdn.jsdelivr.net/npm/locomotive-scroll@4.1.3/dist/locomotive-scroll.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
-  <script src="js/script.js"></script>
+  <script src="js/script.js" defer></script>
 </body>
 </html>
