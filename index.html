@@ -4,15 +4,17 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>PORTFOLIO_YOUNGJAE.KIM</title>
+  <!-- GitHub Pages 배포 환경에 맞게 베이스 경로 설정 -->
+  <base href="/portfolio-youngjae_kim/">
   <link rel="stylesheet" href="css/style.css">
   <!-- Locomotive Scroll CSS -->
-  <link rel="stylesheet"
-        href="https://cdn.jsdelivr.net/npm/locomotive-scroll@4.1.3/dist/locomotive-scroll.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/locomotive-scroll@4.1.3/dist/locomotive-scroll.min.css">
 </head>
 <body>
 
   <!-- Navbar Placeholder (오직 메뉴만 로드) -->
   <div id="navbar-placeholder"></div>
+  <script src="js/navbar-loader.js" defer></script>
 
   <!-- About Overlay (최상위에 위치) -->
   <div id="about-overlay">
@@ -28,7 +30,7 @@
 
   <script>
     // Navbar 동적 로드 (메뉴만 포함됨)
-    fetch('./components/navbar.html')
+    fetch('components/navbar.html')
       .then(response => response.text())
       .then(data => {
         // Navbar.html은 오버레이 없이 메뉴만 포함하도록 수정하세요.
@@ -51,19 +53,21 @@
       .catch(err => console.error('Navbar 로드 실패:', err));
   
     // 커버 페이지의 about 링크 이벤트 처리
-    const coverAboutLink = document.querySelector('.cover .about-link');
-    const aboutOverlay = document.getElementById('about-overlay');
-    const closeAboutButton = document.getElementById('close-about');
+    document.addEventListener('DOMContentLoaded', () => {
+      const coverAboutLink = document.querySelector('.cover .about-link');
+      const aboutOverlay = document.getElementById('about-overlay');
+      const closeAboutButton = document.getElementById('close-about');
   
-    if (coverAboutLink && aboutOverlay && closeAboutButton) {
-      coverAboutLink.addEventListener('click', (e) => {
-        e.preventDefault();
-        aboutOverlay.classList.add('visible');
-      });
-      closeAboutButton.addEventListener('click', () => {
-        aboutOverlay.classList.remove('visible');
-      });
-    }
+      if (coverAboutLink && aboutOverlay && closeAboutButton) {
+        coverAboutLink.addEventListener('click', (e) => {
+          e.preventDefault();
+          aboutOverlay.classList.add('visible');
+        });
+        closeAboutButton.addEventListener('click', () => {
+          aboutOverlay.classList.remove('visible');
+        });
+      }
+    });
   </script>
 
   <!-- 메인 스크롤 컨테이너 -->
