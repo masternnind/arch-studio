@@ -87,41 +87,34 @@ if (scrollContainer) {
 
 
 // ────────────────────────────────────────────────────────────
-// SECTION 2: Inspiration Page 전용 — 4×10 이미지 그리드 생성
-//                                                          
-// DOMContentLoaded 이벤트 시 .inspiration-grid 존재 확인 후 실행
-// ────────────────────────────────────────────────────────────
-
-window.addEventListener('DOMContentLoaded', () => {
-  const grid = document.querySelector('.inspiration-grid');
-  if (!grid) return;
-
-  const total     = 40;  // 총 이미지 수
+// SECTION 2: Inspiration Page 전용 — Plain 이미지 그리드 생성
+document.addEventListener('DOMContentLoaded', () => {
+  const imageFiles = [
+    'img1.jpg',
+    'img2.jpg',
+    'img3.jpg',
+    'img4.jpg',
+    'img5.jpg',
+    'img6.jpg'
+    // 추가 이미지 파일(있다면)
+  ];
+  const total = imageFiles.length; // T
   const imgFolder = '../assets/img/inspirations/';
+  const grid = document.querySelector('.inspiration-grid');
 
   for (let i = 1; i <= total; i++) {
-    const src  = `${imgFolder}img${i}.jpg`;
+    const src = `${imgFolder}${imageFiles[i - 1]}`;
     const container = document.createElement('div');
-    container.className = 'cube-container';
+    container.className = 'image-container';
+    container.style.backgroundImage = `url(${src})`;
 
-    const cube = document.createElement('div');
-    cube.className = 'cube';
+    // 오버레이 생성: overlayText_i = "<h2>Image i</h2><p>Image i description</p>"
+    const overlay = document.createElement('div');
+    overlay.className = 'overlay';
+    overlay.innerHTML = `<h1>Image ${i} </h2><p>This is a description for image ${i}.</p>`;
+    container.appendChild(overlay);
 
-    // face 목록에 대해 모두 동일한 이미지를 적용
-    ['front', 'top', 'right'].forEach(faceName => {
-      const face = document.createElement('div');
-      face.className = `face ${faceName}`;
-      // 윗 면과 앞 면 모두 같은 이미지를 사용함
-      face.style.backgroundImage = `url(${src})`;
-      cube.appendChild(face);
-    });
-
-    container.appendChild(cube);
     grid.appendChild(container);
-
-    cube.addEventListener('mouseleave', () => {
-      cube.classList.remove('show-right');
-    });
   }
 });
 
