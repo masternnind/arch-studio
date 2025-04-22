@@ -8,8 +8,6 @@
   <!-- Locomotive Scroll CSS -->
   <link rel="stylesheet"
         href="https://cdn.jsdelivr.net/npm/locomotive-scroll@4.1.3/dist/locomotive-scroll.min.css">
-  <!-- index.html head 내부에 base 태그 추가 (프로젝트 루트에 맞춰 수정) -->
-  <base href="/portfolio-youngjae_kim/">
 </head>
 <body>
 
@@ -75,28 +73,35 @@
       <div class="content">
         <h1>YOUNGJAE KIM</h1>
         <p>| ARCHITECTURAL DESIGNER |</p>
-        <!-- 중앙의 소문자 about 링크 추가 -->
-        <p class="about-link" style="font-size: 0.8rem; margin-top: 10px; cursor: pointer; text-transform: lowercase; color: #666;">about</p>
+        <p class="about-link">about</p>
       </div>
       <canvas id="pensilCanvas"></canvas>
     </section>
 
     <!-- 프로젝트 이미지 패널들 -->
+    <!-- Project 1 -->
     <section id="page2" class="panel">
       <img src="assets/img/project1.jpg" alt="Project 1">
     </section>
+    <!-- Project 2 -->
     <section id="page3" class="panel">
       <img src="assets/img/project2.jpg" alt="Project 2">
     </section>
+    <!-- Project 3 -->
     <section id="page4" class="panel">
       <img src="assets/img/project3.jpg" alt="Project 3">
     </section>
+    <!-- Project 4 -->
     <section id="page5" class="panel">
       <img src="assets/img/project4.jpg" alt="Project 4">
     </section>
+    <!-- Project 5 (새로운 프로젝트) -->
+    <section id="page6" class="panel">
+      <img src="assets/img/project5.jpg" alt="Project 5">
+    </section>
 
-    <!-- 콘텍츠 페이지 -->
-    <section id="page6" class="panel finish">
+    <!-- Contact Page (기존 page6를 contact-page로 변경) -->
+    <section id="contact-page" class="panel finish">
       <div class="content">
         <h1>CONTACTS</h1>
         <p>E : masternnind@gmail.com</p>
@@ -121,6 +126,7 @@
       <a href="#page4" class="nav-item"></a>
       <a href="#page5" class="nav-item"></a>
       <a href="#page6" class="nav-item"></a>
+      <a href="#contact-page" class="nav-item"></a>
     </nav>
   </div>
 
