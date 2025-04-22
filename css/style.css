@@ -269,14 +269,14 @@ body {
 
 .inspiration-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(450px, 0fr));
+  grid-template-columns: repeat(auto-fill, minmax(320px, 0fr));
   justify-content: center;
   margin-top: 100px; /* 원하는 상단 공백 */
 }
 
 .image-container {
-  width: 450px;
-  height: 450px;
+  width: 320px;
+  height: 320px;
   background-position: center;
   background-size: cover;
   position: relative;
