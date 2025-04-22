@@ -20,7 +20,7 @@ self.onmessage = (e) => {
 
 function initPoints() {
     for (let i = 0; i < numPoints; i++) {
-        const r = 2;
+        const r = 1;
         const x = Math.random() * (width - r * 2) + r;
         const y = Math.random() * (height - r * 2) + r;
         const dx = (Math.random() - 0.5) * 1.5;
@@ -38,7 +38,7 @@ function updatePoints() {
         // Draw each point
         ctx.beginPath();
         ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
-        ctx.fillStyle = 'black';
+        ctx.fillStyle = 'white';
         ctx.fill();
     }
 }
@@ -52,7 +52,7 @@ function connectPoints() {
             const distance = Math.hypot(dx, dy);
             if (distance < maxDistance) {
                 ctx.beginPath();
-                ctx.strokeStyle = `rgba(0, 0, 0, ${1 - distance / maxDistance})`;
+                ctx.strokeStyle = `rgba(225,225,225, ${1 - distance / maxDistance})`;
                 ctx.lineWidth = 1;
                 ctx.moveTo(points[a].x, points[a].y);
                 ctx.lineTo(points[b].x, points[b].y);
