@@ -84,7 +84,7 @@ document.addEventListener('DOMContentLoaded', () => {
   ───────────────────────────────────────────────*/
   const gridContainer = document.querySelector('.inspiration-grid');
   if (gridContainer) {
-    const imageFiles = ['img1.jpg', 'img2.jpg', 'img3.jpg', 'img4.jpg', 'img5.jpg', 'img6.jpg'];
+    const imageFiles = ['img1.jpg', 'img2.jpg', 'img3.jpg', 'img4.jpg', 'img5.jpg', 'img6.jpg', 'img7.jpg', 'img8.jpg', 'img9.jpg', 'img10.jpg'];
     const imgPath = '../assets/img/inspirations/';
     imageFiles.forEach(file => {
       const imgDiv = document.createElement('div');
