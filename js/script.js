@@ -84,21 +84,59 @@ document.addEventListener('DOMContentLoaded', () => {
   ───────────────────────────────────────────────*/
   const gridContainer = document.querySelector('.inspiration-grid');
   if (gridContainer) {
-    const imageFiles = ['img1.jpg', 'img2.jpg', 'img3.jpg', 'img4.jpg', 'img5.jpg'
-                        , 'img6.jpg', 'img7.jpg', 'img8.jpg', 'img9.jpg', 'img10.jpg'
-                       , 'img11.jpg', 'img12.jpg', 'img13.jpg', 'img14.jpg'];
     const imgPath = '../assets/img/inspirations/';
-    imageFiles.forEach(file => {
-      const imgDiv = document.createElement('div');
-      imgDiv.className = 'image-container';
-      imgDiv.style.backgroundImage = `url(${imgPath}${file})`;
-  
-      const overlay = document.createElement('div');
-      overlay.className = 'overlay';
-      imgDiv.appendChild(overlay);
-  
-      gridContainer.appendChild(imgDiv);
+    const jsonPath = `${imgPath}images.json`;
+
+    // JSON 파일에서 이미지 파일 목록 가져오기
+    fetch(jsonPath)
+      .then(response => {
+        if (!response.ok) {
+          throw new Error('Failed to load image list');
+        }
+        return response.json();
+      })
+      .then(imageFiles => {
+        imageFiles.forEach(file => {
+          const imgDiv = document.createElement('div');
+          imgDiv.className = 'image-container';
+
+          // Lazy Loading을 위한 data-src 속성 추가
+          const img = document.createElement('img');
+          img.dataset.src = `${imgPath}${file}`;
+          img.alt = 'Inspiration Image';
+          img.className = 'lazy-image';
+
+          const overlay = document.createElement('div');
+          overlay.className = 'overlay';
+
+          imgDiv.appendChild(img);
+          imgDiv.appendChild(overlay);
+          gridContainer.appendChild(imgDiv);
+        });
+
+        // Lazy Loading 활성화
+        lazyLoadImages();
+      })
+      .catch(error => console.error('Error loading images:', error));
+  }
+
+  // Lazy Loading 함수
+  function lazyLoadImages() {
+    const lazyImages = document.querySelectorAll('.lazy-image');
+    const observer = new IntersectionObserver((entries, observer) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          const img = entry.target;
+          img.src = img.dataset.src; // 실제 이미지 로드
+          img.onload = () => {
+            img.classList.add('loaded'); // 로드 후 효과 추가
+          };
+          observer.unobserve(img); // 관찰 중지
+        }
+      });
     });
+
+    lazyImages.forEach(img => observer.observe(img));
   }
   
   /*──────────────────────────────────────────────
