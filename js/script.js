@@ -72,7 +72,10 @@ document.addEventListener('DOMContentLoaded', () => {
           const imgDiv = document.createElement('div');
           imgDiv.className = 'image-container';
           const img = document.createElement('img');
-          img.dataset.src = `${imgPath}${file}`;
+          const fullPath = `${imgPath}${file}`;
+          // src와 data-src 모두 설정
+          img.src = fullPath;
+          img.dataset.src = fullPath;
           img.alt = 'Inspiration Image';
           img.className = 'lazy-image';
           const overlay = document.createElement('div');
@@ -86,20 +89,121 @@ document.addEventListener('DOMContentLoaded', () => {
       .catch(error => console.error('Error loading images:', error));
   }
 
+  // 고해상도 이미지를 다운스케일하여 Blob URL로 반환하는 함수
+  function downscaleImage(imgElement, maxWidth, maxHeight, quality, callback) {
+    const canvas = document.createElement('canvas');
+    const ctx = canvas.getContext('2d');
+    let { naturalWidth: width, naturalHeight: height } = imgElement;
+    const scale = Math.min(maxWidth / width, maxHeight / height, 1);
+    width = Math.floor(width * scale);
+    height = Math.floor(height * scale);
+    canvas.width = width;
+    canvas.height = height;
+    ctx.drawImage(imgElement, 0, 0, width, height);
+    canvas.toBlob(blob => {
+      callback(URL.createObjectURL(blob));
+    }, 'image/jpeg', quality);
+  }
+
   function lazyLoadImages() {
     const lazyImages = document.querySelectorAll('.lazy-image');
     const observer = new IntersectionObserver((entries, obs) => {
       entries.forEach(entry => {
         if (entry.isIntersecting) {
           const img = entry.target;
-          img.src = img.dataset.src;
-          img.onload = () => img.classList.add('loaded');
+          const tempImg = new Image();
+          // 필요시 CORS 설정 (서버 환경에 따라)
+          tempImg.crossOrigin = "anonymous";
+          tempImg.src = img.dataset.src;
+          tempImg.onload = () => {
+            // 다운스케일할 최대 크기와 품질을 지정 (예: 800×600, 품질 0.7)
+            downscaleImage(tempImg, 800, 600, 0.7, downscaledUrl => {
+              img.src = downscaledUrl;
+              img.onload = () => img.classList.add('loaded');
+            });
+          };
           obs.unobserve(img);
         }
       });
     });
     lazyImages.forEach(img => observer.observe(img));
   }
+
+  // 모달 기능 구현: DOMContentLoaded 내, lazy load 코드 이후에 추가
+  const lazyImages = Array.from(document.querySelectorAll('.image-container img'));
+  const imageUrls = lazyImages.map(img => img.dataset.src);
+  let currentModalIndex = 0;
+  
+  // 모달 오버레이 생성
+  const modalOverlay = document.createElement('div');
+  modalOverlay.className = 'image-modal-overlay';
+  modalOverlay.style.display = 'none';
+  modalOverlay.innerHTML = `
+    <div class="modal-content">
+      <span class="close-modal">&times;</span>
+      <img class="modal-image" src="" alt="Full Image">
+      <div class="modal-arrow left-arrow">&#10094;</div>
+      <div class="modal-arrow right-arrow">&#10095;</div>
+    </div>
+  `;
+  document.body.appendChild(modalOverlay);
+  
+  // 모달 열기 함수
+  function openModal(index) {
+    currentModalIndex = index;
+    // lazyImages 배열 대신, 현재 보여지는 이미지의 src를 직접 사용
+    const currentImg = document.querySelectorAll('.image-container img')[index];
+    const modalImg = document.querySelector('.modal-image');
+    modalImg.src = currentImg.src;  
+    modalOverlay.style.display = 'flex';
+  }
+  
+  // 모달 닫기 함수
+  function closeModal() {
+    modalOverlay.style.display = 'none';
+  }
+  
+  // 좌우 화살표를 통한 이미지 이동 함수
+  function showPrevImage() {
+    currentModalIndex = (currentModalIndex - 1 + imageUrls.length) % imageUrls.length;
+    document.querySelector('.modal-image').src = imageUrls[currentModalIndex];
+  }
+  function showNextImage() {
+    currentModalIndex = (currentModalIndex + 1) % imageUrls.length;
+    document.querySelector('.modal-image').src = imageUrls[currentModalIndex];
+  }
+  
+  // 이벤트 리스너 부착
+  document.querySelector('.close-modal').addEventListener('click', closeModal);
+  document.querySelector('.left-arrow').addEventListener('click', showPrevImage);
+  document.querySelector('.right-arrow').addEventListener('click', showNextImage);
+  
+  // lazyImages 각각에 클릭 이벤트 추가 (모달 열기)
+  lazyImages.forEach((img, index) => {
+    img.addEventListener('click', () => {
+      openModal(index);
+    });
+  });
+
+  // 이미지 그리드 클릭 이벤트 추가
+  document.querySelector('.inspiration-grid').addEventListener('click', (event) => {
+    // 클릭 대상이 이미지라면
+    if (event.target && event.target.matches('img.lazy-image')) {
+      // 이미지 인덱스 찾기
+      const lazyImages = Array.from(document.querySelectorAll('.image-container img'));
+      const index = lazyImages.indexOf(event.target);
+      if (index >= 0) {
+        openModal(index);
+      }
+    }
+  });
+
+  // ESC 키를 눌렀을 때 모달 닫기
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') {
+      closeModal();
+    }
+  });
 
   /* SECTION 3: Timeline Page (FOOTPRINTS) */
   const timeline = document.querySelector('.timeline-horizontal');
