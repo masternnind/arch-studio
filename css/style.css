@@ -213,7 +213,7 @@ html, body {
   aspect-ratio: 4 / 3; /* 가로:세로 비율 설정 */
   background: #f0f0f0; /* 로딩 중 배경색 */
   border-radius: 10px; /* 모서리 둥글게 */
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* 그림자 효과 */
+  box-shadow: 0 2px 3px rgba(0, 0, 0, 0.05); /* 가벼운 그림자 효과 */
 }
 
 /* 이미지 스타일 */
