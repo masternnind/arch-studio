@@ -184,41 +184,71 @@ html, body {
 /* =======================================================================
    7. Inspiration Page (Plain Image Grid)
 ======================================================================= */
+/* Inspiration Grid 스타일 */
 .inspiration-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: 20px;
-  justify-content: center;
-  align-items: center;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); /* 자동으로 열 크기 조정 */
+  gap: 20px; /* 이미지 간격 */
+  justify-content: center; /* 중앙 정렬 */
+  align-items: start; /* 상단 정렬 */
   padding: 20px;
 }
+
+/* 이미지 컨테이너 스타일 */
 .image-container {
   position: relative;
   overflow: hidden;
   width: 100%;
-  aspect-ratio: 4 / 3;
-  background: #f0f0f0;
-  border-radius: 10px;
-  box-shadow: 0 2px 3px rgba(0, 0, 0, 0.05);
+  aspect-ratio: 4 / 3; /* 가로:세로 비율 설정 */
+  background: #f0f0f0; /* 로딩 중 배경색 */
+  border-radius: 10px; /* 모서리 둥글게 */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* 그림자 효과 */
 }
+
+/* 이미지 스타일 */
 .image-container img {
-  cursor: pointer;
   width: 100%;
   height: 100%;
-  object-fit: cover;
-  filter: blur(5px); /* 블러를 5px로 증가 */
-  transition: filter 0.3s ease, transform 0.3s ease, opacity 0.3s ease;
-  opacity: 0;
+  object-fit: cover; /* 이미지 비율 유지하며 컨테이너에 맞춤 */
+  transition: transform 0.3s ease, opacity 0.3s ease;
+  opacity: 0; /* 로딩 전 숨김 */
 }
+
 .image-container img.loaded {
-  opacity: 1;
-  transform: scale(1);
+  opacity: 1; /* 로딩 후 표시 */
+  transform: scale(1); /* 기본 크기 */
 }
-.image-container:hover img {
-  filter: none; /* hover 시 블러 제거 */
-}
+
 .image-container img:hover {
-  transform: scale(1.05);
+  transform: scale(1.05); /* 호버 시 확대 */
+}
+
+/* 오버레이 스타일 */
+.image-container .overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.3);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.image-container:hover .overlay {
+  opacity: 1; /* 호버 시 오버레이 표시 */
+}
+
+/* Lazy Loading 이미지 스타일 */
+.lazy-image {
+  opacity: 0;
+  transform: scale(0.9); /* 로딩 전 축소 */
+  transition: opacity 0.5s ease-in-out, transform 0.5s ease-in-out;
+}
+
+.lazy-image.loaded {
+  opacity: 1;
+  transform: scale(1); /* 로드 후 원래 크기로 */
 }
 
 /* =======================================================================
