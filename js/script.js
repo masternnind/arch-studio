@@ -123,18 +123,16 @@ document.addEventListener('DOMContentLoaded', () => {
   // Lazy Loading 함수
   function lazyLoadImages() {
     const lazyImages = document.querySelectorAll('.lazy-image');
-    const observer = new IntersectionObserver((entries, observer) => {
+    const observer = new IntersectionObserver((entries, obs) => {
       entries.forEach(entry => {
         if (entry.isIntersecting) {
           const img = entry.target;
-          img.src = img.dataset.src; // 실제 이미지 로드
-          img.onload = () => {
-            img.classList.add('loaded'); // 로드 후 효과 추가
-          };
-          observer.unobserve(img); // 관찰 중지
+          img.src = img.getAttribute('data-src'); // 실제 이미지 로드
+          img.onload = () => img.classList.add('loaded'); // 로드 후 효과 추가
+          obs.unobserve(img); // 관찰 중지
         }
       });
-    });
+    }, { threshold: 0.1 });
 
     lazyImages.forEach(img => observer.observe(img));
   }
@@ -294,4 +292,29 @@ window.addEventListener('load', () => {
   }
 });
 
-// ※ setupCanvasEffect 함수 정의는 기존 파일 그대로 유지
+document.addEventListener("DOMContentLoaded", function() {
+    const lazyImages = document.querySelectorAll('.lazy-image');
+    const observer = new IntersectionObserver((entries, obs) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                const img = entry.target;
+                img.src = img.getAttribute('data-src');
+                img.onload = () => img.classList.add('loaded');
+                obs.unobserve(img);
+            }
+        });
+    }, { threshold: 0.1 });
+
+    lazyImages.forEach(img => {
+        observer.observe(img);
+    });
+});
+
+// Debounce 함수: 이벤트 빈도 줄여 성능 최적화
+function debounce(func, wait) {
+  let timeout;
+  return function() {
+    clearTimeout(timeout);
+    timeout = setTimeout(() => func.apply(this, arguments), wait);
+  };
+}
