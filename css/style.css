@@ -69,7 +69,6 @@ html, body {
   cursor: pointer;
   transition: background 0.3s ease, transform 0.3s ease;
 }
-
 .nav-item.active {
   background: #ffffff;
   transform: scale(1.2);
@@ -90,7 +89,6 @@ html, body {
   object-fit: contain;
   transition: transform 0.3s ease;
 }
-
 .social-links a img:hover {
   transform: scale(var(--social-hover-scale));
 }
@@ -138,7 +136,6 @@ html, body {
   max-width: 800px;
   margin: 0 auto;
 }
-
 #about-overlay {
   position: fixed;
   top: 0;
@@ -172,69 +169,52 @@ html, body {
 #about-content button {
   font-size: 1rem;
   cursor: pointer;
-
-}
-
-#close-about {
- 
   background: none;
   color: #fff;
   border: none;
   border-radius: 5px;
-  font-size: 0.8rem;
-  cursor: pointer;
   transition: background 0.3s ease, transform 0.3s ease;
-
 }
-
-#close-about:hover {
+#about-content button:hover {
   background: #2c4f7c;
   transform: scale(1.05);
 }
 
+
 /* =======================================================================
    7. Inspiration Page (Plain Image Grid)
 ======================================================================= */
-/* Inspiration Grid 스타일 */
 .inspiration-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); /* 자동으로 열 크기 조정 */
-  gap: 20px; /* 이미지 간격 */
-  justify-content: center; /* 중앙 정렬 */
-  align-items: center; /* 세로 중앙 정렬 */
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 20px;
+  justify-content: center;
+  align-items: center;
   padding: 20px;
 }
-
-/* 이미지 컨테이너 스타일 */
 .image-container {
   position: relative;
   overflow: hidden;
   width: 100%;
-  aspect-ratio: 4 / 3; /* 가로:세로 비율 설정 */
-  background: #f0f0f0; /* 로딩 중 배경색 */
-  border-radius: 10px; /* 모서리 둥글게 */
-  box-shadow: 0 2px 3px rgba(0, 0, 0, 0.05); /* 가벼운 그림자 효과 */
+  aspect-ratio: 4 / 3;
+  background: #f0f0f0;
+  border-radius: 10px;
+  box-shadow: 0 2px 3px rgba(0, 0, 0, 0.05);
 }
-
-/* 이미지 스타일 */
 .image-container img {
   width: 100%;
   height: 100%;
-  object-fit: cover; /* 이미지 비율 유지하며 컨테이너에 맞춤 */
+  object-fit: cover;
   transition: transform 0.3s ease, opacity 0.3s ease;
-  opacity: 0; /* 로딩 전 숨김 */
+  opacity: 0;
 }
-
 .image-container img.loaded {
-  opacity: 1; /* 로딩 후 표시 */
-  transform: scale(1); /* 기본 크기 */
+  opacity: 1;
+  transform: scale(1);
 }
-
 .image-container img:hover {
-  transform: scale(1.05); /* 호버 시 확대 */
+  transform: scale(1.05);
 }
-
-/* 오버레이 스타일 */
 .image-container .overlay {
   position: absolute;
   top: 0;
@@ -245,17 +225,13 @@ html, body {
   opacity: 0;
   transition: opacity 0.3s ease;
 }
-
 .image-container:hover .overlay {
-  opacity: 1; /* 호버 시 오버레이 표시 */
+  opacity: 1;
 }
-
-/* Lazy Loading 이미지 스타일 */
 .lazy-image {
   opacity: 0;
   transition: opacity 0.5s ease-in-out;
 }
-
 .lazy-image.loaded {
   opacity: 1;
 }
@@ -290,9 +266,8 @@ html, body {
 }
 
 /* =======================================================================
-   9. Footprints Page Styles
+   9. Footprints Page Styles - Simplified
 ======================================================================= */
-/* Footprints Page Styles - Simplified */
 body.footprints-page {
   font-family: 'Roboto', sans-serif;
   background: #181818;
@@ -301,47 +276,30 @@ body.footprints-page {
   padding: 0;
   overflow: hidden;
 }
-
-/* 헤더 영역 */
 .footprints-header {
   text-align: center;
+  height: 80px;
+  line-height: 80px;
 }
-
-/* 타임라인 영역 */
 .timeline-horizontal {
   display: flex;
   gap: 80px;
-  padding-left: calc(50vw - 150px);
-  padding-right: calc(50vw - 150px);
+  padding: 0 calc(50vw - 150px);
   white-space: nowrap;
   overflow-x: auto;
   scroll-behavior: smooth;
-  height: 100vh;
-  align-items: center;
+  height: calc(100vh - 80px);
   justify-content: flex-start;
+  align-items: center;
+  margin-top: 40px;
 }
-
-/* 타임라인 컨테이너 */
 .timeline-container {
   flex: 0 0 300px;
-  height: 100px;
+  height: 50px;
   text-align: center;
   position: relative;
   transition: transform 0.3s ease, opacity 0.3s ease;
-  clip-path: polygon(0 0, calc(100% - 10px) 0, 100% 50%, calc(100% - 10px) 100%, 0 100%, 10px 50%);
-  margin-top: 0;
-}
-
-/* 타임라인 텍스트 */
-.timeline-container h2 {
-  font-size: 1.2rem;
-  color: #fff;
-  margin: 10px 0 5px;
-}
-
-.timeline-container p {
-  font-size: 0.9rem;
-  color: #b0b0b0;
+  clip-path: polygon(0 0, 95% 0, 100% 50%, 95% 100%, 0 100%, 5% 50%);
 }
 
 /* FOOTPRINTS 페이지 하단 네비게이션 (연결된 점) */
@@ -378,12 +336,12 @@ body.footprints-page {
   height: 12px;
   background: #fff;
   border-radius: 50%;
-  text-indent: -9999px; /* 텍스트 숨김 */
+  text-indent: -9999px;
   transition: background 0.3s ease;
 }
 .bottom-dots li a.active,
 .bottom-dots li a:hover {
-  background: #2ecc71; /* 활성화된 상태 색상 */
+  background: #2ecc71;
 }
 
 /* =======================================================================
@@ -407,59 +365,3 @@ body.footprints-page {
   color: #ffffff;
 }
 
-/* =======================================================================
-   11. Footer Styles
-======================================================================= */
-footer {
-  text-align: center;
-  padding: 20px;
-  background: #202020;
-  border-top: 1px solid #444;
-  color: #b0b0b0;
-  font-size: 0.9rem;
-}
-
-/* =======================================================================
-   12. Branch Styles
-======================================================================= */
-/* 가지(branch) 기본 스타일 */
-.branch, .sub-branch {
-  position: absolute;
-  white-space: nowrap;
-  font-size: 0.8rem;
-  pointer-events: none;
-  opacity: 0;
-}
-
-/* 메인 가지가 컨테이너 중앙에서 이벤트 박스 쪽으로 뻗어감 */
-@keyframes branchGrow {
-  from {
-    opacity: 0;
-    transform: translate(0,0);
-  }
-  to {
-    opacity: 1;
-    transform: translate(var(--branch-x), var(--branch-y));
-  }
-}
-.branch {
-  color: #fff;
-  animation: branchGrow 0.8s forwards;
-}
-
-/* 서브 가지: 메인 가지 말단에서 키워드까지 뻗어나감 */
-@keyframes subBranchGrow {
-  from {
-    opacity: 0;
-    transform: translate(0,0);
-  }
-  to {
-    opacity: 1;
-    transform: translate(var(--subbranch-x), var(--subbranch-y));
-  }
-}
-.sub-branch {
-  font-weight: bold;
-  color: #2ecc71;
-  animation: subBranchGrow 0.8s forwards;
-}
