@@ -187,7 +187,7 @@ html, body {
 /* Inspiration Grid 스타일 */
 .inspiration-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); /* 자동으로 열 크기 조정 */
+  grid-template-columns: repeat(auto-fit, minmax(450px, 1fr)); /* 자동으로 열 크기 조정 */
   gap: 20px; /* 이미지 간격 */
   justify-content: center; /* 중앙 정렬 */
   align-items: start; /* 상단 정렬 */
@@ -443,3 +443,15 @@ body.footprints-page {
   pointer-events: none;
 }
 
+/* 스크롤바 숨기기 */
+body {
+  overflow: hidden; /* 스크롤바를 완전히 숨김 */
+}
+
+html {
+  scrollbar-width: none; /* Firefox에서 스크롤바 숨기기 */
+}
+
+::-webkit-scrollbar {
+  display: none; /* Webkit 기반 브라우저에서 스크롤바 숨기기 */
+}
