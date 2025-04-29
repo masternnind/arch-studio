@@ -229,4 +229,42 @@ document.addEventListener('DOMContentLoaded', () => {
       setupCanvasEffect(canvas, cover);
     }
   });
+
+  /*─────────────────────────────
+    SECTION 5: About Page – Title Animation
+  ─────────────────────────────*/
+  const aboutButton = document.getElementById('about-button');
+  const closeButton = document.getElementById('close-button');
+  const mainTitle = document.getElementById('main-title');
+  const aboutOverlay = document.getElementById('about-overlay');
+
+  // About 버튼 클릭 시
+  aboutButton.addEventListener('click', () => {
+    mainTitle.classList.add('animate'); // 애니메이션 실행
+    aboutButton.style.display = 'none'; // About 버튼 숨기기
+    closeButton.style.display = 'block'; // Close 버튼 표시
+    mainTitle.style.display = 'none'; // 메인 타이틀 숨기기
+    aboutOverlay.classList.add('visible'); // 오버레이 활성화
+  });
+
+  // Close 버튼 클릭 시
+  closeButton.addEventListener('click', () => {
+    mainTitle.classList.remove('animate'); // 애니메이션 초기화
+    mainTitle.classList.add('reset'); // 원상복귀 애니메이션 실행
+    closeButton.style.display = 'none'; // Close 버튼 숨기기
+    aboutButton.style.display = 'block'; // About 버튼 표시
+    aboutOverlay.classList.remove('visible'); // 오버레이 비활성화
+
+    // 원상복귀 애니메이션 종료 후 reset 클래스 제거
+    mainTitle.addEventListener('animationend', () => {
+      mainTitle.classList.remove('reset');
+    }, { once: true });
+  });
+
+  // ESC 키로 오버레이 닫기
+  document.addEventListener('keydown', (event) => {
+    if (event.key === 'Escape') {
+      aboutOverlay.classList.remove('visible'); // 오버레이 비활성화
+    }
+  });
 });
