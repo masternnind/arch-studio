@@ -315,6 +315,16 @@ html::-webkit-scrollbar-thumb, body::-webkit-scrollbar-thumb {
   transform: scale(1); /* 로드 후 원래 크기로 */
 }
 
+/* 이미지 컨테이너 내 이미지 hover 시 효과 */
+.inspiration-image {
+  opacity: 1 !important;
+  filter: none !important;
+  transition: transform 0.3s ease, opacity 0.3s ease;
+}
+.inspiration-image:hover {
+  transform: scale(1.1);
+}
+
 /* =======================================================================
    8. Inspiration Page Text
 ======================================================================= */
