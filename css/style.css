@@ -3,6 +3,7 @@
 ======================================================================= */
 @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
 
+/* Global Scrollbar 스타일 (모든 페이지 적용) */
 html, body {
   margin: 0;
   padding: 0;
@@ -11,7 +12,28 @@ html, body {
   background: #181818;
   color: #dcdcdc;
   line-height: 1.6;
+  overflow-y: auto; /* 스크롤 가능 */
+  scrollbar-width: thin; /* Firefox: 얇은 스크롤바 */
+  scrollbar-color: #000000 transparent; /* Firefox: 스크롤바 색상 */
 }
+
+/* Chrome, Safari, Opera용 커스텀 스크롤바 */
+html::-webkit-scrollbar, body::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+html::-webkit-scrollbar-track, body::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+html::-webkit-scrollbar-thumb, body::-webkit-scrollbar-thumb {
+  background-color: #000000;
+  border-radius: 4px;
+}
+
+
+
 
 /* =======================================================================
    2. CSS Custom Properties (Variables)
@@ -30,7 +52,7 @@ html, body {
    3. Global Containers & Panels
 ======================================================================= */
 #smooth-scroll {
-  overflow: hidden;
+  overflow: visible;
 }
 .panel {
   width: 100vw;
@@ -43,6 +65,24 @@ html, body {
   text-align: center;
   background: var(--panel-bg);
   color: var(--text-dark);
+  padding: 40px;
+  font-size: 1.2rem;
+}
+
+/* 태블릿 이하 (폭 768px 이하) */
+@media (max-width: 768px) {
+  .panel {
+    padding: 20px;
+    font-size: 1rem;
+  }
+}
+
+/* 모바일 (폭 480px 이하) */
+@media (max-width: 480px) {
+  .panel {
+    padding: 10px;
+    font-size: 0.9rem;
+  }
 }
 
 /* =======================================================================
@@ -194,33 +234,57 @@ html, body {
   padding: 20px;
 }
 
-/* 이미지 컨테이너 스타일 */
+/* 이미지 컨테이너 기본 스타일 */
 .image-container {
   position: relative;
   overflow: hidden;
   width: 100%;
-  aspect-ratio: 4 / 3; /* 가로:세로 비율 설정 */
-  background: #f0f0f0; /* 로딩 중 배경색 */
-  border-radius: 10px; /* 모서리 둥글게 */
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* 그림자 효과 */
+  aspect-ratio: 4 / 3;
+  /* 기본 배경은 fallback용 */
+  background: #f0f0f0;
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
-/* 이미지 스타일 */
+/* 로딩 중 placeholder로 낮은 품질의 blurred 이미지 표시 */
+.image-container::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  /* 각 컨테이너에 인라인 스타일이나 JS로 설정: 예) --placeholder-image: url('path/to/blur-image.jpg'); */
+  background-image: var(--placeholder-image);
+  background-size: cover;
+  background-position: center;
+  filter: blur(15px);
+  transform: scale(1.1);
+  z-index: 1;
+  transition: opacity 0.5s ease;
+}
+
+/* 실제 이미지는 ::before 위에 오도록 */
 .image-container img {
   width: 100%;
   height: 100%;
-  object-fit: cover; /* 이미지 비율 유지하며 컨테이너에 맞춤 */
+  object-fit: cover;
+  position: relative;
+  z-index: 2;
   transition: transform 0.3s ease, opacity 0.3s ease;
-  opacity: 0; /* 로딩 전 숨김 */
+  opacity: 0; /* 로딩 전 숨김 처리 */
 }
 
+/* 이미지가 로드되면 loaded 클래스 추가하여 투명도 변경 (JS에서 처리) */
 .image-container img.loaded {
-  opacity: 1; /* 로딩 후 표시 */
-  transform: scale(1); /* 기본 크기 */
+  opacity: 1;
+  transform: scale(1);
 }
 
-.image-container img:hover {
-  transform: scale(1.05); /* 호버 시 확대 */
+/* ::before는 이미지 로딩 후 투명하게 처리할 수 있음 
+   (JS에서 이미지 로드 후 .image-container에 class 'loaded'를 추가하는 방식도 가능) */
+.image-container.loaded::before {
+  opacity: 0;
 }
 
 /* 오버레이 스타일 */
@@ -252,7 +316,7 @@ html, body {
 }
 
 /* =======================================================================
-   8. Inspiration Page Text & Pop-In Animation
+   8. Inspiration Page Text
 ======================================================================= */
 .inspiration-page .content h1 {
   font-size: 3rem;
@@ -268,16 +332,6 @@ html, body {
   color: #dcdcdc;
   max-width: 800px;
   margin: 10px auto 0;
-}
-@keyframes popIn {
-  from {
-    transform: scale(0.8);
-    opacity: 0;
-  }
-  to {
-    transform: scale(1);
-    opacity: 1;
-  }
 }
 
 /* =======================================================================
@@ -438,20 +492,10 @@ body.footprints-page {
 .left-arrow { left: 10px; }
 .right-arrow { right: 10px; }
 
-/* overlay 클래스는 이미지 컨테이너 내부의 오버레이용이므로 모달에 영향 없음 */
-.overlay {
-  pointer-events: none;
-}
-
-/* 스크롤바 숨기기 */
-body {
-  overflow: hidden; /* 스크롤바를 완전히 숨김 */
-}
-
-html {
-  scrollbar-width: none; /* Firefox에서 스크롤바 숨기기 */
-}
-
-::-webkit-scrollbar {
-  display: none; /* Webkit 기반 브라우저에서 스크롤바 숨기기 */
+/* =======================================================================
+   12. Full Height Utility Class
+======================================================================= */
+.full-height {
+  /* --vh가 업데이트되면 실제 높이 계산 */
+  height: calc(var(--vh, 1vh) * 100);
 }
