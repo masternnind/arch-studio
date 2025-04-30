@@ -6,13 +6,61 @@
   <link rel="stylesheet" href="../css/style.css">
 </head>
 <body>
-  <!-- 파일: components/navbar.html -->
   <nav class="top-menu">
     <ul>
-      <li><a href="/portfolio-youngjae_kim/index.html">Home</a></li>
-      <li><a href="/portfolio-youngjae_kim/pages/inspiration.html">Inspiration</a></li>
-      <li><a href="/portfolio-youngjae_kim/pages/footprints.html">Footprints</a></li>
+      <li><a href="#" id="about">About</a></li>
+      <li><a href="../index.html">Home</a></li>
+      <li><a href="../pages/inspiration.html">Inspiration</a></li>
+      <li><a href="../pages/footprints.html">Footprints</a></li>
     </ul>
   </nav>
+
+  <!-- About Overlay (최상위에 위치) -->
+  <div id="about-overlay">
+    <div id="about-content">
+      <h1 id="about-title">ABOUT</h1>
+      <div class="about-container">
+        <div class="profile-section">
+          <div class="profile-picture">
+            <img src="assets/img/profile.jpg" alt="Profile Picture">
+          </div>
+          <div class="summary">
+            <p>
+              Hello! I'm Youngjae Kim, an architectural designer with a passion for creating innovative and sustainable designs. 
+              My work focuses on blending functionality with aesthetics to deliver exceptional results.
+            </p>
+          </div>
+        </div>
+        <div class="skills-section">
+          <h2>Skills</h2>
+          <div class="skill">
+            <span>Design</span>
+            <div class="progress-bar">
+              <div class="progress" style="width: 90%;"></div>
+            </div>
+          </div>
+          <div class="skill">
+            <span>3D Modeling</span>
+            <div class="progress-bar">
+              <div class="progress" style="width: 80%;"></div>
+            </div>
+          </div>
+          <div class="skill">
+            <span>Rendering</span>
+            <div class="progress-bar">
+              <div class="progress" style="width: 85%;"></div>
+            </div>
+          </div>
+        </div>
+        <div class="additional-section">
+          <h2>Contact</h2>
+          <p>Email: youngjae.kim@example.com</p>
+          <p>Phone: +123 456 7890</p>
+        </div>
+        <!-- 닫기 버튼을 X 아이콘으로 변경 -->
+        <button id="close-button" aria-label="Close">&times;</button>
+      </div>
+    </div>
+  </div>
 </body>
 </html>
