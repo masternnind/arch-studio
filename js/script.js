@@ -136,6 +136,20 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
+  // 이미지 모달 함수들 – SECTION 2: Inspiration Page
+  const modalOverlay = document.getElementById('image-modal-overlay'); // ID로 구분
+  const closeModalButton = document.querySelector('#image-modal-overlay .close-modal');
+  if (modalOverlay && closeModalButton) {
+    closeModalButton.addEventListener('click', () => {
+      modalOverlay.style.display = 'none';
+    });
+    document.addEventListener('keydown', e => {
+      if (e.key === 'Escape') {
+        modalOverlay.style.display = 'none';
+      }
+    });
+  }
+
   /*─────────────────────────────
     SECTION 3: Timeline Page
   ─────────────────────────────*/
@@ -231,40 +245,51 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   /*─────────────────────────────
-    SECTION 5: About Page – Title Animation
+    SECTION 6: Navbar Loader
   ─────────────────────────────*/
-  const aboutButton = document.getElementById('about-button');
-  const closeButton = document.getElementById('close-button');
-  const mainTitle = document.getElementById('main-title');
+  const placeholder = document.getElementById('navbar-placeholder');
+  if (!placeholder) return;
+  const isInPages = window.location.pathname.includes('/pages/');
+  const navbarPath = isInPages ? '../components/navbar.html' : 'components/navbar.html';
+
+  fetch(navbarPath)
+    .then(res => {
+      if (!res.ok) throw new Error('Navbar load failed');
+      return res.text();
+    })
+    .then(html => {
+      placeholder.innerHTML = html;
+      // 네비게이션이 로드된 후 다시 About 이벤트 초기화를 호출합니다.
+      initAboutOverlay();
+    })
+    .catch(console.error);
+});
+
+function initAboutOverlay() {
+  const aboutLink = document.getElementById('about');
   const aboutOverlay = document.getElementById('about-overlay');
+  const closeButton = document.getElementById('close-button');
 
-  // About 버튼 클릭 시
-  aboutButton.addEventListener('click', () => {
-    mainTitle.classList.add('animate'); // 애니메이션 실행
-    aboutButton.style.display = 'none'; // About 버튼 숨기기
-    closeButton.style.display = 'block'; // Close 버튼 표시
-    mainTitle.style.display = 'none'; // 메인 타이틀 숨기기
-    aboutOverlay.classList.add('visible'); // 오버레이 활성화
+  if (!aboutLink || !aboutOverlay || !closeButton) {
+    console.error('About 관련 필수 요소를 찾을 수 없습니다.');
+    return;
+  }
+
+  // About 메뉴 클릭 시 오버레이 활성화
+  aboutLink.addEventListener('click', (e) => {
+    e.preventDefault();
+    aboutOverlay.classList.add('visible');
   });
 
-  // Close 버튼 클릭 시
+  // Close 버튼 클릭 시 오버레이 비활성화
   closeButton.addEventListener('click', () => {
-    mainTitle.classList.remove('animate'); // 애니메이션 초기화
-    mainTitle.classList.add('reset'); // 원상복귀 애니메이션 실행
-    closeButton.style.display = 'none'; // Close 버튼 숨기기
-    aboutButton.style.display = 'block'; // About 버튼 표시
-    aboutOverlay.classList.remove('visible'); // 오버레이 비활성화
-
-    // 원상복귀 애니메이션 종료 후 reset 클래스 제거
-    mainTitle.addEventListener('animationend', () => {
-      mainTitle.classList.remove('reset');
-    }, { once: true });
+    aboutOverlay.classList.remove('visible');
   });
 
-  // ESC 키로 오버레이 닫기
-  document.addEventListener('keydown', (event) => {
-    if (event.key === 'Escape') {
-      aboutOverlay.classList.remove('visible'); // 오버레이 비활성화
+  // ESC 키로 오버레이 닫기 (About 오버레이)
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') {
+      aboutOverlay.classList.remove('visible');
     }
   });
-});
+}
