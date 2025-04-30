@@ -220,10 +220,10 @@ html::-webkit-scrollbar-thumb, body::-webkit-scrollbar-thumb {
   transform: scale(1.05);
 }
 
-
 /* =======================================================================
    7. Inspiration Page (Plain Image Grid)
 ======================================================================= */
+
 /* Inspiration Grid 스타일 */
 .inspiration-grid {
   display: grid;
@@ -420,28 +420,45 @@ body.footprints-page {
 }
 .bottom-dots li a.active,
 .bottom-dots li a:hover {
-  background: #2ecc71;
+  background: #000000;
 }
 
 /* =======================================================================
-   10. Top Menu Styles
+   10. Top Menu Styles (navbar.html용)
 ======================================================================= */
 .top-menu {
   position: fixed;
   top: 20px;
-  right: 30px;
+  left: 30px;
+  right: 30px; /* 좌우에 동일한 여백으로 전체 폭 사용 */
   z-index: 1000;
+  background: transparent; /* 필요 시 배경색 지정 */
 }
+
 .top-menu ul {
   display: flex;
-  gap: 20px;
+  align-items: center;
   list-style: none;
   margin: 0;
   padding: 0;
+  width: 100%;
 }
+
+/* 첫 번째 li("About")를 왼쪽에 고정, 나머지 메뉴는 오른쪽 정렬 */
+.top-menu li:first-child {
+  margin-right: auto;
+}
+
 .top-menu li a {
   text-decoration: none;
   color: #ffffff;
+  font-size: 1rem;
+  padding: 5px 10px;
+  transition: color 0.3s ease, background-color 0.3s ease;
+}
+
+.top-menu li a:hover {
+  color: #999999;
 }
 
 /* =======================================================================
@@ -501,6 +518,24 @@ body.footprints-page {
 }
 .left-arrow { left: 10px; }
 .right-arrow { right: 10px; }
+
+/* Close 버튼을 좌측 상단(about 메뉴와 동일한 위치)으로 배치 */
+#close-button {
+  position: absolute;
+  top: 20px;      /* about 메뉴와 동일한 위치 */
+  left: 30px;     /* about 메뉴와 동일한 위치 */
+  font-size: 50px !important; /* 엑스 아이콘 크기를 더 크게 조정 */
+  background: none;
+  border: none;
+  color: #fff;
+  cursor: pointer;
+  z-index: 1001000000; /* 오버레이 내에서 항상 최상위 */
+  transition: transform 0.2s ease;
+}
+
+#close-button:hover {
+  transform: scale(1.1);
+}
 
 /* =======================================================================
    12. Full Height Utility Class
