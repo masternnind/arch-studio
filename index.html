@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PORTFOLIO_YOUNGJAE.KIM</title>
+  <!-- GitHub Pages 배포 환경에 맞게 베이스 경로 설정 -->
+  <link rel="stylesheet" href="css/style.css">
+  <!-- Locomotive Scroll CSS -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/locomotive-scroll@4.1.3/dist/locomotive-scroll.min.css">
+  <style>
+    /* 초기 상태 */
+    #about-title {
+      position: relative;
+      font-size: 3rem;
+      text-align: center;
+      transition: all 0.5s ease; /* 애니메이션 효과 */
+    }
+
+    /* 클릭 후 상태 */
+    #about-title.animate {
+      position: absolute;
+      top: 20px;
+      left: 20px;
+      font-size: 5rem; /* 폰트 크기 증가 */
+      text-align: left;
+      transform: translate(0, 0); /* 이동 */
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Navbar Placeholder (오직 메뉴만 로드) -->
+  <div id="navbar-placeholder"></div>
+  <script src="js/navbar-loader.js" defer></script>
+
+
+  <!-- 메인 스크롤 컨테이너 -->
+  <div id="smooth-scroll" data-scroll-container>
+    <!-- 커버 페이지 -->
+    <section id="page1" class="panel cover">
+      <div class="content">
+        <h1 id="main-title">YOUNGJAE KIM</h1>
+        <p>| ARCHITECTURAL DESIGNER |</p>
+      </div>
+      <canvas id="pensilCanvas"></canvas>
+    </section>
+
+    <!-- 프로젝트 이미지 패널들 -->
+    <!-- Project 1 -->
+    <section id="page2" class="panel">
+      <img src="assets/img/project1.jpg" alt="Project 1">
+    </section>
+    <!-- Project 2 -->
+    <section id="page3" class="panel">
+      <img src="assets/img/project2.jpg" alt="Project 2">
+    </section>
+    <!-- Project 3 -->
+    <section id="page4" class="panel">
+      <img src="assets/img/project3.jpg" alt="Project 3">
+    </section>
+    <!-- Project 4 -->
+    <section id="page5" class="panel">
+      <img src="assets/img/project4.jpg" alt="Project 4">
+    </section>
+    <!-- Project 5 (새로운 프로젝트) -->
+    <section id="page6" class="panel">
+      <img src="assets/img/project5.jpg" alt="Project 5">
+    </section>
+
+    <!-- Contact Page (기존 page6를 contact-page로 변경) -->
+    <section id="contact-page" class="panel finish">
+      <div class="content">
+        <h1>CONTACTS</h1>
+        <p>E : masternnind@gmail.com</p>
+        <p>P : 010 3794 1934</p>
+        <p>A : 서울특별시 강남구 압구정로 2길 46</p>
+        <div class="social-links">
+          <a href="http://linkedin.com/in/youngjae-kim-18b26b206" target="_blank"><img src="assets/img/links/Linkedin.png" alt="Linkedin"></a>
+          <a href="https://www.instagram.com/youngjae_imda" target="_blank"><img src="assets/img/links/Instagram.png" alt="Instagram"></a>
+          <a href="https://www.youtube.com/@youngjaekim1449" target="_blank"><img src="assets/img/links/Youtube.png" alt="YouTube"></a>
+          <a href="#" target="_blank"><img src="assets/img/links/Pinterest.png" alt="Pinterest"></a>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <!-- 우측 네비게이션 컨테이너 -->
+  <div class="side-nav-container">
+    <nav class="side-nav">
+      <a href="#page1" class="nav-item"></a>
+      <a href="#page2" class="nav-item"></a>
+      <a href="#page3" class="nav-item"></a>
+      <a href="#page4" class="nav-item"></a>
+      <a href="#page5" class="nav-item"></a>
+      <a href="#page6" class="nav-item"></a>
+      <a href="#contact-page" class="nav-item"></a>
+    </nav>
+  </div>
+
+  <!-- Scripts -->
+  <script src="https://cdn.jsdelivr.net/npm/locomotive-scroll@4.1.3/dist/locomotive-scroll.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+  <script src="js/script.js" defer></script>
+</body>
+</html>

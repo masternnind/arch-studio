@@ -1,0 +1,546 @@
+/* =======================================================================
+   1. Global Reset & Base Styles
+======================================================================= */
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
+
+/* Global Scrollbar 스타일 (모든 페이지 적용) */
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  font-family: 'Roboto', sans-serif;
+  background: #181818;
+  color: #dcdcdc;
+  line-height: 1.6;
+  overflow-y: auto; /* 스크롤 가능 */
+  scrollbar-width: thin; /* Firefox: 얇은 스크롤바 */
+  scrollbar-color: #000000 transparent; /* Firefox: 스크롤바 색상 */
+}
+
+/* Chrome, Safari, Opera용 커스텀 스크롤바 */
+html::-webkit-scrollbar, body::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+html::-webkit-scrollbar-track, body::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+html::-webkit-scrollbar-thumb, body::-webkit-scrollbar-thumb {
+  background-color: #000000;
+  border-radius: 4px;
+}
+
+
+
+
+/* =======================================================================
+   2. CSS Custom Properties (Variables)
+======================================================================= */
+:root {
+  --bg-dark: #181818;
+  --text-dark: #dcdcdc;
+  --panel-bg: #202020;
+  --panel-border: #444;
+  --social-gap: 40px;
+  --social-padding: 40px;
+  --social-hover-scale: 1.2;
+}
+
+/* =======================================================================
+   3. Global Containers & Panels
+======================================================================= */
+#smooth-scroll {
+  overflow: visible;
+}
+.panel {
+  width: 100vw;
+  height: 100vh;
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  background: var(--panel-bg);
+  color: var(--text-dark);
+  padding: 40px;
+  font-size: 1.2rem;
+}
+
+/* 태블릿 이하 (폭 768px 이하) */
+@media (max-width: 768px) {
+  .panel {
+    padding: 20px;
+    font-size: 1rem;
+  }
+}
+
+/* 모바일 (폭 480px 이하) */
+@media (max-width: 480px) {
+  .panel {
+    padding: 10px;
+    font-size: 0.9rem;
+  }
+}
+
+/* =======================================================================
+   4. Side Navigation & Social Links
+======================================================================= */
+.side-nav-container {
+  position: fixed;
+  top: 50%;
+  right: 30px;
+  transform: translateY(-50%);
+  z-index: 2000;
+}
+.side-nav {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+  align-items: center;
+}
+.nav-item {
+  width: 10px;
+  height: 10px;
+  background: #474747;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: background 0.3s ease, transform 0.3s ease;
+}
+.nav-item.active {
+  background: #ffffff;
+  transform: scale(1.2);
+}
+.social-links {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: var(--social-gap);
+  padding: var(--social-padding) 0;
+  position: absolute;
+  bottom: var(--social-gap);
+  left: 50%;
+  transform: translateX(-50%);
+}
+.social-links a img {
+  height: 20px;
+  object-fit: contain;
+  transition: transform 0.3s ease;
+}
+.social-links a img:hover {
+  transform: scale(var(--social-hover-scale));
+}
+
+/* =======================================================================
+   5. Canvas & Cover Page Styles
+======================================================================= */
+#pensilCanvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+}
+.cover .content {
+  position: relative;
+  z-index: 2;
+  text-align: center;
+  padding: 2rem;
+}
+.cover h1 {
+  font-size: 3rem;
+}
+.cover p {
+  font-size: 1.5rem;
+}
+.cover .about-link {
+  font-size: 0.8rem;
+  margin-top: 10px;
+  cursor: pointer;
+  text-transform: lowercase;
+  color: #ffffff;
+}
+
+/* =======================================================================
+   6. About Page & Overlay Styles
+======================================================================= */
+.about-hero h1 {
+  font-size: 3rem;
+  margin-bottom: 10px;
+}
+.about-hero p {
+  font-size: 1.2rem;
+  max-width: 800px;
+  margin: 0 auto;
+}
+#about-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.8);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 100000;
+  transform: translateY(-100%);
+  transition: transform 0.5s ease;
+}
+#about-overlay.visible {
+  transform: translateY(0);
+}
+#about-content {
+  text-align: center;
+  max-width: 600px;
+  padding: 20px;
+  color: #fff;
+}
+#about-content h1 {
+  font-size: 2.5rem;
+  margin-bottom: 1rem;
+}
+#about-content p {
+  font-size: 1.2rem;
+}
+#about-content button {
+  font-size: 1rem;
+  cursor: pointer;
+  background: none;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  transition: background 0.3s ease, transform 0.3s ease;
+}
+#about-content button:hover {
+  background: #2c4f7c;
+  transform: scale(1.05);
+}
+
+/* =======================================================================
+   7. Inspiration Page (Plain Image Grid)
+======================================================================= */
+
+/* Inspiration Grid 스타일 */
+.inspiration-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(450px, 1fr)); /* 자동으로 열 크기 조정 */
+  gap: 20px; /* 이미지 간격 */
+  justify-content: center; /* 중앙 정렬 */
+  align-items: start; /* 상단 정렬 */
+  padding: 20px;
+}
+
+/* 이미지 컨테이너 기본 스타일 */
+.image-container {
+  position: relative;
+  overflow: hidden;
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  /* 기본 배경은 fallback용 */
+  background: #f0f0f0;
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* 로딩 중 placeholder로 낮은 품질의 blurred 이미지 표시 */
+.image-container::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  /* 각 컨테이너에 인라인 스타일이나 JS로 설정: 예) --placeholder-image: url('path/to/blur-image.jpg'); */
+  background-image: var(--placeholder-image);
+  background-size: cover;
+  background-position: center;
+  filter: blur(15px);
+  transform: scale(1.1);
+  z-index: 1;
+  transition: opacity 0.5s ease;
+}
+
+/* 실제 이미지는 ::before 위에 오도록 */
+.image-container img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  position: relative;
+  z-index: 2;
+  transition: transform 0.3s ease, opacity 0.3s ease;
+  opacity: 0; /* 로딩 전 숨김 처리 */
+}
+
+/* 이미지가 로드되면 loaded 클래스 추가하여 투명도 변경 (JS에서 처리) */
+.image-container img.loaded {
+  opacity: 1;
+  transform: scale(1);
+}
+
+/* ::before는 이미지 로딩 후 투명하게 처리할 수 있음 
+   (JS에서 이미지 로드 후 .image-container에 class 'loaded'를 추가하는 방식도 가능) */
+.image-container.loaded::before {
+  opacity: 0;
+}
+
+/* 오버레이 스타일 */
+.image-container .overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.3);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.image-container:hover .overlay {
+  opacity: 1; /* 호버 시 오버레이 표시 */
+}
+
+/* Lazy Loading 이미지 스타일 */
+.lazy-image {
+  opacity: 0;
+  transform: scale(0.9); /* 로딩 전 축소 */
+  transition: opacity 0.5s ease-in-out, transform 0.5s ease-in-out;
+}
+
+.lazy-image.loaded {
+  opacity: 1;
+  transform: scale(1); /* 로드 후 원래 크기로 */
+}
+
+/* 이미지 컨테이너 내 이미지 hover 시 효과 */
+.inspiration-image {
+  opacity: 1 !important;
+  filter: none !important;
+  transition: transform 0.3s ease, opacity 0.3s ease;
+}
+.inspiration-image:hover {
+  transform: scale(1.1);
+}
+
+/* =======================================================================
+   8. Inspiration Page Text
+======================================================================= */
+.inspiration-page .content h1 {
+  font-size: 3rem;
+  text-align: center;
+  color: #ffffff;
+  margin-bottom: 20px;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+}
+.inspiration-page .content p {
+  font-size: 1.2rem;
+  text-align: center;
+  color: #dcdcdc;
+  max-width: 800px;
+  margin: 10px auto 0;
+}
+
+/* =======================================================================
+   9. Footprints Page Styles - Simplified
+======================================================================= */
+body.footprints-page {
+  font-family: 'Roboto', sans-serif;
+  background: #181818;
+  color: #dcdcdc;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+}
+.footprints-header {
+  text-align: center;
+  height: 80px;
+  line-height: 80px;
+}
+.timeline-horizontal {
+  display: flex;
+  gap: 80px;
+  padding: 0 calc(50vw - 150px);
+  white-space: nowrap;
+  overflow-x: auto;
+  scroll-behavior: smooth;
+  height: calc(100vh - 80px);
+  justify-content: flex-start;
+  align-items: center;
+  margin-top: 40px;
+}
+.timeline-container {
+  flex: 0 0 300px;
+  height: 50px;
+  text-align: center;
+  position: relative;
+  transition: transform 0.3s ease, opacity 0.3s ease;
+  clip-path: polygon(0 0, 95% 0, 100% 50%, 95% 100%, 0 100%, 5% 50%);
+}
+
+/* FOOTPRINTS 페이지 하단 네비게이션 (연결된 점) */
+.bottom-dots {
+  position: fixed;
+  bottom: 20px;
+  width: 100%;
+  text-align: center;
+  z-index: 1000;
+}
+.bottom-dots ul {
+  display: inline-flex;
+  list-style: none;
+  padding: 0;
+  margin: 0 auto;
+  position: relative;
+}
+.bottom-dots ul::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 0;
+  right: 0;
+  border-top: 1px solid #fff;
+  z-index: -1;
+}
+.bottom-dots li {
+  margin: 0 10px;
+  position: relative;
+}
+.bottom-dots li a {
+  display: block;
+  width: 12px;
+  height: 12px;
+  background: #fff;
+  border-radius: 50%;
+  text-indent: -9999px;
+  transition: background 0.3s ease;
+}
+.bottom-dots li a.active,
+.bottom-dots li a:hover {
+  background: #000000;
+}
+
+/* =======================================================================
+   10. Top Menu Styles (navbar.html용)
+======================================================================= */
+.top-menu {
+  position: fixed;
+  top: 20px;
+  left: 30px;
+  right: 30px; /* 좌우에 동일한 여백으로 전체 폭 사용 */
+  z-index: 1000;
+  background: transparent; /* 필요 시 배경색 지정 */
+}
+
+.top-menu ul {
+  display: flex;
+  align-items: center;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  width: 100%;
+}
+
+/* 첫 번째 li("About")를 왼쪽에 고정, 나머지 메뉴는 오른쪽 정렬 */
+.top-menu li:first-child {
+  margin-right: auto;
+}
+
+.top-menu li a {
+  text-decoration: none;
+  color: #ffffff;
+  font-size: 1rem;
+  padding: 5px 10px;
+  transition: color 0.3s ease, background-color 0.3s ease;
+}
+
+.top-menu li a:hover {
+  color: #999999;
+}
+
+/* =======================================================================
+   11. Modal Overlay & Content Styles
+======================================================================= */
+/* 모달 오버레이 및 내부 내용 스타일 (창 전체 크기 활용) */
+.image-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0,0,0,0.8);
+  display: none; /* 모달 열 때 display를 'flex'로 변경 */
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+}
+
+.modal-content {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.modal-content img.modal-image {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+  border-radius: 4px;
+}
+
+/* 닫기 버튼 */
+.close-modal {
+  position: absolute;
+  top: 10px;
+  right: 20px;
+  font-size: 2rem;
+  color: #fff;
+  cursor: pointer;
+  user-select: none;
+}
+
+/* 좌우 화살표 */
+.modal-arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 3rem;
+  color: #fff;
+  cursor: pointer;
+  user-select: none;
+  padding: 10px;
+}
+.left-arrow { left: 10px; }
+.right-arrow { right: 10px; }
+
+/* Close 버튼을 좌측 상단(about 메뉴와 동일한 위치)으로 배치 */
+#close-button {
+  position: absolute;
+  top: 20px;      /* about 메뉴와 동일한 위치 */
+  left: 30px;     /* about 메뉴와 동일한 위치 */
+  font-size: 50px !important; /* 엑스 아이콘 크기를 더 크게 조정 */
+  background: none;
+  border: none;
+  color: #fff;
+  cursor: pointer;
+  z-index: 1001000000; /* 오버레이 내에서 항상 최상위 */
+  transition: transform 0.2s ease;
+}
+
+#close-button:hover {
+  transform: scale(1.1);
+}
+
+/* =======================================================================
+   12. Full Height Utility Class
+======================================================================= */
+.full-height {
+  /* --vh가 업데이트되면 실제 높이 계산 */
+  height: calc(var(--vh, 1vh) * 100);
+}
