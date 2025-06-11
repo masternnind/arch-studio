@@ -1,7 +1,13 @@
 let canvas, ctx, width, height;
-const numPoints = 800;
-const points = [];
+let points = [];
 let paused = false;
+
+// 화면 크기에 따라 포인트 개수 동적 결정
+function getNumPoints(w, h) {
+    const area = w * h;
+    // 5,000 px²당 1개, 최소 60개, 최대 1200개 제한 (아주 높은 밀도)
+    return Math.max(60, Math.min(1200, Math.round(area / 5000)));
+}
 
 self.onmessage = (e) => {
     const data = e.data;
@@ -10,6 +16,7 @@ self.onmessage = (e) => {
         ctx = canvas.getContext('2d');
         width = canvas.width = data.width;
         height = canvas.height = data.height;
+        points = [];
         initPoints();
         animate();
     }
@@ -19,8 +26,9 @@ self.onmessage = (e) => {
 };
 
 function initPoints() {
+    const numPoints = getNumPoints(width, height);
     for (let i = 0; i < numPoints; i++) {
-        const r = 1;
+        const r = 1.2;
         const x = Math.random() * (width - r * 2) + r;
         const y = Math.random() * (height - r * 2) + r;
         const dx = (Math.random() - 0.5) * 1.5;
@@ -70,3 +78,29 @@ function animate() {
     }
     requestAnimationFrame(animate);
 }
+
+function getDotCount() {
+  const width = window.innerWidth;
+  if (width >= 1200) return 30;      // 데스크탑
+  if (width >= 768) return 15;       // 태블릿
+  return 8;                          // 모바일
+}
+
+function renderDots() {
+  const dotContainer = document.querySelector('.bottom-dots ul');
+  if (!dotContainer) return;
+  dotContainer.innerHTML = ''; // 기존 점 제거
+
+  const dotCount = getDotCount();
+  for (let i = 0; i < dotCount; i++) {
+    const li = document.createElement('li');
+    const a = document.createElement('a');
+    a.href = '#';
+    li.appendChild(a);
+    dotContainer.appendChild(li);
+  }
+}
+
+// 최초 실행 및 리사이즈 대응
+window.addEventListener('DOMContentLoaded', renderDots);
+window.addEventListener('resize', renderDots);

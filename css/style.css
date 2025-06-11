@@ -163,6 +163,12 @@ html::-webkit-scrollbar-thumb, body::-webkit-scrollbar-thumb {
   text-transform: lowercase;
   color: #ffffff;
 }
+.cover {
+  min-height: 100vh;
+  width: 100vw;
+  box-sizing: border-box;
+  /* 필요하다면 배경색이나 이미지도 추가 */
+}
 
 /* =======================================================================
    6. About Page & Overlay Styles

@@ -1,68 +1,4 @@
-document.addEventListener('DOMContentLoaded', () => {
-  /*─────────────────────────────
-    SECTION 1: LocomotiveScroll & ScrollTrigger
-  ─────────────────────────────*/
-  const scrollContainer = document.querySelector('#smooth-scroll');
-  if (scrollContainer) {
-    gsap.registerPlugin(ScrollTrigger);
-    const locoScroll = new LocomotiveScroll({
-      el: scrollContainer,
-      smooth: true,
-      inertia: 0.5,
-    });
-    locoScroll.on('scroll', ScrollTrigger.update);
-    ScrollTrigger.scrollerProxy(scrollContainer, {
-      scrollTop(value) {
-        return arguments.length ? locoScroll.scrollTo(value, 0, 0) : locoScroll.scroll.instance.scroll.y;
-      },
-      getBoundingClientRect() {
-        return { top: 0, left: 0, width: window.innerWidth, height: window.innerHeight };
-      },
-      pinType: scrollContainer.style.transform ? 'transform' : 'fixed',
-    });
-    ScrollTrigger.addEventListener('refresh', () => locoScroll.update());
-    ScrollTrigger.refresh();
-
-    document.querySelectorAll('.panel').forEach((panel, i, panels) => {
-      ScrollTrigger.create({
-        trigger: panel,
-        scroller: '#smooth-scroll',
-        start: 'top top',
-        pin: i !== panels.length - 1,
-        pinSpacing: false,
-        anticipatePin: 1,
-      });
-    });
-
-    // 네비게이션 클릭 시 스크롤 이동
-    document.querySelectorAll('.nav-item').forEach(item => {
-      item.addEventListener('click', e => {
-        e.preventDefault();
-        const targetID = item.getAttribute('href');
-        const panels = [...document.querySelectorAll('.panel')];
-        const index = panels.findIndex(panel => `#${panel.id}` === targetID);
-        if (index >= 0) locoScroll.scrollTo(index * window.innerHeight, { duration: 800 });
-      });
-    });
-
-    function activateSideNav(activeIdx) {
-      document.querySelectorAll('.side-nav .nav-item')
-        .forEach((nav, i) => nav.classList.toggle('active', i === activeIdx));
-    }
-
-    document.querySelectorAll('section.panel').forEach((panel, idx) => {
-      ScrollTrigger.create({
-        trigger: panel,
-        scroller: '#smooth-scroll',
-        start: 'top center',
-        end: 'bottom center',
-        onEnter: () => activateSideNav(idx),
-        onEnterBack: () => activateSideNav(idx),
-      });
-    });
-  }
-
-  /*─────────────────────────────
+/*─────────────────────────────
     SECTION 2: Inspiration Page – 이미지 그리드 및 모달
   ─────────────────────────────*/
   const gridContainer = document.querySelector('.inspiration-grid');
@@ -236,60 +172,60 @@ document.addEventListener('DOMContentLoaded', () => {
       const offscreen = canvas.transferControlToOffscreen();
       const worker = new Worker('js/canvas-worker.js');
       worker.postMessage({ canvas: offscreen, width: canvas.clientWidth, height: canvas.clientHeight }, [offscreen]);
+      // IntersectionObserver로 cover가 보일 때만 애니메이션
       new IntersectionObserver(entries => {
         entries.forEach(entry => worker.postMessage({ pause: entry.intersectionRatio === 0 }));
       }, { threshold: 0 }).observe(cover);
+
+      // 리사이즈 대응
+      window.addEventListener('resize', () => {
+        worker.postMessage({ width: canvas.clientWidth, height: canvas.clientHeight });
+      });
     } else {
-      setupCanvasEffect(canvas, cover);
+      // OffscreenCanvas 미지원 브라우저용 (필요시 구현)
+      // setupCanvasEffect(canvas, cover);
     }
   });
 
   /*─────────────────────────────
     SECTION 6: Navbar Loader
   ─────────────────────────────*/
-  const placeholder = document.getElementById('navbar-placeholder');
-  if (!placeholder) return;
-  const isInPages = window.location.pathname.includes('/pages/');
-  const navbarPath = isInPages ? '../components/navbar.html' : 'components/navbar.html';
+  document.addEventListener("DOMContentLoaded", function () {
+    const placeholder = document.getElementById('navbar-placeholder');
+    if (!placeholder) return;
+    const isInPages = window.location.pathname.includes('/pages/');
+    const navbarPath = isInPages ? '../components/navbar.html' : 'components/navbar.html';
 
-  fetch(navbarPath)
-    .then(res => {
-      if (!res.ok) throw new Error('Navbar load failed');
-      return res.text();
-    })
-    .then(html => {
-      placeholder.innerHTML = html;
-      // 네비게이션이 로드된 후 다시 About 이벤트 초기화를 호출합니다.
-      initAboutOverlay();
-    })
-    .catch(console.error);
-});
-
-function initAboutOverlay() {
-  const aboutLink = document.getElementById('about');
-  const aboutOverlay = document.getElementById('about-overlay');
-  const closeButton = document.getElementById('close-button');
-
-  if (!aboutLink || !aboutOverlay || !closeButton) {
-    console.error('About 관련 필수 요소를 찾을 수 없습니다.');
-    return;
-  }
-
-  // About 메뉴 클릭 시 오버레이 활성화
-  aboutLink.addEventListener('click', (e) => {
-    e.preventDefault();
-    aboutOverlay.classList.add('visible');
+    fetch(navbarPath)
+      .then(res => {
+        if (!res.ok) throw new Error('Navbar load failed');
+        return res.text();
+      })
+      .then(html => {
+        placeholder.innerHTML = html;
+        // 네비게이션이 로드된 후 About 이벤트 초기화
+        initAboutOverlay();
+      })
+      .catch(console.error);
   });
 
-  // Close 버튼 클릭 시 오버레이 비활성화
-  closeButton.addEventListener('click', () => {
-    aboutOverlay.classList.remove('visible');
-  });
+  // About 오버레이 이벤트 (필요시)
+  function initAboutOverlay() {
+    const aboutLink = document.getElementById('about');
+    const aboutOverlay = document.getElementById('about-overlay');
+    const closeButton = document.getElementById('close-button');
+    if (!aboutLink || !aboutOverlay || !closeButton) return;
 
-  // ESC 키로 오버레이 닫기 (About 오버레이)
-  document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape') {
+    aboutLink.addEventListener('click', (e) => {
+      e.preventDefault();
+      aboutOverlay.classList.add('visible');
+    });
+    closeButton.addEventListener('click', () => {
       aboutOverlay.classList.remove('visible');
-    }
-  });
-}
+    });
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') {
+        aboutOverlay.classList.remove('visible');
+      }
+    });
+  }
