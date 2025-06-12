@@ -86,6 +86,72 @@
     });
   }
 
+    // ...existing code...
+const scrollContainer = document.querySelector('#smooth-scroll');
+if (scrollContainer) {
+  gsap.registerPlugin(ScrollTrigger);
+  const locoScroll = new LocomotiveScroll({
+    el: scrollContainer,
+    smooth: true,
+    inertia: 0.5,
+  });
+  locoScroll.on('scroll', ScrollTrigger.update);
+  ScrollTrigger.scrollerProxy(scrollContainer, {
+    scrollTop(value) {
+      return arguments.length ? locoScroll.scrollTo(value, 0, 0) : locoScroll.scroll.instance.scroll.y;
+    },
+    getBoundingClientRect() {
+      return { top: 0, left: 0, width: window.innerWidth, height: window.innerHeight };
+    },
+    pinType: scrollContainer.style.transform ? 'transform' : 'fixed',
+  });
+  ScrollTrigger.addEventListener('refresh', () => locoScroll.update());
+  ScrollTrigger.refresh();
+
+  document.querySelectorAll('.panel').forEach((panel, i, panels) => {
+    ScrollTrigger.create({
+      trigger: panel,
+      scroller: '#smooth-scroll',
+      start: 'top top',
+      pin: i !== panels.length - 1,
+      pinSpacing: false,
+      anticipatePin: 1,
+    });
+  });
+
+  // projects.html에서만 우측 네비게이션 동작
+  if (window.location.pathname.includes('projects.html')) {
+    // 네비게이션 클릭 시 스크롤 이동
+    document.querySelectorAll('.nav-item').forEach(item => {
+      item.addEventListener('click', e => {
+        e.preventDefault();
+        const targetID = item.getAttribute('href');
+        const panels = [...document.querySelectorAll('.panel')];
+        const index = panels.findIndex(panel => `#${panel.id}` === targetID);
+        if (index >= 0) locoScroll.scrollTo(index * window.innerHeight, { duration: 800 });
+      });
+    });
+
+    // 활성화 표시 함수
+    function activateSideNav(activeIdx) {
+      document.querySelectorAll('.side-nav .nav-item')
+        .forEach((nav, i) => nav.classList.toggle('active', i === activeIdx));
+    }
+
+    // 스크롤 트리거로 활성화 동기화
+    document.querySelectorAll('section.panel').forEach((panel, idx) => {
+      ScrollTrigger.create({
+        trigger: panel,
+        scroller: '#smooth-scroll',
+        start: 'top center',
+        end: 'bottom center',
+        onEnter: () => activateSideNav(idx),
+        onEnterBack: () => activateSideNav(idx),
+      });
+    });
+  }
+}
+// ...existing code...
   /*─────────────────────────────
     SECTION 3: Timeline Page
   ─────────────────────────────*/
