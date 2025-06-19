@@ -14,11 +14,22 @@ self.onmessage = (e) => {
     if (data.canvas) {
         canvas = data.canvas;
         ctx = canvas.getContext('2d');
+        if (!ctx) {
+          // 디버깅용 메시지
+          self.postMessage({ error: 'ctx is null' });
+        }
         width = canvas.width = data.width;
         height = canvas.height = data.height;
         points = [];
         initPoints();
         animate();
+    }
+    // 크기만 변경하는 메시지 처리
+    if (data.width && data.height && !data.canvas) {
+        width = canvas.width = data.width;
+        height = canvas.height = data.height;
+        points = [];
+        initPoints();
     }
     if (data.pause !== undefined) {
         paused = data.pause;
@@ -78,29 +89,3 @@ function animate() {
     }
     requestAnimationFrame(animate);
 }
-
-function getDotCount() {
-  const width = window.innerWidth;
-  if (width >= 1200) return 30;      // 데스크탑
-  if (width >= 768) return 15;       // 태블릿
-  return 8;                          // 모바일
-}
-
-function renderDots() {
-  const dotContainer = document.querySelector('.bottom-dots ul');
-  if (!dotContainer) return;
-  dotContainer.innerHTML = ''; // 기존 점 제거
-
-  const dotCount = getDotCount();
-  for (let i = 0; i < dotCount; i++) {
-    const li = document.createElement('li');
-    const a = document.createElement('a');
-    a.href = '#';
-    li.appendChild(a);
-    dotContainer.appendChild(li);
-  }
-}
-
-// 최초 실행 및 리사이즈 대응
-window.addEventListener('DOMContentLoaded', renderDots);
-window.addEventListener('resize', renderDots);

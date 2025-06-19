@@ -230,26 +230,40 @@ if (scrollContainer) {
   /*─────────────────────────────
     SECTION 4: Cover Page – Canvas Animation
   ─────────────────────────────*/
-  window.addEventListener('load', () => {
+  window.addEventListener('DOMContentLoaded', () => {
     const canvas = document.getElementById('pensilCanvas');
-    const cover = document.querySelector('.cover');
-    if (!canvas || !cover) return;
-    if (canvas.transferControlToOffscreen) {
+    if (canvas && window.OffscreenCanvas) {
+      // 캔버스 크기 설정
+      function resizeCanvas() {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+      }
+      resizeCanvas();
+      window.addEventListener('resize', resizeCanvas);
+
+      // 워커 생성 및 오프스크린 캔버스 전달
       const offscreen = canvas.transferControlToOffscreen();
       const worker = new Worker('js/canvas-worker.js');
-      worker.postMessage({ canvas: offscreen, width: canvas.clientWidth, height: canvas.clientHeight }, [offscreen]);
-      // IntersectionObserver로 cover가 보일 때만 애니메이션
-      new IntersectionObserver(entries => {
-        entries.forEach(entry => worker.postMessage({ pause: entry.intersectionRatio === 0 }));
-      }, { threshold: 0 }).observe(cover);
+      worker.postMessage({
+        canvas: offscreen,
+        width: canvas.width,
+        height: canvas.height
+      }, [offscreen]);
 
-      // 리사이즈 대응
+      // 리사이즈 시 워커에도 크기 전달
       window.addEventListener('resize', () => {
-        worker.postMessage({ width: canvas.clientWidth, height: canvas.clientHeight });
+        worker.postMessage({
+          width: canvas.width,
+          height: canvas.height
+        });
       });
+
+      // 워커에서 오는 메시지(디버깅용) 콘솔에 출력
+      worker.onmessage = (e) => {
+        console.log('worker message:', e.data);
+      };
     } else {
-      // OffscreenCanvas 미지원 브라우저용 (필요시 구현)
-      // setupCanvasEffect(canvas, cover);
+      console.warn('OffscreenCanvas를 지원하지 않는 브라우저입니다.');
     }
   });
 
@@ -295,3 +309,12 @@ if (scrollContainer) {
       }
     });
   }
+
+  document.addEventListener('DOMContentLoaded', function() {
+    const aboutTitle = document.getElementById('about-title');
+    if (aboutTitle) {
+      aboutTitle.addEventListener('click', function() {
+        aboutTitle.classList.toggle('animate');
+      });
+    }
+  });
