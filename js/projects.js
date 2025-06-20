@@ -73,10 +73,10 @@ document.addEventListener('DOMContentLoaded', () => {
         opacity: 1,
         scrollTrigger: {
           trigger: panel,
+          scroller: '.projects-panel .content',
           start: 'top 90%',
           end: 'top 40%',
           scrub: true,
-          scroller: '.projects-panel .content'
         }
       }
     );
