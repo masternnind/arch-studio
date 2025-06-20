@@ -13,7 +13,13 @@ html, body {
   background: #181818;
   color: #dcdcdc;
   line-height: 1.6;
+<<<<<<< HEAD
   overflow: hidden; /* 스크롤 완전 제거 */
+=======
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: #000000 transparent;
+>>>>>>> 177c312ae184ac8d78cb931f7960220252b671da
 }
 
 /* Chrome, Safari, Opera용 커스텀 스크롤바 */
@@ -45,11 +51,21 @@ html::-webkit-scrollbar-thumb, body::-webkit-scrollbar-thumb {
 
 /* =======================================================================
    [메인] index.html (js/script.js)
+<<<<<<< HEAD
    - 메인 텍스트 중앙 정렬, 스크롤 제거
 ======================================================================= */
 html, body {
   margin: 0;
   padding: 0;
+=======
+======================================================================= */
+/* #smooth-scroll, .panel, #pensilCanvas, .cover 등 */
+
+#smooth-scroll {
+  overflow: visible;
+}
+.panel {
+>>>>>>> 177c312ae184ac8d78cb931f7960220252b671da
   width: 100vw;
   height: 100vh;
   overflow: hidden; /* 스크롤 완전 제거 */
@@ -62,6 +78,7 @@ html, body {
   display: flex;
   justify-content: center;
   align-items: center;
+<<<<<<< HEAD
   position: relative;
   background: var(--panel-bg, #202020);
   color: var(--text-dark, #fff);
@@ -105,6 +122,41 @@ html, body {
 ======================================================================= */
 /* .about-hero, #about-overlay, #about-content 등 */
 
+=======
+  text-align: center;
+  background: var(--panel-bg);
+  color: var(--text-dark);
+  padding: 40px;
+  font-size: 1.2rem;
+  z-index: 1;
+  transition: z-index 0.3s;
+}
+.panel[style*="z-index: 2"] {
+  z-index: 2 !important;
+}
+
+/* 태블릿 이하 (폭 768px 이하) */
+@media (max-width: 768px) {
+  .panel {
+    padding: 20px;
+    font-size: 1rem;
+  }
+}
+
+/* 모바일 (폭 480px 이하) */
+@media (max-width: 480px) {
+  .panel {
+    padding: 10px;
+    font-size: 0.9rem;
+  }
+}
+
+/* =======================================================================
+   [소개] about.html (js/script.js)
+======================================================================= */
+/* .about-hero, #about-overlay, #about-content 등 */
+
+>>>>>>> 177c312ae184ac8d78cb931f7960220252b671da
 .about-hero h1 {
   font-size: 3rem;
   margin-bottom: 10px;
@@ -160,6 +212,7 @@ html, body {
 
 /* =======================================================================
    [프로젝트] projects.html (js/projects.js)
+<<<<<<< HEAD
    - 네비게이션과 겹치지 않도록 내부만 스크롤
 ======================================================================= */
 .projects-panel {
@@ -206,6 +259,56 @@ html, body {
   position: relative;
 }
 
+=======
+======================================================================= */
+/* .side-nav-container, .side-nav, .nav-item 등 */
+
+.side-nav-container {
+  position: fixed;
+  top: 50%;
+  right: 30px;
+  transform: translateY(-50%);
+  z-index: 2000;
+}
+.side-nav {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+  align-items: center;
+}
+.nav-item {
+  width: 10px;
+  height: 10px;
+  background: #474747;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: background 0.3s ease, transform 0.3s ease;
+}
+.nav-item.active {
+  background: #ffffff;
+  transform: scale(1.2);
+}
+.social-links {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: var(--social-gap);
+  padding: var(--social-padding) 0;
+  position: absolute;
+  bottom: var(--social-gap);
+  left: 50%;
+  transform: translateX(-50%);
+}
+.social-links a img {
+  height: 20px;
+  object-fit: contain;
+  transition: transform 0.3s ease;
+}
+.social-links a img:hover {
+  transform: scale(var(--social-hover-scale));
+}
+
+>>>>>>> 177c312ae184ac8d78cb931f7960220252b671da
 /* =======================================================================
    [영감] inspiration.html (js/inspiration.js)
 ======================================================================= */
