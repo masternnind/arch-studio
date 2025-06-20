@@ -25,33 +25,28 @@
       transform: translate(0, 0); /* 이동 */
     }
   </style>
-  <!-- LocomotiveScroll CSS (선택) -->
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/locomotive-scroll@4.1.4/dist/locomotive-scroll.min.css">
 </head>
 <body>
+  <!-- 로딩 오버레이 -->
+  <div id="loading-overlay">
+    <div id="loading-text">0%</div>
+  </div>
 
-  <!-- Navbar Placeholder (오직 메뉴만 로드) -->
+  <!-- Navbar Placeholder -->
   <div id="navbar-placeholder"></div>
   <script src="js/navbar-loader.js" defer></script>
 
-  <!-- 메인 컨테이너 (data-scroll-container 속성 제거) -->
-  <div id="smooth-scroll">
-    <!-- 커버 페이지 -->
-    <section id="page1" class="panel cover">
-      <div class="content">
-        <h1 id="main-title">YOUNGJAE KIM</h1>
-        <p>| ARCHITECTURAL DESIGNER |</p>
-      </div>
-      <canvas id="pensilCanvas"></canvas>
-    </section>
-  </div>
+  <!-- 메인 컨테이너 (스크롤 관련 div 제거) -->
+  <section id="page1" class="panel cover">
+    <div class="content">
+      <h1 id="main-title">YOUNGJAE KIM</h1>
+      <p>| ARCHITECTURAL DESIGNER |</p>
+    </div>
+    <canvas id="pensilCanvas"></canvas>
+  </section>
 
-  </style>
-  <!-- GSAP CDN 추가 (ScrollTrigger 포함) -->
+  <!-- GSAP CDN 추가 (ScrollTrigger는 필요없으면 삭제 가능) -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/locomotive-scroll@4.1.4/dist/locomotive-scroll.min.css">
-  <script src="https://cdn.jsdelivr.net/npm/locomotive-scroll@4.1.4/dist/locomotive-scroll.min.js"></script>
   <script src="js/script.js"></script>
 </body>
 </html>

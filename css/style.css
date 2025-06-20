@@ -1,9 +1,9 @@
 /* =======================================================================
-   1. Global Reset & Base Styles
+   [공통] Global Reset & Base Styles
+   (모든 페이지, 모든 JS)
 ======================================================================= */
 @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
 
-/* Global Scrollbar 스타일 (모든 페이지 적용) */
 html, body {
   margin: 0;
   padding: 0;
@@ -12,9 +12,9 @@ html, body {
   background: #181818;
   color: #dcdcdc;
   line-height: 1.6;
-  overflow-y: auto; /* 스크롤 가능 */
-  scrollbar-width: thin; /* Firefox: 얇은 스크롤바 */
-  scrollbar-color: #000000 transparent; /* Firefox: 스크롤바 색상 */
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: #000000 transparent;
 }
 
 /* Chrome, Safari, Opera용 커스텀 스크롤바 */
@@ -22,21 +22,17 @@ html::-webkit-scrollbar, body::-webkit-scrollbar {
   width: 8px;
   height: 8px;
 }
-
 html::-webkit-scrollbar-track, body::-webkit-scrollbar-track {
   background: transparent;
 }
-
 html::-webkit-scrollbar-thumb, body::-webkit-scrollbar-thumb {
   background-color: #000000;
   border-radius: 4px;
 }
 
-
-
-
 /* =======================================================================
-   2. CSS Custom Properties (Variables)
+   [공통] CSS Custom Properties (Variables)
+   (모든 페이지, 모든 JS)
 ======================================================================= */
 :root {
   --bg-dark: #181818;
@@ -49,8 +45,10 @@ html::-webkit-scrollbar-thumb, body::-webkit-scrollbar-thumb {
 }
 
 /* =======================================================================
-   3. Global Containers & Panels
+   [메인] index.html (js/script.js)
 ======================================================================= */
+/* #smooth-scroll, .panel, #pensilCanvas, .cover 등 */
+
 #smooth-scroll {
   overflow: visible;
 }
@@ -67,6 +65,11 @@ html::-webkit-scrollbar-thumb, body::-webkit-scrollbar-thumb {
   color: var(--text-dark);
   padding: 40px;
   font-size: 1.2rem;
+  z-index: 1;
+  transition: z-index 0.3s;
+}
+.panel[style*="z-index: 2"] {
+  z-index: 2 !important;
 }
 
 /* 태블릿 이하 (폭 768px 이하) */
@@ -86,94 +89,10 @@ html::-webkit-scrollbar-thumb, body::-webkit-scrollbar-thumb {
 }
 
 /* =======================================================================
-   4. Side Navigation & Social Links
+   [소개] about.html (js/script.js)
 ======================================================================= */
-.side-nav-container {
-  position: fixed;
-  top: 50%;
-  right: 30px;
-  transform: translateY(-50%);
-  z-index: 2000;
-}
-.side-nav {
-  display: flex;
-  flex-direction: column;
-  gap: 30px;
-  align-items: center;
-}
-.nav-item {
-  width: 10px;
-  height: 10px;
-  background: #474747;
-  border-radius: 50%;
-  cursor: pointer;
-  transition: background 0.3s ease, transform 0.3s ease;
-}
-.nav-item.active {
-  background: #ffffff;
-  transform: scale(1.2);
-}
-.social-links {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: var(--social-gap);
-  padding: var(--social-padding) 0;
-  position: absolute;
-  bottom: var(--social-gap);
-  left: 50%;
-  transform: translateX(-50%);
-}
-.social-links a img {
-  height: 20px;
-  object-fit: contain;
-  transition: transform 0.3s ease;
-}
-.social-links a img:hover {
-  transform: scale(var(--social-hover-scale));
-}
+/* .about-hero, #about-overlay, #about-content 등 */
 
-/* =======================================================================
-   5. Canvas & Cover Page Styles
-======================================================================= */
-/* 예시: 커버 섹션 내 캔버스 배경 */
-#pensilCanvas {
-  position: absolute;
-  top: 0; left: 0;
-  width: 100vw;
-  height: 100vh;
-  z-index: 0;
-  pointer-events: none;
-}
-.cover .content {
-  position: relative;
-  z-index: 2;
-  text-align: center;
-  padding: 2rem;
-}
-.cover h1 {
-  font-size: 3rem;
-}
-.cover p {
-  font-size: 1.5rem;
-}
-.cover .about-link {
-  font-size: 0.8rem;
-  margin-top: 10px;
-  cursor: pointer;
-  text-transform: lowercase;
-  color: #ffffff;
-}
-.cover {
-  min-height: 100vh;
-  width: 100vw;
-  box-sizing: border-box;
-  /* 필요하다면 배경색이나 이미지도 추가 */
-}
-
-/* =======================================================================
-   6. About Page & Overlay Styles
-======================================================================= */
 .about-hero h1 {
   font-size: 3rem;
   margin-bottom: 10px;
@@ -228,132 +147,159 @@ html::-webkit-scrollbar-thumb, body::-webkit-scrollbar-thumb {
 }
 
 /* =======================================================================
-   7. Inspiration Page (Plain Image Grid)
+   [프로젝트] projects.html (js/projects.js)
 ======================================================================= */
+/* .side-nav-container, .side-nav, .nav-item 등 */
 
-/* Inspiration Grid 스타일 */
-.inspiration-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(450px, 1fr)); /* 자동으로 열 크기 조정 */
-  gap: 20px; /* 이미지 간격 */
-  justify-content: center; /* 중앙 정렬 */
-  align-items: start; /* 상단 정렬 */
-  padding: 20px;
+.side-nav-container {
+  position: fixed;
+  top: 50%;
+  right: 30px;
+  transform: translateY(-50%);
+  z-index: 2000;
+}
+.side-nav {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+  align-items: center;
+}
+.nav-item {
+  width: 10px;
+  height: 10px;
+  background: #474747;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: background 0.3s ease, transform 0.3s ease;
+}
+.nav-item.active {
+  background: #ffffff;
+  transform: scale(1.2);
+}
+.social-links {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: var(--social-gap);
+  padding: var(--social-padding) 0;
+  position: absolute;
+  bottom: var(--social-gap);
+  left: 50%;
+  transform: translateX(-50%);
+}
+.social-links a img {
+  height: 20px;
+  object-fit: contain;
+  transition: transform 0.3s ease;
+}
+.social-links a img:hover {
+  transform: scale(var(--social-hover-scale));
 }
 
-/* 이미지 컨테이너 기본 스타일 */
+/* =======================================================================
+   [영감] inspiration.html (js/inspiration.js)
+======================================================================= */
+/* .inspiration-grid, .image-container, .image-modal-overlay 등 */
+
+.inspiration-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 20px;
+  justify-content: center;
+  align-items: start;
+  padding: 20px;
+}
 .image-container {
   position: relative;
   overflow: hidden;
   width: 100%;
   aspect-ratio: 4 / 3;
-  /* 기본 배경은 fallback용 */
   background: #f0f0f0;
   border-radius: 10px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
-
-/* 로딩 중 placeholder로 낮은 품질의 blurred 이미지 표시 */
-.image-container::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  /* 각 컨테이너에 인라인 스타일이나 JS로 설정: 예) --placeholder-image: url('path/to/blur-image.jpg'); */
-  background-image: var(--placeholder-image);
-  background-size: cover;
-  background-position: center;
-  filter: blur(15px);
-  transform: scale(1.1);
-  z-index: 1;
-  transition: opacity 0.5s ease;
-}
-
-/* 실제 이미지는 ::before 위에 오도록 */
 .image-container img {
   width: 100%;
   height: 100%;
   object-fit: cover;
   position: relative;
   z-index: 2;
-  transition: transform 0.3s ease, opacity 0.3s ease;
-  opacity: 0; /* 로딩 전 숨김 처리 */
-}
-
-/* 이미지가 로드되면 loaded 클래스 추가하여 투명도 변경 (JS에서 처리) */
-.image-container img.loaded {
+  transition: transform 0.3s, opacity 0.3s;
   opacity: 1;
-  transform: scale(1);
 }
-
-/* ::before는 이미지 로딩 후 투명하게 처리할 수 있음 
-   (JS에서 이미지 로드 후 .image-container에 class 'loaded'를 추가하는 방식도 가능) */
-.image-container.loaded::before {
-  opacity: 0;
-}
-
-/* 오버레이 스타일 */
 .image-container .overlay {
   position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0, 0, 0, 0.3);
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background: rgba(0,0,0,0.3);
   opacity: 0;
-  transition: opacity 0.3s ease;
+  transition: opacity 0.3s;
 }
-
 .image-container:hover .overlay {
-  opacity: 1; /* 호버 시 오버레이 표시 */
-}
-
-/* Lazy Loading 이미지 스타일 */
-.lazy-image {
-  opacity: 0;
-  transform: scale(0.9); /* 로딩 전 축소 */
-  transition: opacity 0.5s ease-in-out, transform 0.5s ease-in-out;
-}
-
-.lazy-image.loaded {
   opacity: 1;
-  transform: scale(1); /* 로드 후 원래 크기로 */
 }
-
-/* 이미지 컨테이너 내 이미지 hover 시 효과 */
 .inspiration-image {
-  opacity: 1 !important;
-  filter: none !important;
-  transition: transform 0.3s ease, opacity 0.3s ease;
+  transition: transform 0.3s, opacity 0.3s;
 }
 .inspiration-image:hover {
   transform: scale(1.1);
 }
 
-/* =======================================================================
-   8. Inspiration Page Text
-======================================================================= */
-.inspiration-page .content h1 {
+/* 모달 오버레이 */
+.image-modal-overlay {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100vw; height: 100vh;
+  background: rgba(0,0,0,0.8);
+  display: none;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+}
+.image-modal-overlay.visible {
+  display: flex;
+}
+.modal-content {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.modal-content img.modal-image {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+  border-radius: 4px;
+}
+.close-modal {
+  position: absolute;
+  top: 10px;
+  right: 20px;
+  font-size: 2rem;
+  color: #fff;
+  cursor: pointer;
+  user-select: none;
+}
+.modal-arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
   font-size: 3rem;
-  text-align: center;
-  color: #ffffff;
-  margin-bottom: 20px;
-  font-weight: 700;
-  letter-spacing: 0.05em;
+  color: #fff;
+  cursor: pointer;
+  user-select: none;
+  padding: 10px;
 }
-.inspiration-page .content p {
-  font-size: 1.2rem;
-  text-align: center;
-  color: #dcdcdc;
-  max-width: 800px;
-  margin: 10px auto 0;
-}
+.left-arrow { left: 10px; }
+.right-arrow { right: 10px; }
 
 /* =======================================================================
-   9. Footprints Page Styles - Simplified
+   [발자취] footprints.html (js/footprint.js)
 ======================================================================= */
+/* .footprints-header, .timeline-horizontal, .bottom-dots 등 */
+
 body.footprints-page {
   font-family: 'Roboto', sans-serif;
   background: #181818;
@@ -384,7 +330,7 @@ body.footprints-page {
   height: 50px;
   text-align: center;
   position: relative;
-  transition: transform 0.3s ease, opacity 0.3s ease;
+  transition: transform 0.3s, opacity 0.3s;
   clip-path: polygon(0 0, 95% 0, 100% 50%, 95% 100%, 0 100%, 5% 50%);
 }
 
@@ -423,7 +369,7 @@ body.footprints-page {
   background: #fff;
   border-radius: 50%;
   text-indent: -9999px;
-  transition: background 0.3s ease;
+  transition: background 0.3s;
 }
 .bottom-dots li a.active,
 .bottom-dots li a:hover {
@@ -431,17 +377,18 @@ body.footprints-page {
 }
 
 /* =======================================================================
-   10. Top Menu Styles (navbar.html용)
+   [네비게이션] navbar.html (js/navbar-loader.js)
 ======================================================================= */
+/* .top-menu 등 */
+
 .top-menu {
   position: fixed;
   top: 20px;
   left: 30px;
-  right: 30px; /* 좌우에 동일한 여백으로 전체 폭 사용 */
+  right: 30px;
   z-index: 1000;
-  background: transparent; /* 필요 시 배경색 지정 */
+  background: transparent;
 }
-
 .top-menu ul {
   display: flex;
   align-items: center;
@@ -450,104 +397,92 @@ body.footprints-page {
   padding: 0;
   width: 100%;
 }
-
-/* 첫 번째 li("About")를 왼쪽에 고정, 나머지 메뉴는 오른쪽 정렬 */
 .top-menu li:first-child {
   margin-right: auto;
 }
-
 .top-menu li a {
   text-decoration: none;
-  color: #ffffff;
+  color: #cbcbcb;
   font-size: 1rem;
   padding: 5px 10px;
-  transition: color 0.3s ease, background-color 0.3s ease;
+  transition: color 0.3s, background-color 0.3s;
 }
-
 .top-menu li a:hover {
-  color: #999999;
+  color: #656565;
 }
 
 /* =======================================================================
    11. Modal Overlay & Content Styles
 ======================================================================= */
-/* 모달 오버레이 및 내부 내용 스타일 (창 전체 크기 활용) */
-.image-modal-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  background: rgba(0,0,0,0.8);
-  display: none; /* 모달 열 때 display를 'flex'로 변경 */
-  justify-content: center;
-  align-items: center;
-  z-index: 9999;
-}
-
-.modal-content {
-  position: relative;
-  width: 100vw;
-  height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.modal-content img.modal-image {
-  max-width: 100%;
-  max-height: 100%;
-  object-fit: contain;
-  border-radius: 4px;
-}
-
-/* 닫기 버튼 */
-.close-modal {
-  position: absolute;
-  top: 10px;
-  right: 20px;
-  font-size: 2rem;
-  color: #fff;
-  cursor: pointer;
-  user-select: none;
-}
-
-/* 좌우 화살표 */
-.modal-arrow {
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-  font-size: 3rem;
-  color: #fff;
-  cursor: pointer;
-  user-select: none;
-  padding: 10px;
-}
-.left-arrow { left: 10px; }
-.right-arrow { right: 10px; }
-
-/* Close 버튼을 좌측 상단(about 메뉴와 동일한 위치)으로 배치 */
-#close-button {
-  position: absolute;
-  top: 20px;      /* about 메뉴와 동일한 위치 */
-  left: 30px;     /* about 메뉴와 동일한 위치 */
-  font-size: 50px !important; /* 엑스 아이콘 크기를 더 크게 조정 */
-  background: none;
-  border: none;
-  color: #fff;
-  cursor: pointer;
-  z-index: 1001000000; /* 오버레이 내에서 항상 최상위 */
-  transition: transform 0.2s ease;
-}
-
-#close-button:hover {
-  transform: scale(1.1);
-}
+/* (이미 inspiration 모달 스타일 위에서 처리) */
 
 /* =======================================================================
    12. Full Height Utility Class
 ======================================================================= */
 .full-height {
-  /* --vh가 업데이트되면 실제 높이 계산 */
   height: calc(var(--vh, 1vh) * 100);
+}
+
+/* ====== 인덱스 로딩 오버레이 ====== */
+#loading-overlay {
+  position: fixed;
+  z-index: 99999;
+  top: 0; left: 0;
+  width: 100vw; height: 100vh;
+  background: #181818;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: opacity 0.8s cubic-bezier(.77,0,.18,1);
+}
+#loading-overlay.hide {
+  opacity: 0;
+  pointer-events: none;
+}
+#loading-text {
+  color: #fff;
+  font-size: 3.5rem;
+  font-family: 'Roboto', sans-serif;
+  letter-spacing: 2px;
+  text-shadow: 0 2px 8px #000;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100vw;
+  height: 100vh;
+  text-align: center;
+}
+
+/* =======================================================================
+   [영감] inspiration.html (js/inspiration.js) - 패널 추가
+======================================================================= */
+.inspiration-panel {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: var(--bg-dark);
+  z-index: 0;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+}
+
+.inspiration-panel .content {
+  /* 네비게이션 아래에서만 스크롤, 경계선으로 시각적 분리 */
+  margin-top: 80px; /* 네비게이션 높이만큼 내림 */
+  max-width: 1400px;
+  width: 100%;
+  height: calc(100vh - 80px);
+  overflow-y: scroll;
+  box-sizing: border-box;
+  z-index: 1;
+  background: transparent;
+  /* 스크롤바 숨기기 (크롬, 엣지, 사파리) */
+  scrollbar-width: none; /* 파이어폭스 */
+  -ms-overflow-style: none; /* IE, Edge */
+}
+.inspiration-panel .content::-webkit-scrollbar {
+  display: none; /* 크롬, 사파리, 오페라 */
 }
