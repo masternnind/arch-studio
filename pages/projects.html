@@ -4,12 +4,14 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>PORTFOLIO_YOUNGJAE.KIM</title>
-  <link rel="stylesheet" href="css/style.css">
+  <!-- 공통 스타일 -->
+  <link rel="stylesheet" href="../css/style.css">
+  <!-- 라이브러리 스타일 (필요시) -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/locomotive-scroll@4.1.3/dist/locomotive-scroll.min.css">
   <style>
     /* 프로젝트 이미지 섹션 상단에 여백 추가 */
     #smooth-scroll .panel {
-      padding-top: 120px; /* 네비게이션 높이만큼 */
+      padding-top: 120px;
       margin-top: 0;
       position: relative;
       overflow: visible;
@@ -23,45 +25,46 @@
   </style>
 </head>
 <body>
-
-  <!-- Navbar Placeholder (오직 메뉴만 로드) -->
+  <!-- Navbar Placeholder -->
   <div id="navbar-placeholder"></div>
   <script src="../js/navbar-loader.js" defer></script>
 
-  <!-- 메인 스크롤 컨테이너 -->
-  <div id="smooth-scroll" data-scroll-container>
-    <section id="page2" class="panel">
-      <img src="../assets/img/project1.jpg" alt="Project 1">
-    </section>
-    <section id="page3" class="panel">
-      <img src="../assets/img/project2.jpg" alt="Project 2">
-    </section>
-    <section id="page4" class="panel">
-      <img src="../assets/img/project3.jpg" alt="Project 3">
-    </section>
-    <section id="page5" class="panel">
-      <img src="../assets/img/project4.jpg" alt="Project 4">
-    </section>
-    <section id="page6" class="panel">
-      <img src="../assets/img/project5.jpg" alt="Project 5">
-    </section>
-  </div>
+  <!-- 메인 프로젝트 영역 -->
+  <main>
+    <div id="smooth-scroll" data-scroll-container>
+      <section id="page2" class="panel">
+        <img src="../assets/img/project1.jpg" alt="Project 1">
+      </section>
+      <section id="page3" class="panel">
+        <img src="../assets/img/project2.jpg" alt="Project 2">
+      </section>
+      <section id="page4" class="panel">
+        <img src="../assets/img/project3.jpg" alt="Project 3">
+      </section>
+      <section id="page5" class="panel">
+        <img src="../assets/img/project4.jpg" alt="Project 4">
+      </section>
+      <section id="page6" class="panel">
+        <img src="../assets/img/project5.jpg" alt="Project 5">
+      </section>
+    </div>
+  </main>
 
-  <!-- 우측 네비게이션 컨테이너 -->
-  <div class="side-nav-container">
-    <nav class="side-nav">
+  <!-- 우측 네비게이션 -->
+  <nav class="side-nav-container">
+    <div class="side-nav">
       <a href="#page2" class="nav-item"></a>
       <a href="#page3" class="nav-item"></a>
       <a href="#page4" class="nav-item"></a>
       <a href="#page5" class="nav-item"></a>
       <a href="#page6" class="nav-item"></a>
-    </nav>
-  </div>
+    </div>
+  </nav>
 
-  <!-- Scripts -->
+  <!-- 스크립트 -->
   <script src="https://cdn.jsdelivr.net/npm/locomotive-scroll@4.1.3/dist/locomotive-scroll.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
-  <script src="../js/script.js" defer></script>
+  <script src="../js/projects.js" defer></script>
 </body>
 </html>

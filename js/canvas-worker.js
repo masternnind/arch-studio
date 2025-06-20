@@ -4,9 +4,15 @@ let paused = false;
 
 // 화면 크기에 따라 포인트 개수 동적 결정
 function getNumPoints(w, h) {
+    const percent = 0.04; // 전체 면적의 4%만큼 점 생성
+    const maxPercent = 0.05; // 최대 40%
+    const minPercent = 0.02; // 최소 2%
     const area = w * h;
-    // 5,000 px²당 1개, 최소 60개, 최대 1200개 제한 (아주 높은 밀도)
-    return Math.max(60, Math.min(1200, Math.round(area / 5000)));
+    const vwvh = 100 * 100; // 100vw * 100vh
+    const numPoints = Math.round((area / vwvh) * 100 * percent);
+    const maxPoints = Math.round((area / vwvh) * 100 * maxPercent);
+    const minPoints = Math.round((area / vwvh) * 100 * minPercent);
+    return Math.max(minPoints, Math.min(maxPoints, numPoints));
 }
 
 self.onmessage = (e) => {
@@ -42,8 +48,8 @@ function initPoints() {
         const r = 1.2;
         const x = Math.random() * (width - r * 2) + r;
         const y = Math.random() * (height - r * 2) + r;
-        const dx = (Math.random() - 0.5) * 1.5;
-        const dy = (Math.random() - 0.5) * 1.5;
+        const dx = (Math.random() - 0.5) * 1;
+        const dy = (Math.random() - 0.5) * 1;
         points.push({ x, y, dx, dy, r });
     }
 }
