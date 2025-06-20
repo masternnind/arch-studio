@@ -27,29 +27,6 @@ document.addEventListener('DOMContentLoaded', () => {
   ScrollTrigger.addEventListener('refresh', () => locoScroll.update());
   ScrollTrigger.refresh();
 
-<<<<<<< HEAD
-  // 패널 슬라이드 애니메이션 (스크롤 시 위로 슬라이드)
-  const panels = document.querySelectorAll('.panel');
-  panels.forEach((panel) => {
-    gsap.fromTo(panel,
-      { y: 100, opacity: 0 },
-      {
-        y: 0,
-        opacity: 1,
-        scrollTrigger: {
-          trigger: panel,
-          scroller: '#smooth-scroll',
-          start: 'top 90%',
-          end: 'top 40%',
-          scrub: true,
-        }
-      }
-    );
-  });
-
-  // 네비게이션 클릭 시 해당 패널로 스크롤 이동
-  document.querySelectorAll('.side-nav .nav-item').forEach((item, idx) => {
-=======
   // 패널 고정(겹치지 않고 한 패널씩 스크롤)
   const panels = document.querySelectorAll('.panel');
   panels.forEach((panel, i, arr) => {
@@ -68,16 +45,12 @@ document.addEventListener('DOMContentLoaded', () => {
   const navItems = document.querySelectorAll('.side-nav .nav-item');
 
   navItems.forEach((item, idx) => {
->>>>>>> 177c312ae184ac8d78cb931f7960220252b671da
     item.addEventListener('click', e => {
       e.preventDefault();
       const target = panels[idx];
       if (target) {
         locoScroll.scrollTo(target, {
-<<<<<<< HEAD
-=======
           offset: NAV_OFFSET,
->>>>>>> 177c312ae184ac8d78cb931f7960220252b671da
           duration: 800,
           disableLerp: true,
         });
@@ -85,28 +58,38 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
-<<<<<<< HEAD
-  // 활성화 표시 함수
-  function activateSideNav(activeIdx) {
-    document.querySelectorAll('.side-nav .nav-item')
-      .forEach((nav, i) => nav.classList.toggle('active', i === activeIdx));
-  }
+  // 네비게이션 아래에서만 스크롤되도록 구조를 inspiration과 동일하게
+  // <div class="projects-panel"><div class="content">...</div></div> 구조를 사용해야 함
 
-  // 스크롤 트리거로 활성화 동기화
-=======
-  function activateSideNav(activeIdx) {
-    navItems.forEach((nav, i) => nav.classList.toggle('active', i === activeIdx));
-  }
+  // 패널 슬라이드 효과 (GSAP ScrollTrigger)
+  gsap.registerPlugin(ScrollTrigger);
 
->>>>>>> 177c312ae184ac8d78cb931f7960220252b671da
-  panels.forEach((panel, idx) => {
-    ScrollTrigger.create({
-      trigger: panel,
-      scroller: '#smooth-scroll',
-      start: 'top center',
-      end: 'bottom center',
-      onEnter: () => activateSideNav(idx),
-      onEnterBack: () => activateSideNav(idx),
+  const projectPanels = document.querySelectorAll('.panel.project');
+  projectPanels.forEach((panel, i) => {
+    gsap.fromTo(panel, 
+      { y: 100, opacity: 0 },
+      {
+        y: 0,
+        opacity: 1,
+        scrollTrigger: {
+          trigger: panel,
+          start: 'top 90%',
+          end: 'top 40%',
+          scrub: true,
+          scroller: '.projects-panel .content'
+        }
+      }
+    );
+  });
+
+  // 우측 네비게이션 (필요시)
+  navItems.forEach((item, idx) => {
+    item.addEventListener('click', e => {
+      e.preventDefault();
+      const target = projectPanels[idx];
+      if (target) {
+        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
     });
   });
 });
