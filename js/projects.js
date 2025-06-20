@@ -27,30 +27,32 @@ document.addEventListener('DOMContentLoaded', () => {
   ScrollTrigger.addEventListener('refresh', () => locoScroll.update());
   ScrollTrigger.refresh();
 
-  // 패널 고정(겹치지 않고 한 패널씩 스크롤)
+  // 패널 슬라이드 애니메이션 (스크롤 시 위로 슬라이드)
   const panels = document.querySelectorAll('.panel');
-  panels.forEach((panel, i, arr) => {
-    ScrollTrigger.create({
-      trigger: panel,
-      scroller: '#smooth-scroll',
-      start: 'top top',
-      pin: i !== arr.length - 1,
-      pinSpacing: false,
-      anticipatePin: 1,
-    });
+  panels.forEach((panel) => {
+    gsap.fromTo(panel,
+      { y: 100, opacity: 0 },
+      {
+        y: 0,
+        opacity: 1,
+        scrollTrigger: {
+          trigger: panel,
+          scroller: '#smooth-scroll',
+          start: 'top 90%',
+          end: 'top 40%',
+          scrub: true,
+        }
+      }
+    );
   });
 
-  // 우측 네비게이션
-  const NAV_OFFSET = -120;
-  const navItems = document.querySelectorAll('.side-nav .nav-item');
-
-  navItems.forEach((item, idx) => {
+  // 네비게이션 클릭 시 해당 패널로 스크롤 이동
+  document.querySelectorAll('.side-nav .nav-item').forEach((item, idx) => {
     item.addEventListener('click', e => {
       e.preventDefault();
       const target = panels[idx];
       if (target) {
         locoScroll.scrollTo(target, {
-          offset: NAV_OFFSET,
           duration: 800,
           disableLerp: true,
         });
@@ -58,10 +60,13 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
+  // 활성화 표시 함수
   function activateSideNav(activeIdx) {
-    navItems.forEach((nav, i) => nav.classList.toggle('active', i === activeIdx));
+    document.querySelectorAll('.side-nav .nav-item')
+      .forEach((nav, i) => nav.classList.toggle('active', i === activeIdx));
   }
 
+  // 스크롤 트리거로 활성화 동기화
   panels.forEach((panel, idx) => {
     ScrollTrigger.create({
       trigger: panel,

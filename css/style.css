@@ -7,14 +7,13 @@
 html, body {
   margin: 0;
   padding: 0;
-  height: 100%;
+  width: 100vw;
+  height: 100vh;
   font-family: 'Roboto', sans-serif;
   background: #181818;
   color: #dcdcdc;
   line-height: 1.6;
-  overflow-y: auto;
-  scrollbar-width: thin;
-  scrollbar-color: #000000 transparent;
+  overflow: hidden; /* 스크롤 완전 제거 */
 }
 
 /* Chrome, Safari, Opera용 커스텀 스크롤바 */
@@ -46,46 +45,59 @@ html::-webkit-scrollbar-thumb, body::-webkit-scrollbar-thumb {
 
 /* =======================================================================
    [메인] index.html (js/script.js)
+   - 메인 텍스트 중앙 정렬, 스크롤 제거
 ======================================================================= */
-/* #smooth-scroll, .panel, #pensilCanvas, .cover 등 */
-
-#smooth-scroll {
-  overflow: visible;
-}
-.panel {
+html, body {
+  margin: 0;
+  padding: 0;
   width: 100vw;
   height: 100vh;
-  position: relative;
-  overflow: hidden;
+  overflow: hidden; /* 스크롤 완전 제거 */
+}
+
+.panel.cover {
+  width: 100vw;
+  height: 100vh;
+  min-height: 100vh;
   display: flex;
   justify-content: center;
   align-items: center;
-  text-align: center;
-  background: var(--panel-bg);
-  color: var(--text-dark);
-  padding: 40px;
-  font-size: 1.2rem;
+  position: relative;
+  background: var(--panel-bg, #202020);
+  color: var(--text-dark, #fff);
+  overflow: hidden;
+}
+
+.panel.cover .content {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+#main-title {
+  font-size: 3rem;
+  font-weight: 700;
+  margin: 0 0 1rem 0;
+  letter-spacing: 2px;
+}
+
+.panel.cover p {
+  font-size: 1.3rem;
+  margin: 0;
+  letter-spacing: 2px;
+}
+
+/* 캔버스가 전체를 덮도록 */
+#pensilCanvas {
+  position: absolute;
+  top: 0; left: 0;
+  width: 100vw;
+  height: 100vh;
   z-index: 1;
-  transition: z-index 0.3s;
-}
-.panel[style*="z-index: 2"] {
-  z-index: 2 !important;
-}
-
-/* 태블릿 이하 (폭 768px 이하) */
-@media (max-width: 768px) {
-  .panel {
-    padding: 20px;
-    font-size: 1rem;
-  }
-}
-
-/* 모바일 (폭 480px 이하) */
-@media (max-width: 480px) {
-  .panel {
-    padding: 10px;
-    font-size: 0.9rem;
-  }
+  pointer-events: none;
 }
 
 /* =======================================================================
@@ -148,52 +160,50 @@ html::-webkit-scrollbar-thumb, body::-webkit-scrollbar-thumb {
 
 /* =======================================================================
    [프로젝트] projects.html (js/projects.js)
+   - 네비게이션과 겹치지 않도록 내부만 스크롤
 ======================================================================= */
-/* .side-nav-container, .side-nav, .nav-item 등 */
-
-.side-nav-container {
+.projects-panel {
   position: fixed;
-  top: 50%;
-  right: 30px;
-  transform: translateY(-50%);
-  z-index: 2000;
-}
-.side-nav {
-  display: flex;
-  flex-direction: column;
-  gap: 30px;
-  align-items: center;
-}
-.nav-item {
-  width: 10px;
-  height: 10px;
-  background: #474747;
-  border-radius: 50%;
-  cursor: pointer;
-  transition: background 0.3s ease, transform 0.3s ease;
-}
-.nav-item.active {
-  background: #ffffff;
-  transform: scale(1.2);
-}
-.social-links {
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: var(--bg-dark, #181818);
+  z-index: 0;
   display: flex;
   justify-content: center;
+  align-items: flex-start;
+}
+
+.projects-panel .content {
+  margin-top: 80px; /* 네비게이션 높이만큼 내림 */
+  max-width: 1400px;
+  width: 100%;
+  height: calc(100vh - 80px);
+  overflow-y: auto;
+  box-sizing: border-box;
+  z-index: 1;
+  background: transparent;
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE, Edge */
+}
+.projects-panel .content::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, Opera */
+}
+
+.panel.project {
+  min-height: 80vh;
+  display: flex;
   align-items: center;
-  gap: var(--social-gap);
-  padding: var(--social-padding) 0;
-  position: absolute;
-  bottom: var(--social-gap);
-  left: 50%;
-  transform: translateX(-50%);
-}
-.social-links a img {
-  height: 20px;
-  object-fit: contain;
-  transition: transform 0.3s ease;
-}
-.social-links a img:hover {
-  transform: scale(var(--social-hover-scale));
+  justify-content: center;
+  transition: transform 0.8s cubic-bezier(.77,0,.18,1);
+  will-change: transform;
+  background: #232323;
+  margin-bottom: 40px;
+  border-radius: 24px;
+  box-shadow: 0 4px 24px #0006;
+  overflow: hidden;
+  position: relative;
 }
 
 /* =======================================================================
