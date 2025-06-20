@@ -535,7 +535,7 @@ body.footprints-page {
   max-width: 1400px;
   width: 100%;
   height: calc(100vh - 80px);
-  overflow-y: scroll;
+  overflow-y: auto;
   box-sizing: border-box;
   z-index: 1;
   background: transparent;
