@@ -59,5 +59,13 @@
     </div>
   </div>
   <script src="../js/projects.js"></script>
+
+  <!-- 푸터 영역 -->
+  <div id="footer-placeholder"></div>
+  <script>
+    fetch('../components/footer.html')
+      .then(res => res.text())
+      .then(html => document.getElementById('footer-placeholder').innerHTML = html);
+  </script>
 </body>
 </html>
