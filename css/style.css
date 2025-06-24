@@ -258,3 +258,23 @@ main {
     border-radius: 12px;
   }
 }
+
+/* 링크 아이콘 크기 완전 통일 (작게, 56px) */
+.link-icon {
+  width: 56px;
+  height: 56px;
+  max-width: 56px;
+  max-height: 56px;
+  min-width: 56px;
+  min-height: 56px;
+  object-fit: contain;
+  aspect-ratio: 1/1;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  opacity: 0.8;
+  transition: opacity 0.2s;
+}
+.link-icon:hover {
+  opacity: 1;
+}
