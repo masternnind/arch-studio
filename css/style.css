@@ -17,16 +17,13 @@ html, body {
   overflow-y: auto;
 }
 
-/* Chrome, Safari, Opera용 커스텀 스크롤바 */
+/* 스크롤바 커스텀 */
 html::-webkit-scrollbar, body::-webkit-scrollbar {
   width: 8px;
   height: 8px;
 }
-html::-webkit-scrollbar-track, body::-webkit-scrollbar-track {
-  background: transparent;
-}
 html::-webkit-scrollbar-thumb, body::-webkit-scrollbar-thumb {
-  background-color: #000000;
+  background: #000;
   border-radius: 4px;
 }
 
@@ -42,19 +39,6 @@ html::-webkit-scrollbar-thumb, body::-webkit-scrollbar-thumb {
   --social-gap: 40px;
   --social-padding: 40px;
   --social-hover-scale: 1.2;
-}
-
-/* =======================================================================
-   [메인] index.html (js/script.js)
-   - 메인 텍스트 중앙 정렬, 스크롤 제거
-======================================================================= */
-/* 아래 부분에서 스크롤을 막는 overflow: hidden 제거 */
-html, body {
-  /* margin: 0;
-  padding: 0;
-  width: 100vw;
-  height: 100vh;
-  overflow: hidden;  스크롤 완전 제거 → 삭제 */
 }
 
 .panel.cover {
@@ -257,20 +241,19 @@ main {
   background: transparent;
 }
 
-/* 인덱스 페이지 제외, 본문에만 영역(패널) 효과 */
-body:not(.index-page) .main-content-panel {
+/* 어바웃 등 본문 패널 효과 */
+.main-content-panel {
   max-width: 1100px;
   margin: 64px auto 32px auto;
   padding: 48px 6vw 56px 6vw;
-  background: rgba(35, 39, 47, 0.92); /* 약간 투명한 어두운 패널 */
+  background: rgba(35,39,47,0.92);
   border-radius: 28px;
   box-shadow: 0 4px 32px #0002;
-  /* 텍스트 가독성 보장 */
 }
 
 @media (max-width: 700px) {
-  body:not(.index-page) .main-content-panel {
-    margin: 16px 0 16px 0;
+  .main-content-panel {
+    margin: 16px 0;
     padding: 18px 2vw 24px 2vw;
     border-radius: 12px;
   }
