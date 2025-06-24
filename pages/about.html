@@ -50,6 +50,9 @@
     .social-links a img:hover {
       filter: none;
     }
+    .content {
+      padding-bottom: 80px; /* 푸터 높이만큼 */
+    }
   </style>
 </head>
 <body>
@@ -76,6 +79,14 @@
       <a href="https://blog.naver.com/bhum2003" target="_blank"><img src="../assets/img/links/Naverblog.png" alt="NaverBlog"></a>
     </div>
   </section>
+
+  <!-- Footer Placeholder -->
+  <div id="footer-placeholder"></div>
+  <script>
+    fetch('../components/footer.html')
+      .then(res => res.text())
+      .then(html => document.getElementById('footer-placeholder').innerHTML = html);
+  </script>
 
   <!-- Scripts -->
   <script src="https://cdn.jsdelivr.net/npm/locomotive-scroll@4.1.3/dist/locomotive-scroll.min.js"></script>

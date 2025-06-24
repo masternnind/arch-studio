@@ -4,27 +4,28 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Inspiration</title>
-
-  <!-- 공통 스타일 -->
   <link rel="stylesheet" href="../css/style.css" />
 </head>
-<body>
-  <!-- Navbar 삽입 -->
+<body style="min-height:100vh;display:flex;flex-direction:column;">
+  <!-- 네비게이션 바 -->
   <div id="navbar-placeholder"></div>
   <script src="../js/navbar-loader.js" defer></script>
 
-  <!-- Inspiration 페이지 영역 -->
-  <main class="inspiration-page">
-    <section class="inspiration-panel">
-      <div class="content">
-        <!-- <h1>Inspiration</h1> 삭제됨 -->
-        <!-- JS로 4×10 그리드의 컨테이너들이 생성됩니다 -->
+  <main style="flex:1 0 auto;display:flex;flex-direction:column;">
+    <section class="inspiration-panel" style="flex:1 0 auto;">
+      <div class="content" style="margin-top:80px;max-width:1400px;width:100%;box-sizing:border-box;background:transparent;">
         <div class="inspiration-grid"></div>
       </div>
     </section>
   </main>
-
-  <!-- 3D 큐브 제어 스크립트 -->
   <script src="../js/inspiration.js"></script>
+
+  <!-- 푸터 영역 -->
+  <div id="footer-placeholder"></div>
+  <script>
+    fetch('../components/footer.html')
+      .then(res => res.text())
+      .then(html => document.getElementById('footer-placeholder').innerHTML = html);
+  </script>
 </body>
 </html>
