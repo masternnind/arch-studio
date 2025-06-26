@@ -7,207 +7,202 @@
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tailwindcss@3.4.1/dist/tailwind.min.css" />
   <link rel="stylesheet" href="../css/style.css" />
   <style>
-    html, body {
-      height: auto !important;
-      min-height: 100vh !important;
-      overflow-x: hidden;
-      overflow-y: auto;
+    .link-icon {
+      width: 64px; height: 64px; object-fit: contain; aspect-ratio: 1/1;
+      border-radius: 0.75rem; background: rgba(255,255,255,0.06);
+      box-shadow: 0 2px 12px 0 rgba(30,41,59,0.10);
+      transition: transform 0.18s cubic-bezier(.4,2,.6,1), box-shadow 0.18s;
+      margin-left: auto; margin-right: auto; opacity: 0.92;
     }
-    body {
-      /* Tailwind의 min-h-screen과 중복되지만, 강제적으로 auto로 지정 */
-      position: static !important;
+    .link-icon:hover {
+      transform: scale(1.12) rotate(-2deg);
+      box-shadow: 0 8px 32px 0 rgba(30,41,59,0.18);
+      opacity: 1;
+      background: rgba(255,255,255,0.13);
+    }
+    .fade-in-up { opacity: 0; animation: fadeInUp 0.8s ease-out forwards; }
+    @keyframes fadeInUp { from { opacity:0; transform:translateY(32px);} to {opacity:1; transform:translateY(0);} }
+    .fade-in-left { opacity: 0; animation: fadeInLeft 0.8s ease-out forwards;}
+    @keyframes fadeInLeft { from { opacity:0; transform:translateX(-32px);} to {opacity:1; transform:translateX(0);} }
+    .fade-in-right { opacity: 0; animation: fadeInRight 0.8s ease-out forwards;}
+    @keyframes fadeInRight { from { opacity:0; transform:translateX(32px);} to {opacity:1; transform:translateX(0);} }
+    .section-heading { position: relative; display: inline-block; }
+    .section-heading::after {
+      content: '';
+      position: absolute;
+      width: 2.5rem;
+      height: 0.18rem;
+      background: #3b82f6;
+      bottom: -0.5rem;
+      left: 50%;
+      transform: translateX(-50%);
+      border-radius: 0.125rem;
     }
     .timeline-dot {
-      position: absolute; left: -1.25rem; top: 0.5rem;
-      width: 0.75rem; height: 0.75rem; background: #60a5fa;
+      position: absolute; left: -1.1rem; top: 0.7rem;
+      width: 0.8rem; height: 0.8rem; background: #3b82f6;
       border-radius: 50%; border: 2px solid #fff; z-index: 1;
     }
-    .timeline-bar { border-left: 2px solid #60a5fa; }
+    .timeline-bar { border-left: 2px solid #3b82f6; }
     @media (max-width: 700px) {
       .timeline-bar { border-left-width: 1.5px; }
+      .timeline-dot { left: -0.9rem; }
     }
-    /* 불필요한 fixed, absolute, height:100vh 등은 사용하지 않음 */
   </style>
 </head>
-<body class="bg-gradient-to-br from-[#23272f] to-[#3a4660] min-h-screen text-white font-sans">
-  <!-- Navbar Include -->
-  <div id="navbar-placeholder"></div>
+<body class="bg-gradient-to-br from-[#23272f] to-[#3a4660] min-h-screen text-white font-sans flex flex-col items-center">
+  <!-- Navbar -->
+  <div id="navbar-placeholder" class="fixed top-0 left-0 w-full z-50"></div>
   <script>
     fetch('../components/navbar.html')
       .then(res => res.text())
       .then(html => document.getElementById('navbar-placeholder').innerHTML = html);
   </script>
 
-  <main class="flex justify-center items-start min-h-[90vh] px-4 md:px-8 pt-12 pb-20">
-    <div class="w-full max-w-3xl bg-white/5 rounded-2xl shadow-lg p-6 md:p-12 mx-auto">
-      <!-- Hero Section -->
-      <section class="flex flex-col items-center justify-center text-center py-12">
-        <h1 class="text-3xl md:text-4xl font-extrabold mb-4 tracking-tight">Youngjae Kim <span class="text-blue-400">|</span> Architectural Designer &amp; Technical Engineer</h1>
-        <p class="text-lg md:text-2xl font-semibold mb-4 text-blue-200">구조적 사고와 창의적 디자인의 융합, 공간을 실현하는 사람.</p>
-        <p class="text-base md:text-lg text-gray-200 max-w-2xl mb-2">설계, 제작, 시공을 아우르는 실무형 인재로서, 대형 산업구조물 설계, 자동화 시스템 개발, 디지털 브랜딩까지 다양한 분야에서 경험을 쌓았습니다.</p>
-        <p class="text-base md:text-lg text-gray-200 max-w-2xl">미국과 한국을 아우르는 국제적 시각과 실무 역량을 바탕으로, 창의적이고 실용적인 공간을 구현합니다.</p>
-      </section>
+  <main class="flex-1 w-full max-w-[1200px] mx-auto pt-28 pb-24 px-2 md:px-6 grid grid-cols-1 md:grid-cols-12 gap-8 relative justify-center items-center text-center">
 
-      <!-- Profile Summary -->
-      <section id="profile" class="py-12">
-        <h2 class="text-2xl md:text-3xl font-bold mb-8 text-center">Profile</h2>
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-8 text-center text-base md:text-lg text-gray-200 mb-6">
-          <div>
-            <span class="font-semibold text-blue-300">학력</span><br>
-            Kent State University(건축학)<br>
-            Ohio University(기계공학)
-          </div>
-          <div>
-            <span class="font-semibold text-blue-300">경력</span><br>
-            월드브리지산업<br>
-            백양엔지니어링<br>
-            해담건축사사무소<br>
-            IEN건축사사무소
-          </div>
-          <div>
-            <span class="font-semibold text-blue-300">역량</span><br>
-            구조 설계, 3D 모델링<br>
-            자동화 시스템 개발<br>
-            웹 디자인
-          </div>
-        </div>
-        <div class="text-gray-300 text-base md:text-lg text-center leading-relaxed">
-          미국 Kent State University에서 건축학을 전공하고, 다양한 설계 스튜디오 프로젝트와 Digital Assistant로 활동하며 디자인 역량과 기술 활용 능력을 키웠습니다.<br>
-          국내에서는 백양엔지니어링에서 정밀 안전진단 실무를 경험하며 구조 이해를 강화했고, 월드브리지산업㈜에서 초대형 유류탱크 알루미늄 돔루프(ADR) 설계, 제작도 자동화 시스템 개발, 현장 피드백을 반영한 구조 개선 등 실질적인 설계·제작·시공 전 과정을 담당했습니다.<br>
-          해담건축사사무소의 공식 홈페이지를 직접 기획·디자인·코딩하며, 웹 기반 브랜딩과 디지털 커뮤니케이션 능력도 갖추었습니다.
-        </div>
-      </section>
+    <!-- Hero (상단 중앙) -->
+    <section class="md:col-start-3 md:col-span-8 col-span-1 fade-in-up mb-8 flex justify-center items-center text-center">
+      <div class="bg-white/10 rounded-3xl shadow-2xl px-6 py-12 md:px-16 md:py-16 text-center w-full">
+        <h1 class="text-3xl md:text-4xl font-extrabold mb-4 tracking-tight">Youngjae Kim <span class="text-blue-400">|</span> Designer &amp; Engineer</h1>
+        <p class="text-lg md:text-2xl font-semibold mb-4 text-blue-200">공학적 사고와 창의적 디자인의 융합, 공간을 실현하는 사람.</p>
+        <p class="text-base md:text-lg text-gray-200 max-w-2xl mx-auto mb-2">설계, 제작, 시공을 아우르는 실무형 인재로서, 대형 산업구조물 설계, 자동화 시스템 개발, 디지털 브랜딩까지 다양한 분야에서 경험을 쌓았습니다.</p>
+      </div>
+    </section>
 
-      <!-- Timeline -->
-      <section id="timeline" class="py-12">
-        <h2 class="text-2xl md:text-3xl font-bold mb-8 text-center">Career Timeline</h2>
-        <ol class="relative timeline-bar pl-8">
-          <li class="mb-10 relative">
+    <!-- Profile (좌측 상단) -->
+    <section class="md:col-start-1 md:col-span-5 col-span-1 fade-in-left flex flex-col justify-between items-center text-center">
+      <div class="bg-white/10 rounded-2xl shadow-xl p-7 md:p-10 mb-8 md:mb-0 w-full">
+        <h2 class="section-heading text-xl font-bold text-blue-300 mb-4">Profile</h2>
+        <div class="text-base md:text-lg text-gray-200 mb-2">
+          <span class="font-semibold">학력</span><br>
+          Kent State University(건축학)<br>
+          Ohio University(기계공학)
+        </div>
+        <div class="text-gray-300 text-sm md:text-base mt-2">
+          미국 Kent State University에서 건축학을 전공하고, 다양한 설계 스튜디오 프로젝트와 Digital Assistant로 활동하며 디자인 역량과 기술 활용 능력을 키웠습니다.
+        </div>
+      </div>
+    </section>
+
+    <!-- Skills (우측 상단) -->
+    <section class="md:col-start-9 md:col-span-4 col-span-1 fade-in-right flex flex-col justify-between items-center text-center">
+      <div class="bg-white/10 rounded-2xl shadow-xl p-7 md:p-10 w-full">
+        <h2 class="section-heading text-xl font-bold text-blue-300 mb-4">Skills</h2>
+        <ul class="text-base md:text-lg text-gray-200 mb-2 space-y-1">
+          <li><span class="font-semibold">구조설계</span>: AutoCAD, Revit, SAP2000, Tekla</li>
+          <li><span class="font-semibold">3D/시각화</span>: Rhino, SketchUp, Lumion, Enscape</li>
+          <li><span class="font-semibold">프로그래밍</span>: Python, VBA, Dynamo, Grasshopper</li>
+          <li><span class="font-semibold">웹/디지털</span>: HTML, CSS, JavaScript, Figma</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- Career (중앙, Hero 아래) -->
+    <section class="md:col-start-4 md:col-span-6 col-span-1 fade-in-up z-10 -mt-8 md:-mt-16 flex justify-center items-center text-center">
+      <div class="bg-white/10 rounded-2xl shadow-xl p-7 md:p-10 w-full">
+        <h2 class="section-heading text-xl font-bold text-blue-300 mb-4">Career</h2>
+        <ul class="text-gray-200 list-disc list-inside mb-4 text-base md:text-lg">
+          <li>월드브리지산업 - ADR 설계</li>
+          <li>백양엔지니어링 - 구조진단</li>
+          <li>해담건축 - 웹·브랜딩</li>
+          <li>IEN건축 - 프로젝트 협업</li>
+        </ul>
+        <p class="text-gray-400 text-sm md:text-base">국내외 다양한 기업에서 프로젝트 관리와 구조 설계를 통해 실무 역량을 강화했습니다.</p>
+      </div>
+    </section>
+
+    <!-- Timeline (좌측 하단) -->
+    <section class="md:col-start-1 md:col-span-6 col-span-1 fade-in-left mt-8 flex flex-col items-center text-center">
+      <h2 class="section-heading text-2xl font-bold mb-8 text-center">Career Timeline</h2>
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-8 w-full">
+        <ol class="relative timeline-bar pl-10 space-y-10">
+          <li class="relative">
             <div class="timeline-dot"></div>
-            <time class="text-sm text-blue-300">2016</time>
+            <time class="text-blue-400 font-semibold">2016</time>
             <div class="font-semibold text-base mt-1">Kent State University 건축학 입학</div>
           </li>
-          <li class="mb-10 relative">
+          <li class="relative">
             <div class="timeline-dot"></div>
-            <time class="text-sm text-blue-300">2018~2019</time>
-            <div class="font-semibold text-base mt-1">Digital Assistant, Kent State University</div>
-            <div class="text-sm text-gray-400">디지털 설계 및 연구 지원</div>
-          </li>
-          <li class="mb-10 relative">
-            <div class="timeline-dot"></div>
-            <time class="text-sm text-blue-300">2020</time>
+            <time class="text-blue-400 font-semibold">2020</time>
             <div class="font-semibold text-base mt-1">백양엔지니어링</div>
             <div class="text-sm text-gray-400">정밀 안전진단 실무</div>
           </li>
-          <li class="mb-10 relative">
+          <li class="relative">
             <div class="timeline-dot"></div>
-            <time class="text-sm text-blue-300">2021~2023</time>
-            <div class="font-semibold text-base mt-1">월드브리지산업㈜</div>
-            <div class="text-sm text-gray-400">ADR 설계, 자동화 시스템 개발, 구조 개선</div>
-          </li>
-          <li class="mb-10 relative">
-            <div class="timeline-dot"></div>
-            <time class="text-sm text-blue-300">2022~2023</time>
+            <time class="text-blue-400 font-semibold">2022–2023</time>
             <div class="font-semibold text-base mt-1">해담건축사사무소</div>
             <div class="text-sm text-gray-400">공식 홈페이지 기획·디자인·코딩</div>
           </li>
-          <li class="mb-10 relative">
+        </ol>
+        <ol class="relative timeline-bar pl-10 space-y-10">
+          <li class="relative">
             <div class="timeline-dot"></div>
-            <time class="text-sm text-blue-300">2023~</time>
-            <div class="font-semibold text-base mt-1">IEN건축사사무소</div>
-            <div class="text-sm text-gray-400">구조설계 및 프로젝트 매니지먼트</div>
+            <time class="text-blue-400 font-semibold">2018–2019</time>
+            <div class="font-semibold text-base mt-1">Digital Assistant, Kent State</div>
+          </li>
+          <li class="relative">
+            <div class="timeline-dot"></div>
+            <time class="text-blue-400 font-semibold">2021–2023</time>
+            <div class="font-semibold text-base mt-1">월드브리지산업 ADR 설계 및 자동화</div>
+          </li>
+          <li class="relative">
+            <div class="timeline-dot"></div>
+            <time class="text-blue-400 font-semibold">2023–현재</time>
+            <div class="font-semibold text-base mt-1">IEN건축사사무소 프로젝트 매니지먼트</div>
           </li>
         </ol>
-      </section>
+      </div>
+    </section>
 
-      <!-- Skills Table -->
-      <section id="skills" class="py-12">
-        <h2 class="text-2xl md:text-3xl font-bold mb-8 text-center">Core Skills</h2>
-        <div class="overflow-x-auto">
-          <table class="min-w-full text-left text-gray-200 border-separate border-spacing-y-2">
-            <thead>
-              <tr>
-                <th class="px-4 py-2 font-semibold text-blue-300">분야</th>
-                <th class="px-4 py-2 font-semibold text-blue-300">기술</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr class="bg-white/5 rounded-lg">
-                <td class="px-4 py-2">설계/구조</td>
-                <td class="px-4 py-2">AutoCAD, Revit, SAP2000, Tekla</td>
-              </tr>
-              <tr class="bg-white/5 rounded-lg">
-                <td class="px-4 py-2">3D/시각화</td>
-                <td class="px-4 py-2">Rhino, SketchUp, Lumion, Enscape</td>
-              </tr>
-              <tr class="bg-white/5 rounded-lg">
-                <td class="px-4 py-2">프로그래밍/자동화</td>
-                <td class="px-4 py-2">Python, VBA, Dynamo, Grasshopper</td>
-              </tr>
-              <tr class="bg-white/5 rounded-lg">
-                <td class="px-4 py-2">프로젝트 관리</td>
-                <td class="px-4 py-2">MS Project, Notion, Jira</td>
-              </tr>
-              <tr class="bg-white/5 rounded-lg">
-                <td class="px-4 py-2">웹/디지털</td>
-                <td class="px-4 py-2">HTML, CSS, JavaScript, Figma</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </section>
+    <!-- Portfolio & Links (우측 하단) -->
+    <section id="portfolio" class="md:col-start-8 md:col-span-5 col-span-1 fade-in-right mt-8 flex flex-col items-center text-center">
+      <h2 class="section-heading text-2xl font-bold mb-8 text-center">Portfolio & Links</h2>
+      <div class="flex flex-wrap justify-center gap-6">
+        <a href="https://www.youtube.com/channel/UC9K5C4y2N8vCZeb_dCrhJgA" target="_blank" rel="noopener">
+          <img src="../assets/img/links/Youtube.png" alt="YouTube" class="link-icon" />
+        </a>
+        <a href="https://www.instagram.com/youngjae_imda?igsh=Y2c2Zjg1cjlobWE2&utm_source=qr" target="_blank" rel="noopener">
+          <img src="../assets/img/links/Instagram.png" alt="Instagram" class="link-icon" />
+        </a>
+        <a href="https://blog.naver.com/bhum2003" target="_blank" rel="noopener">
+          <img src="../assets/img/links/Naverblog.png" alt="Naver Blog" class="link-icon" />
+        </a>
+        <a href="https://www.linkedin.com/in/youngjae-kim-18b26b206/" target="_blank" rel="noopener">
+          <img src="../assets/img/links/Linkedin.png" alt="LinkedIn" class="link-icon" />
+        </a>
+        <a href="https://issuu.com/signin" target="_blank" rel="noopener">
+          <img src="../assets/img/links/Issuu.png" alt="Issuu" class="link-icon" />
+        </a>
+      </div>
+    </section>
 
-      <!-- Portfolio Link (assets/img/links 폴더의 png 이미지로 적용, 파일명 첫 글자 대문자) -->
-      <section id="portfolio" class="py-12 text-center">
-        <h2 class="text-2xl md:text-3xl font-bold mb-4">Portfolio & Links</h2>
-        <p class="mb-6 text-gray-200">아래 아이콘을 클릭하면 각 채널 또는 포트폴리오로 이동합니다.</p>
-        <div class="flex flex-wrap justify-center gap-8">
-          <a href="https://www.youtube.com/channel/UC9K5C4y2N8vCZeb_dCrhJgA" target="_blank" rel="noopener" class="block group">
-            <img src="../assets/img/links/Youtube.png" alt="YouTube" class="link-icon" />
-          </a>
-          <a href="https://www.instagram.com/youngjae_imda?igsh=Y2c2Zjg1cjlobWE2&utm_source=qr" target="_blank" rel="noopener" class="block group">
-            <img src="../assets/img/links/Instagram.png" alt="Instagram" class="link-icon" />
-          </a>
-          <a href="https://blog.naver.com/bhum2003" target="_blank" rel="noopener" class="block group">
-            <img src="../assets/img/links/Naverblog.png" alt="Naver Blog" class="link-icon" />
-          </a>
-          <a href="https://www.linkedin.com/in/youngjae-kim-18b26b206/" target="_blank" rel="noopener" class="block group">
-            <img src="../assets/img/links/Linkedin.png" alt="LinkedIn" class="link-icon" />
-          </a>
-          <a href="https://issuu.com/signin" target="_blank" rel="noopener" class="block group">
-            <img src="../assets/img/links/Issuu.png" alt="Issuu" class="link-icon" />
-          </a>
+    <!-- Values & Vision (중앙 하단, Masonry/계단식) -->
+    <section class="md:col-start-2 md:col-span-10 col-span-1 fade-in-up mt-16 flex flex-col items-center text-center">
+      <h2 class="section-heading text-2xl font-bold mb-10 text-center">Values & Vision</h2>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <div class="group bg-gray-800 bg-opacity-60 p-8 rounded-3xl shadow-2xl transform transition hover:scale-105 md:translate-y-4">
+          <p class="text-5xl">🏗️</p>
+          <h3 class="mt-4 text-xl font-semibold text-blue-400">현장성</h3>
+          <p class="mt-2 text-gray-300">실무 경험과 현장 중심의 설계</p>
         </div>
-      </section>
-
-      <!-- Values & Vision -->
-      <section id="vision" class="py-12 mb-4">
-        <h2 class="text-2xl md:text-3xl font-bold mb-8 text-center">Values &amp; Vision</h2>
-        <div class="flex flex-col md:flex-row justify-center items-stretch gap-8 mb-8">
-          <div class="flex-1 flex flex-col items-center bg-white/5 rounded-xl p-6">
-            <span class="text-4xl mb-2">🏗️</span>
-            <span class="font-semibold mb-1">현장성</span>
-            <span class="text-gray-300 text-center text-sm">실무 경험과 현장 중심의 설계</span>
-          </div>
-          <div class="flex-1 flex flex-col items-center bg-white/5 rounded-xl p-6">
-            <span class="text-4xl mb-2">🎨</span>
-            <span class="font-semibold mb-1">창의성</span>
-            <span class="text-gray-300 text-center text-sm">새로운 아이디어와 융합적 사고</span>
-          </div>
-          <div class="flex-1 flex flex-col items-center bg-white/5 rounded-xl p-6">
-            <span class="text-4xl mb-2">🌱</span>
-            <span class="font-semibold mb-1">지속가능성</span>
-            <span class="text-gray-300 text-center text-sm">환경과 미래를 생각하는 설계</span>
-          </div>
+        <div class="group bg-gray-800 bg-opacity-60 p-8 rounded-3xl shadow-2xl transform transition hover:scale-105 md:-translate-y-6">
+          <p class="text-5xl">🎨</p>
+          <h3 class="mt-4 text-xl font-semibold text-blue-400">창의성</h3>
+          <p class="mt-2 text-gray-300">새로운 아이디어와 융합적 사고</p>
         </div>
-        <p class="text-center text-gray-200 text-base md:text-lg max-w-2xl mx-auto">
-          앞으로는 <span class="font-semibold text-blue-300">로봇·AI 기반의 스마트 설계</span>를 통해 더 혁신적이고 지속 가능한 공간을 만들어가고자 합니다.
-        </p>
-      </section>
-    </div>
+        <div class="group bg-gray-800 bg-opacity-60 p-8 rounded-3xl shadow-2xl transform transition hover:scale-105 md:translate-y-8">
+          <p class="text-5xl">🌱</p>
+          <h3 class="mt-4 text-xl font-semibold text-blue-400">지속가능성</h3>
+          <p class="mt-2 text-gray-300">환경과 미래를 생각하는 설계</p>
+        </div>
+      </div>
+      <p class="text-center text-gray-400 text-lg max-w-2xl mx-auto mt-8">앞으로는 <span class="font-semibold text-blue-400">로봇·AI 기반의 스마트 설계</span>를 통해 더 혁신적이고 지속 가능한 공간을 만들어가고자 합니다.</p>
+    </section>
   </main>
 
-  <div id="footer-placeholder"></div>
+  <!-- Footer -->
+  <div id="footer-placeholder" class="mt-auto"></div>
   <script>
     fetch('../components/footer.html')
       .then(res => res.text())
