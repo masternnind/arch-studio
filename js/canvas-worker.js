@@ -2,17 +2,25 @@ let canvas, ctx, width, height;
 let points = [];
 let paused = false;
 
+// 몽환적 파스텔톤 색상
+const DOT_COLOR = 'rgba(180,200,255,0.8)';
+const LINE_COLOR = (alpha) => `rgba(180,200,255,${alpha})`;
+
+// 고정 속도(px/frame)
+const BASE_SPEED = 0.6;
+
 // 화면 크기에 따라 포인트 개수 동적 결정
 function getNumPoints(w, h) {
-    const percent = 0.04; // 전체 면적의 4%만큼 점 생성
-    const maxPercent = 0.05; // 최대 40%
-    const minPercent = 0.02; // 최소 2%
+    // 몽환적이면서도 적당히 꽉 찬 밀도
+    const percent = 0.03;      // 전체 면적의 3%
+    const maxPercent = 0.08;   // 최대 8%
+    const minPercent = 0.015;  // 최소 1.5%
     const area = w * h;
-    const vwvh = 100 * 100; // 100vw * 100vh
-    const numPoints = Math.round((area / vwvh) * 100 * percent);
-    const maxPoints = Math.round((area / vwvh) * 100 * maxPercent);
-    const minPoints = Math.round((area / vwvh) * 100 * minPercent);
-    return Math.max(minPoints, Math.min(maxPoints, numPoints));
+    const vwvh = 100 * 100;
+    const raw = (area / vwvh) * 100 * percent;
+    const maxPts = (area / vwvh) * 100 * maxPercent;
+    const minPts = (area / vwvh) * 100 * minPercent;
+    return Math.round(Math.max(minPts, Math.min(maxPts, raw)));
 }
 
 self.onmessage = (e) => {
@@ -20,18 +28,12 @@ self.onmessage = (e) => {
     if (data.canvas) {
         canvas = data.canvas;
         ctx = canvas.getContext('2d');
-        if (!ctx) {
-          // 디버깅용 메시지
-          self.postMessage({ error: 'ctx is null' });
-        }
         width = canvas.width = data.width;
         height = canvas.height = data.height;
         points = [];
         initPoints();
         animate();
-    }
-    // 크기만 변경하는 메시지 처리
-    if (data.width && data.height && !data.canvas) {
+    } else if (data.width && data.height) {
         width = canvas.width = data.width;
         height = canvas.height = data.height;
         points = [];
@@ -45,11 +47,13 @@ self.onmessage = (e) => {
 function initPoints() {
     const numPoints = getNumPoints(width, height);
     for (let i = 0; i < numPoints; i++) {
-        const r = 1.2;
-        const x = Math.random() * (width - r * 2) + r;
-        const y = Math.random() * (height - r * 2) + r;
-        const dx = (Math.random() - 0.5) * 1;
-        const dy = (Math.random() - 0.5) * 1;
+        // 반지름을 조금 랜덤하게
+        const r = Math.random() * 1.5 + 0.5;
+        const x = Math.random() * (width - 2 * r) + r;
+        const y = Math.random() * (height - 2 * r) + r;
+        // 화면 크기와 무관하게 항상 같은 속도
+        const dx = (Math.random() - 0.5) * BASE_SPEED;
+        const dy = (Math.random() - 0.5) * BASE_SPEED;
         points.push({ x, y, dx, dy, r });
     }
 }
@@ -60,24 +64,24 @@ function updatePoints() {
         if (p.y + p.r > height || p.y - p.r < 0) p.dy = -p.dy;
         p.x += p.dx;
         p.y += p.dy;
-        // Draw each point
+        // Draw
         ctx.beginPath();
         ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
-        ctx.fillStyle = 'white';
+        ctx.fillStyle = DOT_COLOR;
         ctx.fill();
     }
 }
 
 function connectPoints() {
-    const maxDistance = 100;
+    const maxDistance = 120; // 조금 더 넓게 연결
     for (let a = 0; a < points.length; a++) {
         for (let b = a + 1; b < points.length; b++) {
             const dx = points[a].x - points[b].x;
             const dy = points[a].y - points[b].y;
-            const distance = Math.hypot(dx, dy);
-            if (distance < maxDistance) {
+            const dist = Math.hypot(dx, dy);
+            if (dist < maxDistance) {
                 ctx.beginPath();
-                ctx.strokeStyle = `rgba(225,225,225, ${1 - distance / maxDistance})`;
+                ctx.strokeStyle = LINE_COLOR(1 - dist / maxDistance);
                 ctx.lineWidth = 1;
                 ctx.moveTo(points[a].x, points[a].y);
                 ctx.lineTo(points[b].x, points[b].y);
