@@ -1,208 +1,115 @@
 <!DOCTYPE html>
-<html lang="ko">
+<html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>About | Youngjae Kim</title>
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tailwindcss@3.4.1/dist/tailwind.min.css" />
-  <link rel="stylesheet" href="../css/style.css" />
+  <title>Youngjae Kim Studio - About</title>
+  <script src="https://cdn.tailwindcss.com"></script>
   <style>
-    .link-icon {
-      width: 64px; height: 64px; object-fit: contain; aspect-ratio: 1/1;
-      border-radius: 0.75rem; background: rgba(255,255,255,0.06);
-      box-shadow: 0 2px 12px 0 rgba(30,41,59,0.10);
-      transition: transform 0.18s cubic-bezier(.4,2,.6,1), box-shadow 0.18s;
-      margin-left: auto; margin-right: auto; opacity: 0.92;
+    body {
+      background: #181818 !important;
+      color: #fff;
     }
-    .link-icon:hover {
-      transform: scale(1.12) rotate(-2deg);
-      box-shadow: 0 8px 32px 0 rgba(30,41,59,0.18);
-      opacity: 1;
-      background: rgba(255,255,255,0.13);
-    }
-    .fade-in-up { opacity: 0; animation: fadeInUp 0.8s ease-out forwards; }
-    @keyframes fadeInUp { from { opacity:0; transform:translateY(32px);} to {opacity:1; transform:translateY(0);} }
-    .fade-in-left { opacity: 0; animation: fadeInLeft 0.8s ease-out forwards;}
-    @keyframes fadeInLeft { from { opacity:0; transform:translateX(-32px);} to {opacity:1; transform:translateX(0);} }
-    .fade-in-right { opacity: 0; animation: fadeInRight 0.8s ease-out forwards;}
-    @keyframes fadeInRight { from { opacity:0; transform:translateX(32px);} to {opacity:1; transform:translateX(0);} }
-    .section-heading { position: relative; display: inline-block; }
-    .section-heading::after {
-      content: '';
-      position: absolute;
-      width: 2.5rem;
-      height: 0.18rem;
-      background: #3b82f6;
-      bottom: -0.5rem;
-      left: 50%;
-      transform: translateX(-50%);
-      border-radius: 0.125rem;
-    }
-    .timeline-dot {
-      position: absolute; left: -1.1rem; top: 0.7rem;
-      width: 0.8rem; height: 0.8rem; background: #3b82f6;
-      border-radius: 50%; border: 2px solid #fff; z-index: 1;
-    }
-    .timeline-bar { border-left: 2px solid #3b82f6; }
-    @media (max-width: 700px) {
-      .timeline-bar { border-left-width: 1.5px; }
-      .timeline-dot { left: -0.9rem; }
-    }
+    @keyframes fadeInUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+    .animate-fadeUp { animation: fadeInUp 0.8s ease-out forwards; }
+    .scroll-reveal { opacity: 0; }
   </style>
 </head>
-<body class="bg-gradient-to-br from-[#23272f] to-[#3a4660] min-h-screen text-white font-sans flex flex-col items-center">
-  <!-- Navbar -->
-  <div id="navbar-placeholder" class="fixed top-0 left-0 w-full z-50"></div>
+<body class="bg-black text-white leading-relaxed">
+  <!-- Navbar (공통 컴포넌트로 대체) -->
+  <div id="navbar-placeholder"></div>
   <script>
     fetch('../components/navbar.html')
       .then(res => res.text())
       .then(html => document.getElementById('navbar-placeholder').innerHTML = html);
   </script>
 
-  <main class="flex-1 w-full max-w-[1200px] mx-auto pt-28 pb-24 px-2 md:px-6 grid grid-cols-1 md:grid-cols-12 gap-8 relative justify-center items-center text-center">
+  <main class="pt-16">
 
-    <!-- Hero (상단 중앙) -->
-    <section class="md:col-start-3 md:col-span-8 col-span-1 fade-in-up mb-8 flex justify-center items-center text-center">
-      <div class="bg-white/10 rounded-3xl shadow-2xl px-6 py-12 md:px-16 md:py-16 text-center w-full">
-        <h1 class="text-3xl md:text-4xl font-extrabold mb-4 tracking-tight">Youngjae Kim <span class="text-blue-400">|</span> Designer &amp; Engineer</h1>
-        <p class="text-lg md:text-2xl font-semibold mb-4 text-blue-200">공학적 사고와 창의적 디자인의 융합, 공간을 실현하는 사람.</p>
-        <p class="text-base md:text-lg text-gray-200 max-w-2xl mx-auto mb-2">설계, 제작, 시공을 아우르는 실무형 인재로서, 대형 산업구조물 설계, 자동화 시스템 개발, 디지털 브랜딩까지 다양한 분야에서 경험을 쌓았습니다.</p>
+    <!-- Hero -->
+    <section class="mb-16 text-center">
+      <h1 class="text-5xl md:text-7xl font-extrabold mb-6 tracking-tight">About</h1>
+      <p class="text-xl md:text-2xl text-blue-400 font-semibold mb-4">공학적 사고와 창의적 디자인의 융합</p>
+      <p class="max-w-2xl mx-auto text-base md:text-lg text-gray-300 mb-2">설계, 제작, 시공, 디지털 브랜딩까지 실무형 경험을 바탕으로 공간을 실현하는 사람.</p>
+      <!-- 자유로운 형식의 소개글 추가 -->
+      <div class="max-w-2xl mx-auto mt-8 text-gray-200 text-base leading-relaxed">
+        안녕하세요, 김영재입니다.
+        저는 건축과 엔지니어링, 그리고 디지털 디자인을 아우르는 융합적 사고를 바탕으로 공간을 설계하고 구현하는 사람입니다.
+        미국 Kent State University에서 건축학을 전공하며 다양한 설계 스튜디오와 Digital Assistant로 활동했고, Ohio University에서 기계공학을 경험했습니다.
+        월드브리지산업, 백양엔지니어링, 해담건축 등 다양한 기업에서 실무 경험을 쌓으며 구조설계, 프로젝트 관리, 웹 브랜딩 등 폭넓은 역량을 키웠습니다.
+        AutoCAD, Revit, Rhino, Python, HTML/CSS 등 다양한 툴을 활용해 설계와 시각화, 자동화, 디지털 브랜딩까지 직접 수행합니다.
+        현장 중심의 실무 경험과 창의적 문제 해결력을 바탕으로, 앞으로는 로봇·AI 기반의 스마트 설계와 지속가능한 공간 창출에 도전하고자 합니다.<br>
+        <span class="text-blue-400 font-semibold">새로운 공간, 새로운 경험, 그리고 더 나은 미래를 위해 끊임없이 배우고 성장합니다.</span>
       </div>
     </section>
 
-    <!-- Profile (좌측 상단) -->
-    <section class="md:col-start-1 md:col-span-5 col-span-1 fade-in-left flex flex-col justify-between items-center text-center">
-      <div class="bg-white/10 rounded-2xl shadow-xl p-7 md:p-10 mb-8 md:mb-0 w-full">
-        <h2 class="section-heading text-xl font-bold text-blue-300 mb-4">Profile</h2>
-        <div class="text-base md:text-lg text-gray-200 mb-2">
-          <span class="font-semibold">학력</span><br>
-          Kent State University(건축학)<br>
-          Ohio University(기계공학)
-        </div>
-        <div class="text-gray-300 text-sm md:text-base mt-2">
-          미국 Kent State University에서 건축학을 전공하고, 다양한 설계 스튜디오 프로젝트와 Digital Assistant로 활동하며 디자인 역량과 기술 활용 능력을 키웠습니다.
-        </div>
+    <!-- About Section -->
+    <section id="about" class="max-w-7xl mx-auto py-20 px-4 grid grid-cols-1 md:grid-cols-3 gap-8 items-center">
+      <div class="md:col-span-2 scroll-reveal animate-fadeUp">
+        <h2 class="text-4xl font-bold text-white mb-4">Our Story</h2>
+        <p class="text-base mb-4 text-gray-200">Youngjae Kim Studio crafts spaces that merge creativity with structure. From conceptualization to realization, we prioritize sustainability, innovation, and human-centered design.</p>
+        <p class="text-base text-gray-200">Our multidisciplinary team brings expertise in architecture, interior, and spatial design to create environments that inspire and endure.</p>
+      </div>
+      <div class="scroll-reveal animate-fadeUp">
+        <img src="https://source.unsplash.com/random/600x600?interior" alt="Studio workspace" class="rounded-2xl shadow-lg" loading="lazy" />
       </div>
     </section>
-
-    <!-- Skills (우측 상단) -->
-    <section class="md:col-start-9 md:col-span-4 col-span-1 fade-in-right flex flex-col justify-between items-center text-center">
-      <div class="bg-white/10 rounded-2xl shadow-xl p-7 md:p-10 w-full">
-        <h2 class="section-heading text-xl font-bold text-blue-300 mb-4">Skills</h2>
-        <ul class="text-base md:text-lg text-gray-200 mb-2 space-y-1">
-          <li><span class="font-semibold">구조설계</span>: AutoCAD, Revit, SAP2000, Tekla</li>
-          <li><span class="font-semibold">3D/시각화</span>: Rhino, SketchUp, Lumion, Enscape</li>
-          <li><span class="font-semibold">프로그래밍</span>: Python, VBA, Dynamo, Grasshopper</li>
-          <li><span class="font-semibold">웹/디지털</span>: HTML, CSS, JavaScript, Figma</li>
-        </ul>
-      </div>
-    </section>
-
-    <!-- Career (중앙, Hero 아래) -->
-    <section class="md:col-start-4 md:col-span-6 col-span-1 fade-in-up z-10 -mt-8 md:-mt-16 flex justify-center items-center text-center">
-      <div class="bg-white/10 rounded-2xl shadow-xl p-7 md:p-10 w-full">
-        <h2 class="section-heading text-xl font-bold text-blue-300 mb-4">Career</h2>
-        <ul class="text-gray-200 list-disc list-inside mb-4 text-base md:text-lg">
-          <li>월드브리지산업 - ADR 설계</li>
-          <li>백양엔지니어링 - 구조진단</li>
-          <li>해담건축 - 웹·브랜딩</li>
-          <li>IEN건축 - 프로젝트 협업</li>
-        </ul>
-        <p class="text-gray-400 text-sm md:text-base">국내외 다양한 기업에서 프로젝트 관리와 구조 설계를 통해 실무 역량을 강화했습니다.</p>
-      </div>
-    </section>
-
-    <!-- Timeline (좌측 하단) -->
-    <section class="md:col-start-1 md:col-span-6 col-span-1 fade-in-left mt-8 flex flex-col items-center text-center">
-      <h2 class="section-heading text-2xl font-bold mb-8 text-center">Career Timeline</h2>
-      <div class="grid grid-cols-1 sm:grid-cols-2 gap-8 w-full">
-        <ol class="relative timeline-bar pl-10 space-y-10">
-          <li class="relative">
-            <div class="timeline-dot"></div>
-            <time class="text-blue-400 font-semibold">2016</time>
-            <div class="font-semibold text-base mt-1">Kent State University 건축학 입학</div>
-          </li>
-          <li class="relative">
-            <div class="timeline-dot"></div>
-            <time class="text-blue-400 font-semibold">2020</time>
-            <div class="font-semibold text-base mt-1">백양엔지니어링</div>
-            <div class="text-sm text-gray-400">정밀 안전진단 실무</div>
-          </li>
-          <li class="relative">
-            <div class="timeline-dot"></div>
-            <time class="text-blue-400 font-semibold">2022–2023</time>
-            <div class="font-semibold text-base mt-1">해담건축사사무소</div>
-            <div class="text-sm text-gray-400">공식 홈페이지 기획·디자인·코딩</div>
-          </li>
-        </ol>
-        <ol class="relative timeline-bar pl-10 space-y-10">
-          <li class="relative">
-            <div class="timeline-dot"></div>
-            <time class="text-blue-400 font-semibold">2018–2019</time>
-            <div class="font-semibold text-base mt-1">Digital Assistant, Kent State</div>
-          </li>
-          <li class="relative">
-            <div class="timeline-dot"></div>
-            <time class="text-blue-400 font-semibold">2021–2023</time>
-            <div class="font-semibold text-base mt-1">월드브리지산업 ADR 설계 및 자동화</div>
-          </li>
-          <li class="relative">
-            <div class="timeline-dot"></div>
-            <time class="text-blue-400 font-semibold">2023–현재</time>
-            <div class="font-semibold text-base mt-1">IEN건축사사무소 프로젝트 매니지먼트</div>
-          </li>
-        </ol>
-      </div>
-    </section>
-
-    <!-- Portfolio & Links (우측 하단) -->
-    <section id="portfolio" class="md:col-start-8 md:col-span-5 col-span-1 fade-in-right mt-8 flex flex-col items-center text-center">
-      <h2 class="section-heading text-2xl font-bold mb-8 text-center">Portfolio & Links</h2>
-      <div class="flex flex-wrap justify-center gap-6">
-        <a href="https://www.youtube.com/channel/UC9K5C4y2N8vCZeb_dCrhJgA" target="_blank" rel="noopener">
-          <img src="../assets/img/links/Youtube.png" alt="YouTube" class="link-icon" />
+    
+        <!-- Portfolio & Links -->
+    <section class="mb-16">
+      <h2 class="text-2xl font-bold text-center mb-8 text-blue-300">Portfolio & Links</h2>
+      <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-8 max-w-3xl mx-auto">
+        <a href="https://www.youtube.com/channel/UC9K5C4y2N8vCZeb_dCrhJgA" target="_blank" rel="noopener"
+          class="flex flex-col items-center group hover:scale-105 transition-transform duration-200">
+          <img src="../assets/img/links/Youtube.png" alt="YouTube" class="w-16 h-16 rounded-xl mb-2" />
+          <span class="text-sm text-gray-300 group-hover:text-blue-400 font-semibold">YouTube</span>
         </a>
-        <a href="https://www.instagram.com/youngjae_imda?igsh=Y2c2Zjg1cjlobWE2&utm_source=qr" target="_blank" rel="noopener">
-          <img src="../assets/img/links/Instagram.png" alt="Instagram" class="link-icon" />
+        <a href="https://www.instagram.com/youngjae_imda?igsh=Y2c2Zjg1cjlobWE2&utm_source=qr" target="_blank" rel="noopener"
+          class="flex flex-col items-center group hover:scale-105 transition-transform duration-200">
+          <img src="../assets/img/links/Instagram.png" alt="Instagram" class="w-16 h-16 rounded-xl mb-2" />
+          <span class="text-sm text-gray-300 group-hover:text-blue-400 font-semibold">Instagram</span>
         </a>
-        <a href="https://blog.naver.com/bhum2003" target="_blank" rel="noopener">
-          <img src="../assets/img/links/Naverblog.png" alt="Naver Blog" class="link-icon" />
+        <a href="https://blog.naver.com/bhum2003" target="_blank" rel="noopener"
+          class="flex flex-col items-center group hover:scale-105 transition-transform duration-200">
+          <img src="../assets/img/links/Naverblog.png" alt="Naver Blog" class="w-16 h-16 rounded-xl mb-2" />
+          <span class="text-sm text-gray-300 group-hover:text-blue-400 font-semibold">Naver Blog</span>
         </a>
-        <a href="https://www.linkedin.com/in/youngjae-kim-18b26b206/" target="_blank" rel="noopener">
-          <img src="../assets/img/links/Linkedin.png" alt="LinkedIn" class="link-icon" />
+        <a href="https://www.linkedin.com/in/youngjae-kim-18b26b206/" target="_blank" rel="noopener"
+          class="flex flex-col items-center group hover:scale-105 transition-transform duration-200">
+          <img src="../assets/img/links/Linkedin.png" alt="LinkedIn" class="w-16 h-16 rounded-xl mb-2" />
+          <span class="text-sm text-gray-300 group-hover:text-blue-400 font-semibold">LinkedIn</span>
         </a>
-        <a href="https://issuu.com/signin" target="_blank" rel="noopener">
-          <img src="../assets/img/links/Issuu.png" alt="Issuu" class="link-icon" />
+        <a href="https://issuu.com/signin" target="_blank" rel="noopener"
+          class="flex flex-col items-center group hover:scale-105 transition-transform duration-200">
+          <img src="../assets/img/links/Issuu.png" alt="Issuu" class="w-16 h-16 rounded-xl mb-2" />
+          <span class="text-sm text-gray-300 group-hover:text-blue-400 font-semibold">Issuu</span>
         </a>
       </div>
-    </section>
-
-    <!-- Values & Vision (중앙 하단, Masonry/계단식) -->
-    <section class="md:col-start-2 md:col-span-10 col-span-1 fade-in-up mt-16 flex flex-col items-center text-center">
-      <h2 class="section-heading text-2xl font-bold mb-10 text-center">Values & Vision</h2>
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-        <div class="group bg-gray-800 bg-opacity-60 p-8 rounded-3xl shadow-2xl transform transition hover:scale-105 md:translate-y-4">
-          <p class="text-5xl">🏗️</p>
-          <h3 class="mt-4 text-xl font-semibold text-blue-400">현장성</h3>
-          <p class="mt-2 text-gray-300">실무 경험과 현장 중심의 설계</p>
-        </div>
-        <div class="group bg-gray-800 bg-opacity-60 p-8 rounded-3xl shadow-2xl transform transition hover:scale-105 md:-translate-y-6">
-          <p class="text-5xl">🎨</p>
-          <h3 class="mt-4 text-xl font-semibold text-blue-400">창의성</h3>
-          <p class="mt-2 text-gray-300">새로운 아이디어와 융합적 사고</p>
-        </div>
-        <div class="group bg-gray-800 bg-opacity-60 p-8 rounded-3xl shadow-2xl transform transition hover:scale-105 md:translate-y-8">
-          <p class="text-5xl">🌱</p>
-          <h3 class="mt-4 text-xl font-semibold text-blue-400">지속가능성</h3>
-          <p class="mt-2 text-gray-300">환경과 미래를 생각하는 설계</p>
-        </div>
-      </div>
-      <p class="text-center text-gray-400 text-lg max-w-2xl mx-auto mt-8">앞으로는 <span class="font-semibold text-blue-400">로봇·AI 기반의 스마트 설계</span>를 통해 더 혁신적이고 지속 가능한 공간을 만들어가고자 합니다.</p>
     </section>
   </main>
 
-  <!-- Footer -->
-  <div id="footer-placeholder" class="mt-auto"></div>
+  <!-- Lazy-load blog widget script -->
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const script = document.createElement('script');
+      script.src = 'https://haedamgenie.imweb.me/naver-blog-widget.js';
+      script.async = true;
+      document.getElementById('naver-blog').appendChild(script);
+    });
+    // Scroll reveal
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if(entry.isIntersecting) {
+          entry.target.classList.add('animate-fadeUp');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.1 });
+    document.querySelectorAll('.scroll-reveal').forEach(el => observer.observe(el));
+  </script>
+
+  <!-- Footer (공통 컴포넌트) -->
+  <div id="footer-placeholder"></div>
   <script>
     fetch('../components/footer.html')
       .then(res => res.text())

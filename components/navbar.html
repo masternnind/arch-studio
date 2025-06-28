@@ -3,99 +3,65 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="../css/style.css">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    .top-menu {
+      width: 100vw;
+      position: fixed; top: 0; left: 0; z-index: 1000;
+      display: flex; align-items: center;
+      height: 54px; padding-top: 1.5%;
+      color: #fff;
+      font-family: 'Pretendard','Segoe UI','Apple SD Gothic Neo',sans-serif;
+      transition: background 0.3s, box-shadow 0.3s;
+      background: none; box-shadow: none; border: none;
+    }
+    .top-menu ul {
+      display: flex; align-items: center;
+      width: 100vw; height: 54px;
+      margin: 0; padding: 0 4vw; box-sizing: border-box;
+      list-style: none;
+    }
+    .top-menu li { margin: 0 10px; display: flex; align-items: center; }
+    .top-menu li:first-child { margin-right: auto; }
+    .top-menu a {
+      color: #fff; font-size: 1rem; font-weight: 500;
+      letter-spacing: 1px; text-decoration: none;
+      padding: 8px 14px;
+      border-bottom: 2px solid transparent;
+      transition: color 0.2s, border-bottom 0.2s;
+      background: none;
+    }
+    .top-menu a:hover, .top-menu a.active {
+      color: #bbb; border-bottom: 2px solid #bbb;
+    }
+    @media (max-width: 700px) {
+      .top-menu, .top-menu ul { height: 44px; }
+      .top-menu ul { padding: 0 2vw; }
+      .top-menu a { font-size: 0.95rem; padding: 6px 8px; }
+    }
+    body:not(.home) .top-menu {
+      backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    }
+  </style>
 </head>
 <body>
+  <!-- 홈 페이지일 경우 <body class="home"> 추가 -->
   <nav class="top-menu">
-    <style>
-      .top-menu {
-        width: 100vw;
-        background: none;
-        color: #fff;
-        position: fixed;
-        top: 0;
-        left: 0;
-        z-index: 1000;
-        box-shadow: none;
-        border: none;
-        padding: 40px 0;
-        height: 54px;
-        display: flex;
-        align-items: center;
-        font-family: 'Pretendard', 'Segoe UI', 'Apple SD Gothic Neo', sans-serif;
-      }
-      .top-menu ul {
-        display: flex;
-        align-items: center;
-        list-style: none;
-        margin: 0;
-        padding: 0 4vw;
-        width: 100vw;
-        height: 54px;
-        box-sizing: border-box;
-      }
-      .top-menu li {
-        margin: 0 10px;
-        display: flex;
-        align-items: center;
-      }
-      .top-menu li,
-      .top-menu li a {
-        font-size: 1rem;
-        font-weight: 500;
-        color: #fff;
-        font-family: inherit;
-        letter-spacing: 1px;
-      }
-      .top-menu li:first-child {
-        margin-right: auto;
-      }
-      .top-menu li a {
-        text-decoration: none;
-        padding: 8px 14px;
-        border-radius: 0;
-        transition: color 0.2s, border-bottom 0.2s;
-        display: block;
-        background: none;
-        border-bottom: 2px solid transparent;
-      }
-      .top-menu li a:hover,
-      .top-menu li a.active {
-        color: #bbb;
-        background: none;
-        border-bottom: 2px solid #bbb;
-      }
-      @media (max-width: 700px) {
-        .top-menu {
-          height: 44px;
-        }
-        .top-menu ul {
-          height: 44px;
-          padding: 0 2vw;
-        }
-        .top-menu li a {
-          font-size: 0.95rem;
-          padding: 6px 8px;
-        }
-      }
-    </style>
     <ul>
       <li><a href="../index.html">HOME</a></li>
       <li><a href="../pages/projects.html">PROJECTS</a></li>
       <li><a href="../pages/inspiration.html">INSPIRATIONS</a></li>
-      <!-- <li><a href="../pages/footprints.html">FOOTPRINT</a></li> -->
       <li><a href="../pages/about.html">ABOUT</a></li>
     </ul>
-    <script>
-      // 현재 페이지에 해당하는 메뉴에 active 클래스 추가
-      const links = document.querySelectorAll('.top-menu a');
-      const path = location.pathname.split('/').pop();
-      links.forEach(link => {
-        if (link.getAttribute('href').includes(path)) {
-          link.classList.add('active');
-        }
-      });
-    </script>
   </nav>
+  <script>
+    // 현재 페이지 활성화 링크 처리
+    const cur = location.pathname.split('/').pop();
+    document.querySelectorAll('.top-menu a').forEach(a => {
+      if (a.getAttribute('href').includes(cur)) a.classList.add('active');
+    });
+  </script>
 </body>
 </html>
+</body>

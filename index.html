@@ -4,7 +4,71 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>PORTFOLIO_YOUNGJAE.KIM</title>
-  <link rel="stylesheet" href="css/style.css">
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
+
+    body {
+      font-family: 'Roboto', sans-serif;
+      background: #181818;
+      color: #dcdcdc;
+      margin: 0;
+      padding: 0;
+    }
+    #loading-overlay {
+      position: fixed;
+      inset: 0;
+      background: #181818;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 2000;
+      transition: opacity 0.4s;
+    }
+    #loading-text {
+      font-size: 2.5rem;
+      font-weight: 700;
+      color: #fff;
+      letter-spacing: 0.1em;
+    }
+    #navbar-placeholder {
+      width: 100%;
+    }
+    .panel.cover {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      background: transparent;
+    }
+    .content {
+      text-align: center;
+      z-index: 1;
+    }
+    #main-title {
+      font-size: 3rem;
+      font-weight: 900;
+      letter-spacing: 0.08em;
+      margin-bottom: 0.5rem;
+      color: #fff;
+      text-shadow: 0 4px 24px rgba(0,0,0,0.25);
+    }
+    .content p {
+      font-size: 1.2rem;
+      color: #b3b3b3;
+      margin-bottom: 2rem;
+      letter-spacing: 0.15em;
+    }
+    #pensilCanvas {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 0;
+      pointer-events: none;
+    }
+  </style>
 </head>
 <body>
   <!-- 로딩 오버레이 -->
