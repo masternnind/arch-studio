@@ -9,7 +9,6 @@
 
     :root {
       --bg-dark: #181818;
-      --text-dark: #dcdcdc;
       --panel-bg: #202020;
       --panel-border: #444;
     }
@@ -35,28 +34,22 @@
       justify-content: center;
       align-items: flex-start;
     }
-    .projects-panel .content {
-      margin-top: 80px;
-      max-width: 1400px;
-      width: 100%;
-      box-sizing: border-box;
-      background: transparent;
+    
+    .projects-panel .content::-webkit-scrollbar {
+      display: none; /* Chrome, Safari, Opera */
     }
     .panel.project {
-      min-height: 80vh;
+      flex: 0 0 auto;
       display: flex;
       align-items: center;
       justify-content: center;
-      background: #232323;
-      margin-bottom: 40px;
       border-radius: 24px;
       box-shadow: 0 4px 24px #0006;
       overflow: hidden;
       position: relative;
     }
     .panel.project img {
-      width: 100%;
-      height: auto;
+      height: 100%;
       object-fit: cover;
       display: block;
       border-radius: 16px;
@@ -68,16 +61,18 @@
     }
     @media (max-width: 900px) {
       .panel.project {
-        min-height: 40vh;
+        width: 220px !important;
+        height: 100px !important;
       }
     }
     @media (max-width: 600px) {
       .panel.project {
-        min-height: 28vh;
+        width: 160px !important;
+        height: 70px !important;
         border-radius: 12px;
       }
       .panel.project img {
-        border-radius: 8px;
+        border-radius: 8px !important;
       }
       .projects-panel .content {
         margin-top: 40px;
@@ -94,27 +89,40 @@
   <main style="flex:1 0 auto;display:flex;flex-direction:column;">
     <!-- 프로젝트 패널 -->
     <div class="projects-panel" style="flex:1 0 auto;">
-      <div class="content" style="margin-top:80px;max-width:1400px;width:100%;box-sizing:border-box;background:transparent;">
-        <div class="panel project" id="project1">
+      <div class="content" style="margin-top:120px;max-width:1400px;width:100%;box-sizing:border-box;background:transparent;display:flex;flex-direction:row;gap:32px;overflow-x:auto;overflow-y:hidden;padding-bottom:24px;">
+        <div class="panel project" id="project1" style="flex:0 0 auto;width:320px;height:540px;">
           <img src="../assets/img/projects/project1.jpg" alt="Project 1">
         </div>
-        <div class="panel project" id="project2">
+        <div class="panel project" id="project2" style="flex:0 0 auto;width:320px;height:540px;">
           <img src="../assets/img/projects/project2.jpg" alt="Project 2">
         </div>
-        <div class="panel project" id="project3">
+        <div class="panel project" id="project3" style="flex:0 0 auto;width:320px;height:540px;">
           <img src="../assets/img/projects/project3.jpg" alt="Project 3">
         </div>
-        <div class="panel project" id="project4">
+        <div class="panel project" id="project4" style="flex:0 0 auto;width:320px;height:540px;">
           <img src="../assets/img/projects/project4.jpg" alt="Project 4">
         </div>
-        <div class="panel project" id="project5">
+        <div class="panel project" id="project5" style="flex:0 0 auto;width:320px;height:540px;">
           <img src="../assets/img/projects/project5.jpg" alt="Project 5">
         </div>
       </div>
     </div>
   </main>
   <script src="../js/projects.js"></script>
-
+  <script>
+    // 마우스 휠로 가로 스크롤
+    document.addEventListener('DOMContentLoaded', function() {
+      const scrollContainer = document.querySelector('.projects-panel .content');
+      if (scrollContainer) {
+        scrollContainer.addEventListener('wheel', function(e) {
+          if (e.deltaY !== 0) {
+            e.preventDefault();
+            scrollContainer.scrollLeft += e.deltaY;
+          }
+        }, { passive: false });
+      }
+    });
+  </script>
   <!-- 푸터 영역 -->
   <div id="footer-placeholder"></div>
   <script>
