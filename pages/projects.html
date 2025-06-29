@@ -35,7 +35,6 @@
       width: 100vw;
       background: var(--bg-dark, #181818);
       z-index: 100;
-      /* 원하는 높이 지정 (예: 56px) */
       min-height: 56px;
       display: flex;
       align-items: center;
@@ -50,14 +49,10 @@
       justify-content: center;
       align-items: flex-start;
     }
-    
-    .projects-panel .content::-webkit-scrollbar {
-      display: none; /* Chrome, Safari, Opera */
-    }
     .panel.project {
       flex: 0 0 auto;
-      width: 320px;
-      height: calc(320px * 1.4142); /* √2:1 비율 */
+      width: calc(70vh / 1.4142); /* √2:1 비율, 높이 기준 */
+      height: 70vh;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -65,6 +60,14 @@
       box-shadow: 0 4px 24px #0006;
       overflow: hidden;
       position: relative;
+    }
+    .projects-panel .content {
+      /* ...existing code... */
+      scrollbar-width: none; /* Firefox */
+      -ms-overflow-style: none; /* IE, Edge */
+    }
+    .projects-panel .content::-webkit-scrollbar {
+      display: none; /* Chrome, Safari, Opera */
     }
     .panel.project img {
       width: 100%;
@@ -80,8 +83,8 @@
     }
     @media (max-width: 900px) {
       .panel.project {
-        width: 60vw;
-        height: calc(60vw * 1.4142); /* √2:1 비율 */
+        width: calc(60vh / 1.4142);
+        height: 60vh;
         min-width: 120px;
         max-width: 90vw;
         min-height: 180px;
@@ -102,11 +105,11 @@
         overflow-y: hidden;
       }
       .panel.project {
-        width: 80vw;
+        width: calc(60vh / 1.4142);
         max-width: 90vw;
         min-width: 0;
-        height: calc(80vw * 1.4142); /* √2:1 비율 */
-        min-height: 220px;
+        height: 60vh;
+        min-height: 180px;
         max-height: 420px;
         border-radius: 12px;
         margin-bottom: 12px;
@@ -140,19 +143,19 @@
     <!-- 프로젝트 패널 -->
     <div class="projects-panel" style="flex:1 0 auto;">
       <div class="content" style="margin-top:120px;max-width:1400px;width:100%;box-sizing:border-box;background:transparent;display:flex;flex-direction:row;gap:32px;overflow-x:auto;overflow-y:hidden;padding-bottom:24px;">
-        <div class="panel project" id="project1" style="flex:0 0 auto;width:320px;height:540px;">
+        <div class="panel project" id="project1">
           <img src="../assets/img/projects/project1.jpg" alt="Project 1">
         </div>
-        <div class="panel project" id="project2" style="flex:0 0 auto;width:320px;height:540px;">
+        <div class="panel project" id="project2">
           <img src="../assets/img/projects/project2.jpg" alt="Project 2">
         </div>
-        <div class="panel project" id="project3" style="flex:0 0 auto;width:320px;height:540px;">
+        <div class="panel project" id="project3">
           <img src="../assets/img/projects/project3.jpg" alt="Project 3">
         </div>
-        <div class="panel project" id="project4" style="flex:0 0 auto;width:320px;height:540px;">
+        <div class="panel project" id="project4">
           <img src="../assets/img/projects/project4.jpg" alt="Project 4">
         </div>
-        <div class="panel project" id="project5" style="flex:0 0 auto;width:320px;height:540px;">
+        <div class="panel project" id="project5">
           <img src="../assets/img/projects/project5.jpg" alt="Project 5">
         </div>
       </div>
