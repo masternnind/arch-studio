@@ -23,7 +23,23 @@
       width: 100%;
       line-height: 1.6;
       overflow-x: hidden;
-      overflow-y: auto;
+      overflow-y: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+    #footer-placeholder {
+      position: fixed;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      width: 100vw;
+      background: var(--bg-dark, #181818);
+      z-index: 100;
+      /* 원하는 높이 지정 (예: 56px) */
+      min-height: 56px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
 
     /* 프로젝트 페이지 전용 스타일 */
@@ -83,7 +99,7 @@
         flex-direction: column;
         align-items: center;
         overflow-x: hidden;
-        overflow-y: auto;
+        overflow-y: hidden;
       }
       .panel.project {
         width: 80vw;
@@ -107,6 +123,10 @@
         min-height: 0;
         object-fit: cover;
         display: block;
+      }
+      #footer-placeholder {
+        min-height: 48px;
+        height: 48px;
       }
     }
   </style>
