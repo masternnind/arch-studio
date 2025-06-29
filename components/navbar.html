@@ -49,17 +49,18 @@
   <!-- 홈 페이지일 경우 <body class="home"> 추가 -->
   <nav class="top-menu">
     <ul>
-      <li><a href="../index.html">HOME</a></li>
-      <li><a href="../pages/projects.html">PROJECTS</a></li>
-      <li><a href="../pages/inspiration.html">INSPIRATIONS</a></li>
-      <li><a href="../pages/about.html">ABOUT</a></li>
+      <li><a href="../../index.html">HOME</a></li>
+      <li><a href="../../pages/projects.html">PROJECTS</a></li>
+      <li><a href="../../pages/inspiration.html">INSPIRATIONS</a></li>
+      <li><a href="../../pages/about.html">ABOUT</a></li>
     </ul>
   </nav>
   <script>
-    // 현재 페이지 활성화 링크 처리
+    // 현재 페이지 활성화 링크 처리 (폴더 깊이 상관없이 동작)
     const cur = location.pathname.split('/').pop();
     document.querySelectorAll('.top-menu a').forEach(a => {
-      if (a.getAttribute('href').includes(cur)) a.classList.add('active');
+      const href = a.getAttribute('href');
+      if (href && href.endsWith(cur)) a.classList.add('active');
     });
   </script>
 </body>

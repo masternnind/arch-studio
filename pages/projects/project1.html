@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Project 1 - Portfolio</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
+
+    :root {
+      --bg-dark: #181818;
+      --panel-bg: #202020;
+      --panel-border: #444;
+    }
+
+    html, body {
+      height: 100%;
+    }
+    body {
+      margin: 0;
+      background: #181818;
+      color: #eaeaea;
+      font-family: 'Roboto', sans-serif;
+      min-height: 100vh;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      overflow-y: auto;
+      overflow-x: hidden;
+    }
+    #footer-placeholder {
+      position: fixed;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      width: 100vw;
+      background: var(--bg-dark, #181818);
+      z-index: 100;
+      min-height: 56px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .palette-header {
+      font-size: 28px;
+      font-weight: 700;
+      margin: 48px 0 24px 0;
+      text-align: center;
+    }
+    .palette-main {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 0 16px 48px 16px; /* 하단 패딩 추가 */
+    }
+    .palette-image {
+      width: 100%;
+      max-width: 800px;
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: 0 4px 24px #0006;
+      margin-bottom: 16px;
+    }
+    .palette-image img {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+    .palette-info {
+      background: var(--panel-bg, #202020);
+      border-radius: 16px;
+      padding: 24px;
+      width: 100%;
+      max-width: 800px;
+      box-shadow: 0 2px 12px #0004;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+    }
+    .palette-title {
+      font-size: 22px;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+    .palette-desc {
+      font-size: 16px;
+      margin-bottom: 16px;
+    }
+    .palette-meta {
+      font-size: 14px;
+      color: #b0b0b0;
+      margin-bottom: 16px;
+    }
+    .palette-back {
+      background: var(--bg-dark, #181818);
+      color: #dcdcdc;
+      border: 1px solid #444;
+      border-radius: 8px;
+      padding: 10px 16px;
+      cursor: pointer;
+      transition: background 0.3s, transform 0.3s;
+      margin-top: 12px;
+      display: inline-block;
+    }
+    .palette-back:hover {
+      background: #444;
+      transform: translateY(-2px);
+    }
+  </style>
+</head>
+<body>
+  <!-- 네비게이션 바 -->
+  <div id="navbar-placeholder"></div>
+  <script src="../../js/navbar-loader.js" defer></script>
+  <main>
+    <!-- 프로젝트 1 내용 -->
+    <div class="palette-header">Project 1</div>
+    <div class="palette-main">
+      <div class="palette-image">
+        <img src="../../assets/img/projects/project1.jpg" alt="Project 1">
+      </div>
+      <div class="palette-info">
+        <div>
+          <div class="palette-title">프로젝트 1 제목</div>
+          <div class="palette-desc">
+            이곳에 프로젝트 1의 상세 설명을 입력하세요.<br>
+            건축 포트폴리오 팔레트 느낌으로, 이미지와 설명, 메타 정보를 배치합니다.
+          </div>
+        </div>
+        <div class="palette-meta">
+          <div>기간: 2024.01 ~ 2024.03</div>
+          <div>역할: 설계, 3D 모델링</div>
+          <div>기술: SketchUp, AutoCAD, Photoshop</div>
+        </div>
+        <a href="../projects.html" class="palette-back">← 목록으로</a>
+      </div>
+    </div>
+  </main>
+  <!-- 푸터 영역 -->
+  <div id="footer-placeholder"></div>
+  <script>
+    fetch('../../components/footer.html')
+      .then(res => res.text())
+      .then(html => document.getElementById('footer-placeholder').innerHTML = html);
+  </script>
+</body>
+</html>

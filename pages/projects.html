@@ -6,17 +6,13 @@
   <title>Projects</title>
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
-
     :root {
       --bg-dark: #181818;
-      --panel-bg: #202020;
-      --panel-border: #444;
     }
-
     body {
       font-family: 'Roboto', sans-serif;
       background: var(--bg-dark, #181818);
-      color: var(--text-dark, #dcdcdc);
+      color: #dcdcdc;
       margin: 0;
       padding: 0;
       min-height: 100vh;
@@ -40,8 +36,6 @@
       align-items: center;
       justify-content: center;
     }
-
-    /* 프로젝트 페이지 전용 스타일 */
     .projects-panel {
       width: 100%;
       background: var(--bg-dark, #181818);
@@ -51,7 +45,7 @@
     }
     .panel.project {
       flex: 0 0 auto;
-      width: calc(70vh / 1.4142); /* √2:1 비율, 높이 기준 */
+      width: calc(70vh / 1.4142);
       height: 70vh;
       display: flex;
       align-items: center;
@@ -60,14 +54,54 @@
       box-shadow: 0 4px 24px #0006;
       overflow: hidden;
       position: relative;
+      cursor: pointer;
+    }
+    .project-cover {
+      position: absolute;
+      inset: 0;
+      background: rgba(24, 24, 24, 0.78);
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      transition: opacity 0.3s;
+      z-index: 2;
+      font-size: 1.5rem;
+      font-weight: 700;
+      letter-spacing: 1.5px;
+      border-radius: inherit;
+    }
+    .panel.project:hover .project-cover,
+    .panel.project:focus .project-cover {
+      opacity: 1;
+    }
+    .project-title {
+      font-size: 1.4rem;
+      font-weight: 700;
+      letter-spacing: 1.5px;
+      text-align: center;
+      padding: 0 16px;
+      line-height: 1.3;
+      text-shadow: 0 2px 8px #000a;
     }
     .projects-panel .content {
-      /* ...existing code... */
-      scrollbar-width: none; /* Firefox */
-      -ms-overflow-style: none; /* IE, Edge */
+      scrollbar-width: none;
+      -ms-overflow-style: none;
+      overflow-x: auto;
+      overflow-y: hidden;
+      display: flex;
+      flex-direction: row;
+      gap: 32px;
+      margin-top: 120px;
+      max-width: 1400px;
+      width: 100%;
+      box-sizing: border-box;
+      background: transparent;
+      padding-bottom: 24px;
     }
     .projects-panel .content::-webkit-scrollbar {
-      display: none; /* Chrome, Safari, Opera */
+      display: none;
     }
     .panel.project img {
       width: 100%;
@@ -89,6 +123,9 @@
         max-width: 90vw;
         min-height: 180px;
         max-height: 340px;
+      }
+      .panel.project img {
+        border-radius: 8px;
       }
     }
     @media (max-width: 600px) {
@@ -138,32 +175,43 @@
   <!-- 네비게이션 바 -->
   <div id="navbar-placeholder"></div>
   <script src="../js/navbar-loader.js" defer></script>
-
   <main style="flex:1 0 auto;display:flex;flex-direction:column;">
-    <!-- 프로젝트 패널 -->
     <div class="projects-panel" style="flex:1 0 auto;">
-      <div class="content" style="margin-top:120px;max-width:1400px;width:100%;box-sizing:border-box;background:transparent;display:flex;flex-direction:row;gap:32px;overflow-x:auto;overflow-y:hidden;padding-bottom:24px;">
-        <div class="panel project" id="project1">
+      <div class="content">
+        <div class="panel project" id="project1" data-url="projects/project1.html">
+          <div class="project-cover">
+            <span class="project-title">Elevate Living</span>
+          </div>
           <img src="../assets/img/projects/project1.jpg" alt="Project 1">
         </div>
-        <div class="panel project" id="project2">
+        <div class="panel project" id="project2" data-url="projects/project2.html">
+          <div class="project-cover">
+            <span class="project-title">Urban Harmony</span>
+          </div>
           <img src="../assets/img/projects/project2.jpg" alt="Project 2">
         </div>
-        <div class="panel project" id="project3">
+        <div class="panel project" id="project3" data-url="projects/project3.html">
+          <div class="project-cover">
+            <span class="project-title">Nature Blend</span>
+          </div>
           <img src="../assets/img/projects/project3.jpg" alt="Project 3">
         </div>
-        <div class="panel project" id="project4">
+        <div class="panel project" id="project4" data-url="projects/project4.html">
+          <div class="project-cover">
+            <span class="project-title">Creative Office</span>
+          </div>
           <img src="../assets/img/projects/project4.jpg" alt="Project 4">
         </div>
-        <div class="panel project" id="project5">
+        <div class="panel project" id="project5" data-url="projects/project5.html">
+          <div class="project-cover">
+            <span class="project-title">Minimal House</span>
+          </div>
           <img src="../assets/img/projects/project5.jpg" alt="Project 5">
         </div>
       </div>
     </div>
   </main>
-  <script src="../js/projects.js"></script>
   <script>
-    // 마우스 휠로 가로 스크롤
     document.addEventListener('DOMContentLoaded', function() {
       const scrollContainer = document.querySelector('.projects-panel .content');
       if (scrollContainer) {
@@ -173,10 +221,15 @@
             scrollContainer.scrollLeft += e.deltaY;
           }
         }, { passive: false });
+        scrollContainer.querySelectorAll('.panel.project').forEach(panel => {
+          panel.addEventListener('click', function() {
+            const url = panel.getAttribute('data-url');
+            if (url) window.location.href = url;
+          });
+        });
       }
     });
   </script>
-  <!-- 푸터 영역 -->
   <div id="footer-placeholder"></div>
   <script>
     fetch('../components/footer.html')
