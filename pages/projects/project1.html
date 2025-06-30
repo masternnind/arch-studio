@@ -88,5 +88,14 @@
       .then(res => res.text())
       .then(html => document.getElementById('footer-placeholder').innerHTML = html);
   </script>
+
+  <script>
+    // ESC 키 누르면 뒤로가기
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape') {
+        window.location.href = '../projects.html';
+      }
+    });
+  </script>
 </body>
 </html>

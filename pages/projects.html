@@ -18,10 +18,10 @@
       min-height: 100vh;
       width: 100%;
       line-height: 1.6;
-      overflow-x: hidden;
-      overflow-y: hidden;
       display: flex;
       flex-direction: column;
+      overflow-x: auto;
+      overflow-y: auto;
     }
     #footer-placeholder {
       position: fixed;
@@ -170,7 +170,7 @@
     }
   </style>
 </head>
-<body style="min-height:100vh;display:flex;flex-direction:column;">
+<body>
   <!-- 네비게이션 바 -->
   <div id="navbar-placeholder"></div>
   <script src="../js/navbar-loader.js" defer></script>
@@ -214,51 +214,49 @@
     document.addEventListener('DOMContentLoaded', function() {
       const content = document.querySelector('.projects-panel .content');
       let panels = Array.from(content.querySelectorAll('.panel.project'));
-      // 무한루프를 위해 패널 2배로 복제
-      content.innerHTML += content.innerHTML;
-      panels = Array.from(content.querySelectorAll('.panel.project'));
-      let panelWidth = panels[0].offsetWidth + 32; // 패널+gap
-      let totalWidth = panelWidth * panels.length;
+
+      // 무한루프를 위해 패널 2배로 복제 (중복 복제 방지)
+      if (panels.length && panels.length === content.childElementCount) {
+        content.innerHTML += content.innerHTML;
+        panels = Array.from(content.querySelectorAll('.panel.project'));
+      }
+
+      const panelWidth = panels[0].offsetWidth + 32; // 패널+gap
+      const totalWidth = panelWidth * panels.length;
       let pos = 0;
-      let speed = 0.7; // 자연스러운 흐름 속도(조절 가능)
-      let reqId;
+      let speed = 0.8; // 기본 자동 슬라이드 속도
+      let velocity = 0; // 스크롤 가속도
+      let startX = null;
 
       // 자연스럽게 흘러가듯이 애니메이션
       function animate() {
-        pos += speed;
-        if (pos >= totalWidth / 2) pos = 0;
+        pos += speed + velocity;
+        velocity *= 0.92; // 감쇠(0.92~0.96 사이 조절)
+        if (Math.abs(velocity) < 0.01) velocity = 0;
+
+        if (pos < 0) pos += totalWidth / 2;
+        if (pos >= totalWidth / 2) pos -= totalWidth / 2;
         content.style.transition = 'none';
         content.style.transform = `translateX(-${pos}px)`;
-        reqId = requestAnimationFrame(animate);
+        requestAnimationFrame(animate);
       }
       animate();
 
-      // 스크롤(휠)로 더 빠르게 좌우 이동
+      // 스크롤(휠)로 더 빠르게 좌우 이동 (관성 적용)
       content.addEventListener('wheel', function(e) {
-        // 스크롤 방향에 따라 속도 조절
-        if (Math.abs(e.deltaX) > Math.abs(e.deltaY)) {
-          e.preventDefault();
-          pos += e.deltaX * 1.2; // 스크롤 가속도 조절
-          if (pos < 0) pos += totalWidth / 2;
-          if (pos >= totalWidth / 2) pos -= totalWidth / 2;
-          content.style.transition = 'none';
-          content.style.transform = `translateX(-${pos}px)`;
-        }
+        e.preventDefault();
+        let delta = e.deltaX !== 0 ? e.deltaX : e.deltaY;
+        velocity += delta * 0.15; // 관성 가중치(0.1~0.2 사이 조절)
       }, { passive: false });
 
-      // 터치 스와이프 지원 (모바일)
-      let startX = null;
+      // 터치 스와이프 지원 (모바일, 관성 적용)
       content.addEventListener('touchstart', function(e) {
         if (e.touches.length === 1) startX = e.touches[0].clientX;
       });
       content.addEventListener('touchmove', function(e) {
         if (startX !== null) {
           let diff = startX - e.touches[0].clientX;
-          pos += diff * 1.1;
-          if (pos < 0) pos += totalWidth / 2;
-          if (pos >= totalWidth / 2) pos -= totalWidth / 2;
-          content.style.transition = 'none';
-          content.style.transform = `translateX(-${pos}px)`;
+          velocity += diff * 0.18;
           startX = e.touches[0].clientX;
         }
       });
@@ -267,7 +265,7 @@
       });
 
       // 패널 클릭 시 이동
-      content.querySelectorAll('.panel.project').forEach(panel => {
+      panels.forEach(panel => {
         panel.addEventListener('click', function() {
           const url = panel.getAttribute('data-url');
           if (url) window.location.href = url;
