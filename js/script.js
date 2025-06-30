@@ -52,7 +52,9 @@
       if (percent === 100) {
         clearInterval(interval);
         setTimeout(() => {
-          overlay.classList.add('hide');
+          // 자연스러운 쉐이드아웃 효과 추가
+          overlay.style.transition = 'opacity 1.2s cubic-bezier(0.4,0,0.2,1)';
+          overlay.style.opacity = '0';
           setTimeout(() => overlay.style.display = 'none', 800);
         }, 400);
       }

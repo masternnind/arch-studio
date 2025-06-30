@@ -36,19 +36,19 @@
       align-items: flex-start;
     }
     .inspiration-panel .content {
-      margin-top: 80px;
-      max-width: 1400px;
-      width: 100%;
+      margin-top: 200px; /* 충분한 상단 여백으로 조정 */
+      width: 80vw;      /* 뷰포트 전체 너비 */
+      max-width: none;   /* 최대 너비 제한 해제 */
       box-sizing: border-box;
       background: transparent;
     }
     .inspiration-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-      gap: 20px;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); /* 이미지 최소 크기를 220px로 키움 */
+      gap: 30px;
       justify-content: center;
       align-items: start;
-      padding: 20px;
+      padding: 0 0 20px 0; /* 좌우 여백을 완전히 제거 */
     }
     .image-container {
       position: relative;
@@ -58,6 +58,7 @@
       background: #f0f0f0;
       border-radius: 10px;
       box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      /* 높이도 1.5배 커짐 (aspect-ratio 유지) */
     }
     .image-container img {
       width: 100%;
@@ -80,7 +81,7 @@
 
   <main style="flex:1 0 auto;display:flex;flex-direction:column;">
     <section class="inspiration-panel" style="flex:1 0 auto;">
-      <div class="content" style="margin-top:80px;max-width:1400px;width:100%;box-sizing:border-box;background:transparent;">
+      <div class="content">
         <div class="inspiration-grid"></div>
       </div>
     </section>

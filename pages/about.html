@@ -15,7 +15,7 @@
     .scroll-reveal { opacity: 0; }
   </style>
 </head>
-<body class="bg-black text-white leading-relaxed">
+<body class="bg-black text-white leading-relaxed" style="min-height:100vh;display:flex;flex-direction:column;">
   <!-- Navbar (공통 컴포넌트로 대체) -->
   <div id="navbar-placeholder"></div>
   <script>
@@ -24,7 +24,7 @@
       .then(html => document.getElementById('navbar-placeholder').innerHTML = html);
   </script>
 
-  <main class="pt-16">
+  <main class="pt-16" style="flex:1 0 auto;">
 
     <!-- Hero -->
     <section class="mb-16 text-center">
