@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ko">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -33,17 +33,54 @@
       <p class="max-w-2xl mx-auto text-base md:text-lg text-gray-300 mb-2">설계, 제작, 시공, 디지털 브랜딩까지 실무형 경험을 바탕으로 공간을 실현하는 사람.</p>
       <!-- 자유로운 형식의 소개글 추가 -->
       <div class="max-w-2xl mx-auto mt-8 text-gray-200 text-base leading-relaxed">
-        안녕하세요, 김영재입니다.
-        저는 건축과 엔지니어링, 그리고 디지털 디자인을 아우르는 융합적 사고를 바탕으로 공간을 설계하고 구현하는 사람입니다.
-        미국 Kent State University에서 건축학을 전공하며 다양한 설계 스튜디오와 Digital Assistant로 활동했고, Ohio University에서 기계공학을 경험했습니다.
-        월드브리지산업, 백양엔지니어링, 해담건축 등 다양한 기업에서 실무 경험을 쌓으며 구조설계, 프로젝트 관리, 웹 브랜딩 등 폭넓은 역량을 키웠습니다.
-        AutoCAD, Revit, Rhino, Python, HTML/CSS 등 다양한 툴을 활용해 설계와 시각화, 자동화, 디지털 브랜딩까지 직접 수행합니다.
+        안녕하세요, 김영재입니다.<br>
+        저는 건축과 엔지니어링, 그리고 디지털 디자인을 아우르는 융합적 사고를 바탕으로 공간을 설계하고 구현하는 사람입니다.<br>
+        미국 Kent State University에서 건축학을 전공하며 다양한 설계 스튜디오와 Digital Assistant로 활동했고, Ohio University에서 기계공학을 경험했습니다.<br>
+        월드브리지산업, 백양엔지니어링, 해담건축 등 다양한 기업에서 실무 경험을 쌓으며 구조설계, 프로젝트 관리, 웹 브랜딩 등 폭넓은 역량을 키웠습니다.<br>
+        AutoCAD, Revit, Rhino, Python, HTML/CSS 등 다양한 툴을 활용해 설계와 시각화, 자동화, 디지털 브랜딩까지 직접 수행합니다.<br>
         현장 중심의 실무 경험과 창의적 문제 해결력을 바탕으로, 앞으로는 로봇·AI 기반의 스마트 설계와 지속가능한 공간 창출에 도전하고자 합니다.<br>
         <span class="text-blue-400 font-semibold">새로운 공간, 새로운 경험, 그리고 더 나은 미래를 위해 끊임없이 배우고 성장합니다.</span>
       </div>
     </section>
 
-    <!-- About Section -->
+    <!-- Profile / Career / Skills (about_before.html 기반) -->
+    <section class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16 max-w-5xl mx-auto">
+      <!-- Profile -->
+      <div class="bg-neutral-900 rounded-2xl p-8 flex flex-col items-center text-center">
+        <h2 class="text-xl font-bold text-blue-300 mb-4">Profile</h2>
+        <div class="text-lg text-gray-200 mb-2">
+          <span class="font-semibold">학력</span><br>
+          Kent State University(건축학)<br>
+          Ohio University(기계공학)
+        </div>
+        <div class="text-gray-400 text-base mt-2">
+          미국 Kent State University에서 건축학을 전공하고, 다양한 설계 스튜디오 프로젝트와 Digital Assistant로 활동하며 디자인 역량과 기술 활용 능력을 키웠습니다.
+        </div>
+      </div>
+      <!-- Career -->
+      <div class="bg-neutral-900 rounded-2xl p-8 flex flex-col items-center text-center">
+        <h2 class="text-xl font-bold text-blue-300 mb-4">Career</h2>
+        <ul class="text-gray-200 list-disc list-inside text-base space-y-1">
+          <li>월드브리지산업 - ADR 설계</li>
+          <li>백양엔지니어링 - 구조진단</li>
+          <li>해담건축 - 웹·브랜딩</li>
+          <li>IEN건축 - 프로젝트 협업</li>
+        </ul>
+        <p class="text-gray-400 text-sm mt-3">국내외 다양한 기업에서 프로젝트 관리와 구조 설계를 통해 실무 역량을 강화했습니다.</p>
+      </div>
+      <!-- Skills -->
+      <div class="bg-neutral-900 rounded-2xl p-8 flex flex-col items-center text-center">
+        <h2 class="text-xl font-bold text-blue-300 mb-4">Skills</h2>
+        <ul class="text-base text-gray-200 space-y-1">
+          <li><span class="font-semibold">구조설계</span>: AutoCAD, Revit, SAP2000, Tekla</li>
+          <li><span class="font-semibold">3D/시각화</span>: Rhino, SketchUp, Lumion, Enscape</li>
+          <li><span class="font-semibold">프로그래밍</span>: Python, VBA, Dynamo, Grasshopper</li>
+          <li><span class="font-semibold">웹/디지털</span>: HTML, CSS, JavaScript, Figma</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- Our Story -->
     <section id="about" class="max-w-7xl mx-auto py-20 px-4 grid grid-cols-1 md:grid-cols-3 gap-8 items-center">
       <div class="md:col-span-2 scroll-reveal animate-fadeUp">
         <h2 class="text-4xl font-bold text-white mb-4">Our Story</h2>
@@ -54,9 +91,41 @@
         <img src="https://source.unsplash.com/random/600x600?interior" alt="Studio workspace" class="rounded-2xl shadow-lg" loading="lazy" />
       </div>
     </section>
-    
-        <!-- Portfolio & Links -->
-    <section class="mb-16">
+
+    <!-- Career Timeline -->
+    <section class="mb-20">
+      <h2 class="text-2xl font-bold text-center mb-8 text-blue-300">Career Timeline</h2>
+      <ul class="space-y-6 max-w-2xl mx-auto">
+        <li>
+          <span class="font-semibold text-blue-400">2016.08 - 2018.12</span>
+          <span class="ml-2">Lorain County Community College 수료</span>
+        </li>
+        <li>
+          <span class="font-semibold text-blue-400">2019.01 - 2019.05</span>
+          <span class="ml-2">Ohio University 편입학</span>
+        </li>
+        <li>
+          <span class="font-semibold text-blue-400">2019.08 - 2022.12</span>
+          <span class="ml-2">Kent State University 건축학 학사</span>
+        </li>
+        <li>
+          <span class="font-semibold text-blue-400">2021.06 - 2021.08</span>
+          <span class="ml-2">월드브리지산업 구조설계 인턴</span>
+        </li>
+        <li>
+          <span class="font-semibold text-blue-400">2022.01 - 2022.08</span>
+          <span class="ml-2">백양엔지니어링 구조설계 인턴</span>
+        </li>
+        <li>
+          <span class="font-semibold text-blue-400">2023.01 - 2023.12</span>
+          <span class="ml-2">해담건축 구조설계 및 웹 브랜딩</span>
+        </li>
+      </ul>
+    </section>
+
+    <!-- Portfolio & Links -->
+    <section class="mb-32">
+      <h2 class="text-2xl font-bold text-center mb-8 text-blue-300">Portfolio & Links</h2>
       <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-8 max-w-3xl mx-auto">
         <a href="https://www.youtube.com/channel/UC9K5C4y2N8vCZeb_dCrhJgA" target="_blank" rel="noopener"
           class="flex flex-col items-center group hover:scale-105 transition-transform duration-200">
@@ -82,14 +151,13 @@
     </section>
   </main>
 
-  <!-- Lazy-load blog widget script -->
+  <!-- Footer (공통 컴포넌트) -->
+  <div id="footer-placeholder"></div>
   <script>
-    document.addEventListener('DOMContentLoaded', function() {
-      const script = document.createElement('script');
-      script.src = 'https://haedamgenie.imweb.me/naver-blog-widget.js';
-      script.async = true;
-      document.getElementById('naver-blog').appendChild(script);
-    });
+    fetch('../components/footer.html')
+      .then(res => res.text())
+      .then(html => document.getElementById('footer-placeholder').innerHTML = html);
+
     // Scroll reveal
     const observer = new IntersectionObserver(entries => {
       entries.forEach(entry => {
@@ -100,14 +168,6 @@
       });
     }, { threshold: 0.1 });
     document.querySelectorAll('.scroll-reveal').forEach(el => observer.observe(el));
-  </script>
-
-  <!-- Footer (공통 컴포넌트) -->
-  <div id="footer-placeholder"></div>
-  <script>
-    fetch('../components/footer.html')
-      .then(res => res.text())
-      .then(html => document.getElementById('footer-placeholder').innerHTML = html);
   </script>
 </body>
 </html>
