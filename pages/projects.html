@@ -1,14 +1,14 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Projects</title>
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
     :root {
       --bg-dark: #181818;
-      --gap: 32px; /* ★ 변경: gap 변수를 JS와 공유 */
+      --gap: 32px; /* JS와 공유 */
     }
     *{ box-sizing: border-box; }
     body {
@@ -22,10 +22,11 @@
       line-height: 1.6;
       display: flex;
       flex-direction: column;
-      overflow: hidden; /* ★ 변경: 상위에서 스크롤 차단 (트랙만 움직임) */
+      overflow: hidden; /* 트랙만 움직임 */
     }
 
-    /* navbar는 기존 그대로 유지 */
+    /* navbar는 기존 로더로 삽입됨 */
+
     #footer-placeholder {
       position: fixed;
       left: 0; right: 0; bottom: 0;
@@ -38,29 +39,28 @@
 
     .projects-panel {
       width: 100%;
-      height: 100vh;               /* ★ 변경: 뷰포트에 고정 */
+      height: 100vh;                 /* 뷰포트 고정 */
       background: var(--bg-dark, #181818);
       display: flex; align-items: center; justify-content: center;
-      overflow: hidden;            /* ★ 변경: 내부 스크롤 제거 */
+      overflow: hidden;              /* 내부 스크롤 제거 */
       position: relative;
     }
     .projects-panel .content {
-      position: absolute; inset: 0 auto 0 0; /* 트랙처럼 좌측 기준 */
+      position: absolute; inset: 0 auto 0 0; /* 트랙 좌측 기준 */
       display: flex; flex-direction: row;
       align-items: center;
       gap: var(--gap);
-      will-change: transform;      /* 성능 힌트 */
-      transform: translateX(0);    /* 초기값 */
-      transition: none;            /* ★ 변경: JS가 transform 관리 */
-      margin-top: 0;               /* ★ 변경: 레이아웃 흔들림 방지 */
-      width: max-content;          /* 트랙 폭은 자식 합산 */
-      padding: 0 7vw 0 7vw;        /* 좌우 여백은 유지 */
-      overflow: visible;           /* 내부 요소 노출 */
+      will-change: transform;
+      transform: translateX(0);
+      transition: none;              /* JS가 transform 관리 */
+      width: max-content;            /* 트랙 폭 = 자식 합 */
+      padding: 0 7vw;
+      overflow: visible;
     }
+
     .panel.project {
       flex: 0 0 auto;
-      width: calc(60vh / 1.4142);
-      height: 60vh;
+      /* 실제 크기는 JS에서 픽셀 고정 (모바일 비율 개선) */
       display: flex; align-items: center; justify-content: center;
       border-radius: 20px;
       box-shadow: 0 3px 20px #0006;
@@ -76,12 +76,11 @@
       opacity: 0; transition: opacity 0.3s;
       z-index: 2;
       font-size: 1.5rem; font-weight: 700; letter-spacing: 1.5px;
-      border-radius: inherit;
-      text-align: center;
-      padding: 0 16px;
+      border-radius: inherit; text-align: center; padding: 0 16px;
     }
     .panel.project:hover .project-cover,
     .panel.project:focus .project-cover { opacity: 1; }
+
     .project-title {
       font-size: 1.4rem; font-weight: 700; letter-spacing: 1.5px; text-align: center;
       padding: 0 16px; line-height: 1.3; text-shadow: 0 2px 8px #000a;
@@ -94,19 +93,19 @@
     }
     .panel.project img:hover { transform: scale(1.03); }
 
-    /* ★ 추가: 터치 환경에서는 hover 확대 비활성 (흔들림 방지) */
+    /* 터치 환경에서는 hover 확대 제거 (레이아웃 흔들림 방지) */
     @media (hover:none){
       .panel.project img { transition: none; }
       .panel.project img:hover { transform: none; }
     }
 
     @media (max-width: 900px) {
-      :root{ --gap: 16px; } /* ★ 변경: 모바일 gap 축소 */
+      :root{ --gap: 16px; }
       .panel.project { border-radius: 14px; box-shadow: 0 2px 12px #0004; }
       .panel.project img { border-radius: 10px; }
     }
 
-    /* ★ 변경: 600px 이하에서도 내부 가로 스크롤을 없애고, 트랙만 transform */
+    /* 모바일 하위 규칙은 JS 픽셀 고정과 충돌되지 않도록 최소화 */
     @media (max-width: 600px) {
       .projects-panel { overflow: hidden; }
       .projects-panel .content {
@@ -115,15 +114,7 @@
         flex-direction: row !important;
         align-items: center; justify-content: flex-start;
         width: max-content; min-width: auto;
-        overflow: visible; white-space: normal; /* ★ 변경: no-wrap 제거 */
-      }
-      .panel.project {
-        /* JS가 픽셀 고정으로 재설정하므로 비율 규칙은 보조용 */
-        width: calc(60vw / 1.4142);
-        height: 60vw;
-        min-width: 140px; min-height: 180px;
-        max-width: 90vw;  max-height: 360px;
-        border-radius: 14px; margin-bottom: 0;
+        overflow: visible;
       }
       .project-cover { font-size: 1.05rem; border-radius: 10px; padding: 0 4px; }
       #footer-placeholder { min-height: 48px; height: 48px; }
@@ -138,7 +129,7 @@
   <main style="flex:1 0 auto;display:flex;flex-direction:column;">
     <div class="projects-panel" style="flex:1 0 auto;">
       <div class="content" id="track">
-        <!-- ★ 마크업 오탈자 수정: p 태그 제거 -->
+        <!-- 오탈자 수정: </p> 제거 -->
         <div class="panel project" id="project1" data-url="projects/project1.html">
           <div class="project-cover"><span class="project-title">Cultural Center<br/>2021</span></div>
           <img src="../assets/img/projects/project1.png" alt="Project 1">
@@ -179,19 +170,49 @@
 
       let animId=0, pos=0, speed=0.8, velocity=0, trackW=0, gapPx=32;
 
+      // ★ 모바일 비율 개선: 모바일은 vw 기준(A-series 세로형), 데스크톱은 60vh 기준
       function setFixedCardSize(){
-        // ★ 변경: 뷰포트 기준 고정 픽셀 크기 산출 → reflow 방지
-        const vw = Math.max(window.innerWidth, 360);
+        const vw = Math.max(window.innerWidth, 320);
         const vh = Math.max(window.innerHeight, 420);
         const gapVar = getComputedStyle(document.documentElement).getPropertyValue('--gap');
         gapPx = parseInt(gapVar) || 32;
 
-        const h = Math.round(vh * 0.60);
-        const w = Math.round(h / 1.4142);
-        track.querySelectorAll('.panel.project').forEach(card=>{
-          card.style.height = h + 'px';
+        const cards = [...track.querySelectorAll('.panel.project')];
+
+        const isMobile = window.matchMedia('(max-width: 600px)').matches;
+        const isTablet = window.matchMedia('(max-width: 900px)').matches && !isMobile;
+
+        let w, h;
+
+        if (isMobile) {
+          // 모바일: 가로 기준으로 길쭉한 비율 유지 (1:√2)
+          w = Math.round(vw * 0.70);          // 화면폭의 70%
+          h = Math.round(w * 1.4142);         // 세로형
+
+          // 화면 높이를 초과하면 세로에 맞춰 보정
+          const footer = 56;                  // 푸터 높이(사이트에 맞게 조정 가능)
+          const margin = 16;                  // 상하 여백
+          const maxH = vh - footer - margin*2;
+          if (h > maxH) {
+            h = Math.max(180, Math.round(maxH));
+            w = Math.round(h / 1.4142);
+          }
+        } else if (isTablet) {
+          // 태블릿: 폭 45% 기준, 세로형 유지
+          w = Math.round(vw * 0.45);
+          h = Math.round(w * 1.4142);
+          const maxH = Math.round(vh * 0.80);
+          if (h > maxH) { h = maxH; w = Math.round(h / 1.4142); }
+        } else {
+          // 데스크톱: 세로 60vh 기준, 기존 느낌 유지
+          h = Math.round(vh * 0.60);
+          w = Math.round(h / 1.4142);
+        }
+
+        cards.forEach(card => {
           card.style.width  = w + 'px';
-          card.style.flex   = '0 0 auto'; // 크기 고정
+          card.style.height = h + 'px';
+          card.style.flex   = '0 0 auto'; // 고정
         });
       }
 
