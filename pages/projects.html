@@ -184,30 +184,24 @@
 
         let w, h;
 
-        if (isMobile) {
-          // 모바일: 가로 기준으로 길쭉한 비율 유지 (1:√2)
-          w = Math.round(h / 1.4142);          // 화면폭의 70%
-          h = Math.round(vh * 0.60);         // 세로형
+        if (isMobile || isTablet) {
+  // 모바일 & 태블릿: 데스크톱과 동일한 비율 (세로 60vh, A-series 비율 1:√2)
+  h = Math.round(vh * 0.60);
+  w = Math.round(h / 1.4142);
 
-          // 화면 높이를 초과하면 세로에 맞춰 보정
-          const footer = 56;                  // 푸터 높이(사이트에 맞게 조정 가능)
-          const margin = 16;                  // 상하 여백
-          const maxH = vh - footer - margin*2;
-          if (h > maxH) {
-            h = Math.max(180, Math.round(maxH));
-            w = Math.round(h / 1.4142);
-          }
-        } else if (isTablet) {
-          // 태블릿: 폭 45% 기준, 세로형 유지
-          w = Math.round(vw * 0.45);
-          h = Math.round(w * 1.4142);
-          const maxH = Math.round(vh * 0.80);
-          if (h > maxH) { h = maxH; w = Math.round(h / 1.4142); }
-        } else {
-          // 데스크톱: 세로 60vh 기준, 기존 느낌 유지
-          h = Math.round(vh * 0.60);
-          w = Math.round(h / 1.4142);
-        }
+  // 세로가 너무 클 경우 보정
+  const footer = 56;      // 푸터 높이
+  const margin = 16;      // 여백
+  const maxH = vh - footer - margin * 2;
+  if (h > maxH) {
+    h = Math.max(180, Math.round(maxH));
+    w = Math.round(h / 1.4142);
+  }
+} else {
+  // 데스크톱: 동일 (60vh 기준)
+  h = Math.round(vh * 0.60);
+  w = Math.round(h / 1.4142);
+}
 
         cards.forEach(card => {
           card.style.width  = w + 'px';
