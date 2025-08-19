@@ -125,181 +125,231 @@
   </main>
 
   <script>
-    document.addEventListener('DOMContentLoaded', function() {
-      const content = document.querySelector('.projects-panel .content');
+  // 유틸: 이미지 로딩 대기
+  function imagesReady(container){
+    const imgs = [...container.querySelectorAll('img')];
+    if (!imgs.length) return Promise.resolve();
+    return Promise.all(imgs.map(img =>
+      img.complete ? Promise.resolve() :
+      new Promise(res => { img.addEventListener('load',res,{once:true}); img.addEventListener('error',res,{once:true}); })
+    ));
+  }
 
-      // 모바일 여부
-      const isMobile = window.matchMedia('(max-width: 600px)').matches;
+  document.addEventListener('DOMContentLoaded', function() {
+    const track = document.querySelector('.projects-panel .content');
+    let rafId = 0, teardown = () => {};
 
-      // ===== 공통: 패널 클릭 이동 유지 =====
-      function bindClicks(root){
-        [...root.querySelectorAll('.panel.project')].forEach(panel=>{
-          panel.addEventListener('click', ()=>{
-            const url = panel.getAttribute('data-url');
-            if(url) window.location.href = url;
-          });
+    // 공통: 패널 클릭 이동
+    function bindClicks(root){
+      [...root.querySelectorAll('.panel.project')].forEach(p=>{
+        p.addEventListener('click', ()=>{
+          const url = p.getAttribute('data-url');
+          if (url) location.href = url;
+        });
+      });
+    }
+    // 공통: gap 읽기
+    function getGapPx(){
+      const g = getComputedStyle(track).gap;
+      const n = parseInt(g || '0', 10);
+      return Number.isFinite(n) ? n : 0;
+    }
+
+    // --- 데스크톱/태블릿 모드 (원래 방식 유지) ---------------------------------
+    function initDesktop(){
+      let content = track; // 이름 맞추기
+      let panels = Array.from(content.querySelectorAll('.panel.project'));
+      // 2배 복제
+      if (panels.length && panels.length === content.childElementCount) {
+        content.innerHTML += content.innerHTML;
+        panels = Array.from(content.querySelectorAll('.panel.project'));
+      }
+      bindClicks(content);
+
+      const gap = getGapPx();
+      const panelWidth = panels[0].offsetWidth + gap;
+      const totalWidth  = panelWidth * panels.length;
+
+      let pos = 0;
+      let speed = 0.8;
+      let velocity = 0;
+      let startX = null;
+
+      function animate(){
+        pos += speed + velocity;
+        velocity *= 0.92; if (Math.abs(velocity) < 0.01) velocity = 0;
+
+        if (pos < 0) pos += totalWidth / 2;
+        if (pos >= totalWidth / 2) pos -= totalWidth / 2;
+
+        content.style.transition = 'none';
+        content.style.transform = `translateX(-${pos}px)`;
+        rafId = requestAnimationFrame(animate);
+      }
+      animate();
+
+      function onWheel(e){
+        e.preventDefault();
+        const d = e.deltaX !== 0 ? e.deltaX : e.deltaY;
+        velocity += d * 0.15;
+      }
+      function onTouchStart(e){ if (e.touches.length===1) startX = e.touches[0].clientX; }
+      function onTouchMove(e){
+        if (startX!==null){
+          const x2 = e.touches[0].clientX;
+          velocity += (startX - x2) * 0.18;
+          startX = x2;
+        }
+      }
+      function onTouchEnd(){ startX = null; }
+
+      content.addEventListener('wheel', onWheel, {passive:false});
+      content.addEventListener('touchstart', onTouchStart, {passive:true});
+      content.addEventListener('touchmove', onTouchMove, {passive:false});
+      content.addEventListener('touchend', onTouchEnd, {passive:true});
+
+      teardown = () => {
+        cancelAnimationFrame(rafId);
+        content.style.transform = '';
+        content.removeEventListener('wheel', onWheel);
+        content.removeEventListener('touchstart', onTouchStart);
+        content.removeEventListener('touchmove', onTouchMove);
+        content.removeEventListener('touchend', onTouchEnd);
+        // 데스크톱 모드는 DOM 복제를 되돌릴 필요 없음(표현상 문제 없음)
+      };
+    }
+
+    // --- 모바일 모드 (그룹 A/B 양방향 무한 루프 + 웹과 같은 비율) --------------
+    function initMobile(){
+      const content = track;
+      content.style.position = 'relative';
+      content.style.transform = 'none';
+      content.style.transition = 'none';
+
+      // 그룹 두 벌
+      const groupA = document.createElement('div');
+      const groupB = document.createElement('div');
+      const baseGroupStyle = {
+        position:'absolute', left:'0', top:'0', height:'100%',
+        display:'flex', alignItems:'center', gap: getComputedStyle(content).gap || '12px'
+      };
+      Object.assign(groupA.style, baseGroupStyle);
+      Object.assign(groupB.style, baseGroupStyle);
+
+      // 기존 카드들을 A로 이동, 복제하여 B에
+      const originals = [...content.querySelectorAll('.panel.project')];
+      groupA.innerHTML = ''; groupB.innerHTML = '';
+      originals.forEach(el => groupA.appendChild(el));
+      originals.forEach(el => groupB.appendChild(el.cloneNode(true)));
+      content.innerHTML = '';
+      content.appendChild(groupA);
+      content.appendChild(groupB);
+
+      bindClicks(content);
+
+      // 모바일에서도 웹과 같은 비율(60vh, 1:√2) 유지 – 너무 클 때만 안전 보정
+      function fixCardSize(){
+        const vh = Math.max(window.innerHeight, 420);
+        let h = Math.round(vh * 0.60);
+        let w = Math.round(h / 1.4142);
+        const maxH = Math.round(vh * 0.80); // 안전 보정(툴바 등)
+        if (h > maxH){ h = maxH; w = Math.round(h / 1.4142); }
+
+        [...content.querySelectorAll('.panel.project')].forEach(card=>{
+          card.style.height = h + 'px';
+          card.style.width  = w + 'px';
+          card.style.flex   = '0 0 auto';
         });
       }
 
-      // ===== 공통: gap 읽기 =====
-      function getGapPx(){
-        const g = getComputedStyle(content).gap;
-        const n = parseInt(g || '0', 10);
-        return Number.isFinite(n) ? n : 0;
-      }
-
-      if (!isMobile) {
-        /* ===========================
-           데스크톱/태블릿: 기존 무한 루프 로직 유지
-           =========================== */
-        let panels = Array.from(content.querySelectorAll('.panel.project'));
-
-        // 2배로 복제
-        if (panels.length && panels.length === content.childElementCount) {
-          content.innerHTML += content.innerHTML;
-          panels = Array.from(content.querySelectorAll('.panel.project'));
-        }
-
-        bindClicks(content);
-
+      let loopW = 0, unitW = 0;
+      function measure(){
+        fixCardSize();
         const gap = getGapPx();
-        const panelWidth = panels[0].offsetWidth + gap;
-        const totalWidth = panelWidth * panels.length;
-
-        let pos = 0;
-        let speed = 0.8;
-        let velocity = 0;
-        let startX = null;
-
-        function animate() {
-          pos += speed + velocity;
-          velocity *= 0.92;
-          if (Math.abs(velocity) < 0.01) velocity = 0;
-
-          if (pos < 0) pos += totalWidth / 2;
-          if (pos >= totalWidth / 2) pos -= totalWidth / 2;
-
-          content.style.transition = 'none';
-          content.style.transform = `translateX(-${pos}px)`;
-          requestAnimationFrame(animate);
-        }
-        animate();
-
-        content.addEventListener('wheel', (e)=>{
-          e.preventDefault();
-          const delta = e.deltaX !== 0 ? e.deltaX : e.deltaY;
-          velocity += delta * 0.15;
-        }, {passive:false});
-
-        content.addEventListener('touchstart', (e)=>{
-          if(e.touches.length===1) startX = e.touches[0].clientX;
-        });
-        content.addEventListener('touchmove', (e)=>{
-          if(startX!==null){
-            const diff = startX - e.touches[0].clientX;
-            velocity += diff * 0.18;
-            startX = e.touches[0].clientX;
-          }
-        });
-        content.addEventListener('touchend', ()=>{ startX=null; });
-
-      } else {
-        /* ===========================
-           모바일: 웹과 같은 효과 + 같은 비율 + 중앙 정렬
-           (그룹 2벌로 자연스러운 양방향 무한 루프)
-           =========================== */
-        // content를 트랙 기준으로 사용 (position은 CSS에서)
-        const groupA = document.createElement('div');
-        const groupB = document.createElement('div');
-        const baseGroupStyle = {
-          position:'absolute', left:'0', top:'0', height:'100%',
-          display:'flex', alignItems:'center',
-          gap: getComputedStyle(content).gap || '12px'
-        };
-        Object.assign(groupA.style, baseGroupStyle);
-        Object.assign(groupB.style, baseGroupStyle);
-
-        // 기존 카드 -> A, 복제 -> B
-        const originals = [...content.querySelectorAll('.panel.project')];
-        groupA.innerHTML = ''; groupB.innerHTML = '';
-        originals.forEach(el => groupA.appendChild(el));
-        originals.forEach(el => groupB.appendChild(el.cloneNode(true)));
-
-        // content를 비우고 그룹 삽입
-        content.innerHTML = '';
-        content.style.position = 'relative';
-        content.appendChild(groupA);
-        content.appendChild(groupB);
-
-        bindClicks(content);
-
-        // 한 세트 길이 계산
-        function measure() {
-          const gap = getGapPx();
-          const widths = [...groupA.querySelectorAll('.panel.project')].map(c => c.getBoundingClientRect().width);
-          const loopW = widths.reduce((a,b)=>a+b,0) + gap * (widths.length - 1);
-          const unitW = loopW + gap; // 마지막-첫번째 사이도 동일 간격
-
-          groupA.style.transform = `translate3d(0px,0,0)`;
-          groupB.style.transform = `translate3d(${unitW}px,0,0)`;
-          return { loopW, unitW };
-        }
-
-        let { loopW, unitW } = measure();
-
-        // 애니메이션
-        let t = 0;        // 이동량
-        let speed = 0.8;  // 기본 속도
-        let velocity = 0; // 입력 가감
-
-        function animate(){
-          t += speed + velocity;
-          velocity *= 0.92;
-          if (Math.abs(velocity) < 0.01) velocity = 0;
-
-          let posA = -t;
-          let posB = unitW - t;
-
-          if (posA <= -unitW) posA += 2*unitW;
-          if (posB <= -unitW) posB += 2*unitW;
-          if (posA >=  unitW) posA -= 2*unitW;
-          if (posB >=  unitW) posB -= 2*unitW;
-
-          groupA.style.transform = `translate3d(${posA}px,0,0)`;
-          groupB.style.transform = `translate3d(${posB}px,0,0)`;
-
-          requestAnimationFrame(animate);
-        }
-        animate();
-
-        // 입력(휠/터치): 관성
-        content.addEventListener('wheel', (e)=>{
-          e.preventDefault();
-          const delta = e.deltaX !== 0 ? e.deltaX : e.deltaY;
-          velocity += delta * 0.15;
-        }, {passive:false});
-
-        let startX = null;
-        content.addEventListener('touchstart', (e)=>{
-          if(e.touches.length===1) startX = e.touches[0].clientX;
-        }, {passive:true});
-        content.addEventListener('touchmove', (e)=>{
-          if(startX!==null){
-            e.preventDefault();
-            const x2 = e.touches[0].clientX;
-            velocity += (startX - x2) * 0.18;
-            startX = x2;
-          }
-        }, {passive:false});
-        content.addEventListener('touchend', ()=>{ startX=null; }, {passive:true});
-
-        // 리사이즈 시 길이 재계산
-        window.addEventListener('resize', ()=>{
-          const m = measure(); loopW = m.loopW; unitW = m.unitW;
-        }, {passive:true});
+        const widths = [...groupA.querySelectorAll('.panel.project')].map(c => c.getBoundingClientRect().width);
+        loopW = widths.reduce((a,b)=>a+b,0) + gap * (widths.length - 1);
+        unitW = loopW + gap; // 마지막–첫번째 사이도 동일 간격
+        groupA.style.transform = `translate3d(0px,0,0)`;
+        groupB.style.transform = `translate3d(${unitW}px,0,0)`;
       }
-    });
-  </script>
+
+      let t = 0, speed = 0.8, velocity = 0;
+      function animate(){
+        t += speed + velocity;
+        velocity *= 0.92; if (Math.abs(velocity) < 0.01) velocity = 0;
+
+        let posA = -t;
+        let posB = unitW - t;
+
+        if (posA <= -unitW) posA += 2*unitW;
+        if (posB <= -unitW) posB += 2*unitW;
+        if (posA >=  unitW) posA -= 2*unitW;
+        if (posB >=  unitW) posB -= 2*unitW;
+
+        groupA.style.transform = `translate3d(${posA}px,0,0)`;
+        groupB.style.transform = `translate3d(${posB}px,0,0)`;
+
+        rafId = requestAnimationFrame(animate);
+      }
+
+      function onWheel(e){
+        e.preventDefault();
+        const d = e.deltaX !== 0 ? e.deltaX : e.deltaY;
+        velocity += d * 0.15;
+      }
+      let startX = null;
+      function onTouchStart(e){ if (e.touches.length===1) startX = e.touches[0].clientX; }
+      function onTouchMove(e){
+        if (startX!==null){
+          e.preventDefault();
+          const x2 = e.touches[0].clientX;
+          velocity += (startX - x2) * 0.18;
+          startX = x2;
+        }
+      }
+      function onTouchEnd(){ startX = null; }
+
+      content.addEventListener('wheel', onWheel, {passive:false});
+      content.addEventListener('touchstart', onTouchStart, {passive:true});
+      content.addEventListener('touchmove', onTouchMove, {passive:false});
+      content.addEventListener('touchend', onTouchEnd, {passive:true});
+
+      imagesReady(content).then(()=>{ measure(); t = 0; animate(); });
+      window.addEventListener('resize', ()=>{ imagesReady(content).then(measure); }, {passive:true});
+
+      teardown = () => {
+        cancelAnimationFrame(rafId);
+        content.removeEventListener('wheel', onWheel);
+        content.removeEventListener('touchstart', onTouchStart);
+        content.removeEventListener('touchmove', onTouchMove);
+        content.removeEventListener('touchend', onTouchEnd);
+        // 모바일에서 DOM을 그룹으로 바꿨으므로, 원본으로 복구
+        const all = [...groupA.querySelectorAll('.panel.project')];
+        track.innerHTML = ''; // track = content
+        all.forEach(el => track.appendChild(el));
+      };
+    }
+
+    // --- 모드 감지 & 전환 ------------------------------------------------------
+    const mql = window.matchMedia('(max-width: 600px)');
+    function boot(){
+      teardown(); // 이전 모드 정리
+      if (mql.matches) initMobile(); else initDesktop();
+    }
+
+    // 최초 실행
+    boot();
+    // 뷰포트 변화(회전/리사이즈)에 대응
+    mql.addEventListener('change', boot);
+    window.addEventListener('orientationchange', boot);
+    window.addEventListener('resize', () => {
+      // 주소창/툴바 변동으로 매치 상태 바뀌는 경우 대비
+      const now = mql.matches;
+      // 강제 재부팅(모드 유지 시에도 길이 재측정 유도)
+      boot();
+    }, {passive:true});
+  });
+</script>
 
   <div id="footer-placeholder"></div>
   <script>
