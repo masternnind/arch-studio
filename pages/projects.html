@@ -6,186 +6,306 @@
   <title>Projects</title>
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
-    :root{ --bg:#181818; --fg:#dcdcdc; --gap:32px; --footer-h:56px; }
-    *{ box-sizing:border-box }
-    html,body{ height:100% }
-    body{ margin:0; font-family:'Roboto',system-ui,Apple SD Gothic Neo,Malgun Gothic,sans-serif; background:var(--bg); color:var(--fg); line-height:1.6; display:flex; flex-direction:column; overflow:hidden }
+    :root { --bg-dark:#181818; }
+    body{
+      font-family:'Roboto',sans-serif;
+      background:var(--bg-dark,#181818);
+      color:#dcdcdc; margin:0; padding:0;
+      min-height:100vh; width:100%;
+      line-height:1.6; display:flex; flex-direction:column;
+      overflow-x:auto; overflow-y:auto;
+    }
+    #footer-placeholder{
+      position:fixed; left:0; right:0; bottom:0; width:100vw;
+      background:var(--bg-dark,#181818); z-index:100; min-height:56px;
+      display:flex; align-items:center; justify-content:center;
+    }
+    .projects-panel{
+      width:100%; background:var(--bg-dark,#181818);
+      display:flex; justify-content:center; align-items:center; overflow:hidden;
+    }
+    .projects-panel .content{
+      display:flex; flex-direction:row; gap:32px;
+      overflow:visible; scroll-behavior:smooth;
+      transition:transform .6s cubic-bezier(0.4,0,0.2,1);
+      margin-top:6vh; width:100vw; box-sizing:border-box; background:transparent;
+      padding-bottom:24px; justify-content:flex-start; align-items:flex-start; padding-left:7vw;
+    }
+    .panel.project{
+      flex:0 0 auto;
+      width:calc(60vh / 1.4142); height:60vh;          /* 웹 비율 */
+      display:flex; align-items:center; justify-content:center;
+      border-radius:20px; box-shadow:0 3px 20px #0006; overflow:hidden;
+      position:relative; cursor:pointer;
+    }
+    .project-cover{
+      position:absolute; inset:0; background:rgba(24,24,24,.78); color:#fff;
+      display:flex; align-items:center; justify-content:center;
+      opacity:0; transition:opacity .3s; z-index:2; font-size:1.5rem; font-weight:700;
+      letter-spacing:1.5px; border-radius:inherit; text-align:center; padding:0 16px;
+    }
+    .panel.project:hover .project-cover, .panel.project:focus .project-cover{ opacity:1; }
+    .project-title{ font-size:1.4rem; font-weight:700; letter-spacing:1.5px; text-align:center; padding:0 16px; line-height:1.3; text-shadow:0 2px 8px #000a; }
+    .panel.project img{
+      width:100%; height:100%; object-fit:cover; display:block; border-radius:16px; box-shadow:0 2px 12px #0004; transition:transform .3s;
+    }
+    .panel.project img:hover{ transform:scale(1.03); }
 
-    /* navbar는 외부 로더 유지 */
-    #footer-placeholder{ position:fixed; left:0; right:0; bottom:0; height:var(--footer-h); background:var(--bg); display:flex; align-items:center; justify-content:center; z-index:5 }
+    /* 태블릿: 원본 유지 */
+    @media (max-width:900px){
+      .panel.project img{ border-radius:8px; }
+      .projects-panel .content{ gap:16px; padding-left:2vw; margin-top:4vw; }
+    }
 
-    .projects-panel{ position:relative; width:100vw; height:100vh; display:flex; align-items:center; justify-content:center; overflow:hidden }
-    .track{ position:absolute; inset:0; display:flex; align-items:center; gap:var(--gap); padding:0 7vw; width:max-content; will-change:transform; transform:translateX(0) }
+    /* ★ 모바일: 웹과 같은 비율(60vh/1:√2), 중앙 정렬, row 유지, 트랙 이동에 최적화 */
+    @media (max-width:600px){
+      .projects-panel{ align-items:center; justify-content:center; overflow-x:hidden; }
+      .projects-panel .content{
+        margin-top:12px;
+        padding:0 2vw 16px 2vw;
+        gap:12px;
+        flex-direction:row !important;      /* ← row 유지 */
+        align-items:center; justify-content:center;  /* ← 중앙 정렬 */
+        width:max-content; min-width:auto;          /* 트랙 폭 = 자식 합 */
+        overflow:visible; box-sizing:border-box;
+        white-space:normal;
+        transform:none !important; transition:none !important; /* JS가 관리 */
+      }
+      .panel.project{
+        width:calc(60vh / 1.4142);  /* ← 웹과 동일한 비율 */
+        height:60vh;                /* ← 웹과 동일한 비율 */
+        border-radius:12px; margin-bottom:0; box-shadow:0 2px 12px #0004; flex:0 0 auto;
+        max-width:90vw; max-height:80vh;    /* 너무 커질 때 안전장치 */
+      }
+      .panel.project img{ border-radius:8px; }
+      .project-cover{ font-size:1.05rem; border-radius:10px; padding:0 4px; }
+      #footer-placeholder{ min-height:48px; height:48px; }
+    }
 
-    .card{ flex:0 0 auto; border-radius:20px; overflow:hidden; box-shadow:0 3px 20px #0006; position:relative; cursor:pointer; display:flex; align-items:center; justify-content:center }
-    .card img{ width:100%; height:100%; object-fit:cover; display:block; border-radius:16px; transition:transform .3s }
-    .cover{ position:absolute; inset:0; display:flex; align-items:center; justify-content:center; background:rgba(24,24,24,.78); color:#fff; font-weight:700; letter-spacing:1.5px; border-radius:inherit; opacity:0; transition:opacity .3s; z-index:2; padding:0 16px; text-align:center }
-    .card:hover .cover{ opacity:1 }
-    .title{ font-size:1.3rem; line-height:1.3; text-shadow:0 2px 8px #000a }
-
-    @media (max-width: 900px){ :root{ --gap:16px } .card{ border-radius:14px; box-shadow:0 2px 12px #0004 } .card img{ border-radius:10px } }
-    @media (hover:none){ .card img{ transition:none } .card img:hover{ transform:none } }
+    /* 터치 환경에서 hover 확대로 인한 흔들림 방지 */
+    @media (hover:none){
+      .panel.project img{ transition:none; }
+      .panel.project img:hover{ transform:none; }
+    }
   </style>
 </head>
 <body>
-  <!-- 네비게이션 바 (기존 로더 유지) -->
+  <!-- 네비게이션 바 -->
   <div id="navbar-placeholder"></div>
   <script src="../js/navbar-loader.js" defer></script>
 
-  <main class="projects-panel" aria-label="Projects carousel">
-    <div class="track" id="track">
-      <a class="card" data-url="projects/project1.html" aria-label="Cultural Center, 2021">
-        <div class="cover"><span class="title">Cultural Center<br/>2021</span></div>
-        <img src="../assets/img/projects/project1.png" alt="Project 1"/>
-      </a>
-      <a class="card" data-url="projects/project2.html" aria-label="Urban Harmony">
-        <div class="cover"><span class="title">Urban Harmony</span></div>
-        <img src="../assets/img/projects/project2.jpg" alt="Project 2"/>
-      </a>
-      <a class="card" data-url="projects/project3.html" aria-label="Nature Blend">
-        <div class="cover"><span class="title">Nature Blend</span></div>
-        <img src="../assets/img/projects/project3.jpg" alt="Project 3"/>
-      </a>
-      <a class="card" data-url="projects/project4.html" aria-label="Creative Office">
-        <div class="cover"><span class="title">Creative Office</span></div>
-        <img src="../assets/img/projects/project4.jpg" alt="Project 4"/>
-      </a>
-      <a class="card" data-url="projects/project5.html" aria-label="Minimal House">
-        <div class="cover"><span class="title">Minimal House</span></div>
-        <img src="../assets/img/projects/project5.jpg" alt="Project 5"/>
-      </a>
+  <main style="flex:1 0 auto;display:flex;flex-direction:column;">
+    <div class="projects-panel" style="flex:1 0 auto;">
+      <div class="content">
+        <div class="panel project" id="project1" data-url="projects/project1.html">
+          <div class="project-cover">
+            <!-- 오탈자 수정: </p> 제거 -->
+            <span class="project-title">Cultural Center<br/>2021</span>
+          </div>
+          <img src="../assets/img/projects/project1.png" alt="Project 1">
+        </div>
+        <div class="panel project" id="project2" data-url="projects/project2.html">
+          <div class="project-cover"><span class="project-title">Urban Harmony</span></div>
+          <img src="../assets/img/projects/project2.jpg" alt="Project 2">
+        </div>
+        <div class="panel project" id="project3" data-url="projects/project3.html">
+          <div class="project-cover"><span class="project-title">Nature Blend</span></div>
+          <img src="../assets/img/projects/project3.jpg" alt="Project 3">
+        </div>
+        <div class="panel project" id="project4" data-url="projects/project4.html">
+          <div class="project-cover"><span class="project-title">Creative Office</span></div>
+          <img src="../assets/img/projects/project4.jpg" alt="Project 4">
+        </div>
+        <div class="panel project" id="project5" data-url="projects/project5.html">
+          <div class="project-cover"><span class="project-title">Minimal House</span></div>
+          <img src="../assets/img/projects/project5.jpg" alt="Project 5">
+        </div>
+      </div>
     </div>
   </main>
 
-  <div id="footer-placeholder"></div>
-
   <script>
-  // ---- Utils
-  const qs = (s, el=document) => el.querySelector(s);
-  const qsa = (s, el=document) => [...el.querySelectorAll(s)];
+    document.addEventListener('DOMContentLoaded', function() {
+      const content = document.querySelector('.projects-panel .content');
 
-  function imagesReady(container){
-    const imgs = qsa('img', container);
-    if(!imgs.length) return Promise.resolve();
-    return Promise.all(imgs.map(img => img.complete ? Promise.resolve() : new Promise(res => {
-      img.addEventListener('load', res, {once:true});
-      img.addEventListener('error', res, {once:true});
-    })));
-  }
-
-  (function(){
-    const track = qs('#track');
-
-    // 1) 그룹 두 개를 만들어 무한 루프를 '연속 좌표'로 처리 (점프 없음)
-    //    - t 는 계속 증가 (리셋하지 않음)
-    //    - 각 그룹은 base 오프셋(0, loopW)을 가진 채 translateX(base - t)
-    //    - 그룹 위치가 화면 왼쪽 밖으로 완전히 나가면 base += 2*loopW 로 오른쪽 뒤로 재배치
-
-    let loopW = 0;          // 원본 세트 길이 (px)
-    let gapPx = 32;         // 카드 사이 간격 (px)
-    let t = 0;              // 전역 이동량 (단조 증가)
-    let speed = 0.8;        // 기본 속도(px/frame)
-    let velocity = 0;       // 관성 가속도
-    let rafId = 0;
-
-    // 그룹 컨테이너 생성
-    const groupA = document.createElement('div');
-    const groupB = document.createElement('div');
-    groupA.className = 'group';
-    groupB.className = 'group';
-    Object.assign(groupA.style, {position:'absolute', inset:'0 auto 0 0', display:'flex', alignItems:'center', gap:'var(--gap)'});
-    Object.assign(groupB.style, {position:'absolute', inset:'0 auto 0 0', display:'flex', alignItems:'center', gap:'var(--gap)'});
-
-    // 기존 카드 DOM을 groupA로 옮기고, 복제본을 groupB에 채움
-    function mountGroups(){
-      // 초기화
-      groupA.innerHTML = '';
-      groupB.innerHTML = '';
-      const originals = qsa('.card', track);
-      originals.forEach(el => groupA.appendChild(el));
-      originals.forEach(el => groupB.appendChild(el.cloneNode(true)));
-      // 트랙 비우고 그룹 삽입
-      track.innerHTML = '';
-      track.appendChild(groupA);
-      track.appendChild(groupB);
-      // 카드 클릭 동작 유지
-      qsa('.card', track).forEach(card => card.addEventListener('click', () => {
-        const url = card.getAttribute('data-url'); if(url) location.href = url;
-      }));
-    }
-
-    function setCardSize(){
-      const vh = Math.max(window.innerHeight, 420);
+      // 모바일 여부
       const isMobile = window.matchMedia('(max-width: 600px)').matches;
-      const isTablet = window.matchMedia('(max-width: 900px)').matches && !isMobile;
-      let h = Math.round(vh * 0.60);
-      let w = Math.round(h / 1.4142);
-      if (isMobile || isTablet){
-        const footer = parseInt(getComputedStyle(document.documentElement).getPropertyValue('--footer-h')) || 56;
-        const margin = 16;
-        const maxH = vh - footer - margin*2;
-        if (h > maxH){ h = Math.max(180, Math.round(maxH)); w = Math.round(h / 1.4142); }
+
+      // ===== 공통: 패널 클릭 이동 유지 =====
+      function bindClicks(root){
+        [...root.querySelectorAll('.panel.project')].forEach(panel=>{
+          panel.addEventListener('click', ()=>{
+            const url = panel.getAttribute('data-url');
+            if(url) window.location.href = url;
+          });
+        });
       }
-      qsa('.card', track).forEach(card => { card.style.width=w+'px'; card.style.height=h+'px'; card.style.flex='0 0 auto'; });
-    }
 
-    function measure(){
-      const gapVar = getComputedStyle(document.documentElement).getPropertyValue('--gap');
-      gapPx = parseInt(gapVar) || 32;
-      setCardSize();
-      // groupA의 길이를 측정 → loopW
-      const cards = qsa('.card', groupA);
-      const widths = cards.map(c => c.getBoundingClientRect().width);
-      loopW = widths.reduce((a,b)=>a+b,0) + gapPx * (widths.length - 1);
-      // 그룹 초기 위치 설정
-      groupA.style.transform = `translate3d(0px,0,0)`;
-      groupB.style.transform = `translate3d(${loopW}px,0,0)`;
-    }
+      // ===== 공통: gap 읽기 =====
+      function getGapPx(){
+        const g = getComputedStyle(content).gap;
+        const n = parseInt(g || '0', 10);
+        return Number.isFinite(n) ? n : 0;
+      }
 
-    function animate(){
-      t += speed + velocity;                // 연속 좌표
-      velocity *= 0.92; if(Math.abs(velocity) < 0.01) velocity = 0;
+      if (!isMobile) {
+        /* ===========================
+           데스크톱/태블릿: 기존 무한 루프 로직 유지
+           =========================== */
+        let panels = Array.from(content.querySelectorAll('.panel.project'));
 
-      const xA = -t;                        // groupA 위치 = -t
-      const xB = loopW - t;                 // groupB 위치 = loopW - t
+        // 2배로 복제
+        if (panels.length && panels.length === content.childElementCount) {
+          content.innerHTML += content.innerHTML;
+          panels = Array.from(content.querySelectorAll('.panel.project'));
+        }
 
-      // 왼쪽 밖으로 완전히 나간 그룹은 오른쪽 뒤로 재배치 (base += 2*loopW)
-      const recycleA = (xA <= -loopW);
-      const recycleB = (xB <= -loopW);
-      let baseA = 0;
-      let baseB = loopW;
-      if(recycleA){ baseA += 2*loopW; t -= loopW; } // t를 줄여 수치 폭주 방지
-      if(recycleB){ baseB += 2*loopW; t -= loopW; }
+        bindClicks(content);
 
-      // 실제 위치 적용 (translate3d로 서브픽셀 흔들림 최소화)
-      groupA.style.transform = `translate3d(${(-t + baseA)}px,0,0)`;
-      groupB.style.transform = `translate3d(${(loopW - t + (baseB-loopW))}px,0,0)`;
+        const gap = getGapPx();
+        const panelWidth = panels[0].offsetWidth + gap;
+        const totalWidth = panelWidth * panels.length;
 
-      rafId = requestAnimationFrame(animate);
-    }
+        let pos = 0;
+        let speed = 0.8;
+        let velocity = 0;
+        let startX = null;
 
-    function start(){
-      cancelAnimationFrame(rafId);
-      mountGroups();
-      imagesReady(track).then(() => { measure(); t = 0; animate(); });
-    }
+        function animate() {
+          pos += speed + velocity;
+          velocity *= 0.92;
+          if (Math.abs(velocity) < 0.01) velocity = 0;
 
-    // 입력: 휠/터치 → 관성 속도
-    track.addEventListener('wheel', (e)=>{ e.preventDefault(); const d = e.deltaX || e.deltaY; velocity += d * 0.15; }, {passive:false});
-    let startX = null;
-    track.addEventListener('touchstart', (e)=>{ if(e.touches.length===1) startX = e.touches[0].clientX; }, {passive:true});
-    track.addEventListener('touchmove', (e)=>{ if(startX!==null){ e.preventDefault(); const x2=e.touches[0].clientX; velocity += (startX - x2) * 0.18; startX = x2; } }, {passive:false});
-    track.addEventListener('touchend', ()=>{ startX=null; }, {passive:true});
+          if (pos < 0) pos += totalWidth / 2;
+          if (pos >= totalWidth / 2) pos -= totalWidth / 2;
 
-    window.addEventListener('resize', ()=>{ imagesReady(track).then(()=>{ measure(); }); }, {passive:true});
+          content.style.transition = 'none';
+          content.style.transform = `translateX(-${pos}px)`;
+          requestAnimationFrame(animate);
+        }
+        animate();
 
-    start();
-  })();
+        content.addEventListener('wheel', (e)=>{
+          e.preventDefault();
+          const delta = e.deltaX !== 0 ? e.deltaX : e.deltaY;
+          velocity += delta * 0.15;
+        }, {passive:false});
+
+        content.addEventListener('touchstart', (e)=>{
+          if(e.touches.length===1) startX = e.touches[0].clientX;
+        });
+        content.addEventListener('touchmove', (e)=>{
+          if(startX!==null){
+            const diff = startX - e.touches[0].clientX;
+            velocity += diff * 0.18;
+            startX = e.touches[0].clientX;
+          }
+        });
+        content.addEventListener('touchend', ()=>{ startX=null; });
+
+      } else {
+        /* ===========================
+           모바일: 웹과 같은 효과 + 같은 비율 + 중앙 정렬
+           (그룹 2벌로 자연스러운 양방향 무한 루프)
+           =========================== */
+        // content를 트랙 기준으로 사용 (position은 CSS에서)
+        const groupA = document.createElement('div');
+        const groupB = document.createElement('div');
+        const baseGroupStyle = {
+          position:'absolute', left:'0', top:'0', height:'100%',
+          display:'flex', alignItems:'center',
+          gap: getComputedStyle(content).gap || '12px'
+        };
+        Object.assign(groupA.style, baseGroupStyle);
+        Object.assign(groupB.style, baseGroupStyle);
+
+        // 기존 카드 -> A, 복제 -> B
+        const originals = [...content.querySelectorAll('.panel.project')];
+        groupA.innerHTML = ''; groupB.innerHTML = '';
+        originals.forEach(el => groupA.appendChild(el));
+        originals.forEach(el => groupB.appendChild(el.cloneNode(true)));
+
+        // content를 비우고 그룹 삽입
+        content.innerHTML = '';
+        content.style.position = 'relative';
+        content.appendChild(groupA);
+        content.appendChild(groupB);
+
+        bindClicks(content);
+
+        // 한 세트 길이 계산
+        function measure() {
+          const gap = getGapPx();
+          const widths = [...groupA.querySelectorAll('.panel.project')].map(c => c.getBoundingClientRect().width);
+          const loopW = widths.reduce((a,b)=>a+b,0) + gap * (widths.length - 1);
+          const unitW = loopW + gap; // 마지막-첫번째 사이도 동일 간격
+
+          groupA.style.transform = `translate3d(0px,0,0)`;
+          groupB.style.transform = `translate3d(${unitW}px,0,0)`;
+          return { loopW, unitW };
+        }
+
+        let { loopW, unitW } = measure();
+
+        // 애니메이션
+        let t = 0;        // 이동량
+        let speed = 0.8;  // 기본 속도
+        let velocity = 0; // 입력 가감
+
+        function animate(){
+          t += speed + velocity;
+          velocity *= 0.92;
+          if (Math.abs(velocity) < 0.01) velocity = 0;
+
+          let posA = -t;
+          let posB = unitW - t;
+
+          if (posA <= -unitW) posA += 2*unitW;
+          if (posB <= -unitW) posB += 2*unitW;
+          if (posA >=  unitW) posA -= 2*unitW;
+          if (posB >=  unitW) posB -= 2*unitW;
+
+          groupA.style.transform = `translate3d(${posA}px,0,0)`;
+          groupB.style.transform = `translate3d(${posB}px,0,0)`;
+
+          requestAnimationFrame(animate);
+        }
+        animate();
+
+        // 입력(휠/터치): 관성
+        content.addEventListener('wheel', (e)=>{
+          e.preventDefault();
+          const delta = e.deltaX !== 0 ? e.deltaX : e.deltaY;
+          velocity += delta * 0.15;
+        }, {passive:false});
+
+        let startX = null;
+        content.addEventListener('touchstart', (e)=>{
+          if(e.touches.length===1) startX = e.touches[0].clientX;
+        }, {passive:true});
+        content.addEventListener('touchmove', (e)=>{
+          if(startX!==null){
+            e.preventDefault();
+            const x2 = e.touches[0].clientX;
+            velocity += (startX - x2) * 0.18;
+            startX = x2;
+          }
+        }, {passive:false});
+        content.addEventListener('touchend', ()=>{ startX=null; }, {passive:true});
+
+        // 리사이즈 시 길이 재계산
+        window.addEventListener('resize', ()=>{
+          const m = measure(); loopW = m.loopW; unitW = m.unitW;
+        }, {passive:true});
+      }
+    });
   </script>
 
+  <div id="footer-placeholder"></div>
   <script>
-    // footer 로드 (경로는 프로젝트 구조에 맞게 조정)
-    fetch('../components/footer.html').then(r=>r.text()).then(html=>document.getElementById('footer-placeholder').innerHTML=html);
+    fetch('../components/footer.html')
+      .then(res=>res.text())
+      .then(html=>document.getElementById('footer-placeholder').innerHTML=html);
   </script>
 </body>
 </html>
