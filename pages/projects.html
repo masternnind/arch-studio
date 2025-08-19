@@ -136,18 +136,21 @@
       .projects-panel {
         align-items: stretch;
         overflow-x: auto;
+        /* 가로 스크롤 활성화 */
       }
       .projects-panel .content {
         margin-top: 12px;
         padding: 0 2vw 16px 2vw;
         gap: 10px;
-        flex-direction: row;
+        flex-direction: row !important; /* 강제 가로 배치 */
         align-items: flex-start;
-        width: 100vw;
-        min-width: 0;
+        width: max-content; /* 패널 개수만큼 가로로 확장 */
+        min-width: 100vw;
         overflow-x: auto;
         overflow-y: hidden;
         box-sizing: border-box;
+        display: flex;
+        white-space: nowrap; /* 패널이 한 줄에 나열되도록 */
       }
       .panel.project {
         width: 78vw;
@@ -162,6 +165,7 @@
         display: flex;
         align-items: center;
         justify-content: center;
+        flex: 0 0 auto; /* 가로로만 배치 */
       }
       .panel.project img {
         border-radius: 8px;
