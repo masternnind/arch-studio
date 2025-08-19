@@ -63,7 +63,6 @@
   // ---- Utils
   const qs = (s, el=document) => el.querySelector(s);
   const qsa = (s, el=document) => [...el.querySelectorAll(s)];
-  const clamp = (v, a, b) => Math.max(a, Math.min(b, v));
 
   function imagesReady(container){
     const imgs = qsa('img', container);
@@ -76,67 +75,111 @@
 
   (function(){
     const track = qs('#track');
-    let pos = 0, speed = 0.8, velocity = 0, loopW = 0, gapPx = 32, rafId = 0;
+
+    // 1) 그룹 두 개를 만들어 무한 루프를 '연속 좌표'로 처리 (점프 없음)
+    //    - t 는 계속 증가 (리셋하지 않음)
+    //    - 각 그룹은 base 오프셋(0, loopW)을 가진 채 translateX(base - t)
+    //    - 그룹 위치가 화면 왼쪽 밖으로 완전히 나가면 base += 2*loopW 로 오른쪽 뒤로 재배치
+
+    let loopW = 0;          // 원본 세트 길이 (px)
+    let gapPx = 32;         // 카드 사이 간격 (px)
+    let t = 0;              // 전역 이동량 (단조 증가)
+    let speed = 0.8;        // 기본 속도(px/frame)
+    let velocity = 0;       // 관성 가속도
+    let rafId = 0;
+
+    // 그룹 컨테이너 생성
+    const groupA = document.createElement('div');
+    const groupB = document.createElement('div');
+    groupA.className = 'group';
+    groupB.className = 'group';
+    Object.assign(groupA.style, {position:'absolute', inset:'0 auto 0 0', display:'flex', alignItems:'center', gap:'var(--gap)'});
+    Object.assign(groupB.style, {position:'absolute', inset:'0 auto 0 0', display:'flex', alignItems:'center', gap:'var(--gap)'});
+
+    // 기존 카드 DOM을 groupA로 옮기고, 복제본을 groupB에 채움
+    function mountGroups(){
+      // 초기화
+      groupA.innerHTML = '';
+      groupB.innerHTML = '';
+      const originals = qsa('.card', track);
+      originals.forEach(el => groupA.appendChild(el));
+      originals.forEach(el => groupB.appendChild(el.cloneNode(true)));
+      // 트랙 비우고 그룹 삽입
+      track.innerHTML = '';
+      track.appendChild(groupA);
+      track.appendChild(groupB);
+      // 카드 클릭 동작 유지
+      qsa('.card', track).forEach(card => card.addEventListener('click', () => {
+        const url = card.getAttribute('data-url'); if(url) location.href = url;
+      }));
+    }
 
     function setCardSize(){
-      const vw = Math.max(window.innerWidth, 320);
       const vh = Math.max(window.innerHeight, 420);
       const isMobile = window.matchMedia('(max-width: 600px)').matches;
       const isTablet = window.matchMedia('(max-width: 900px)').matches && !isMobile;
-
-      // 모든 기기: 데스크톱과 동일 비율(세로 60vh, A-series 1:√2)
       let h = Math.round(vh * 0.60);
       let w = Math.round(h / 1.4142);
-
-      if (isMobile || isTablet) {
-        // 모바일/태블릿: 화면 높이(푸터/여백 고려) 초과 시 보정
+      if (isMobile || isTablet){
         const footer = parseInt(getComputedStyle(document.documentElement).getPropertyValue('--footer-h')) || 56;
         const margin = 16;
         const maxH = vh - footer - margin*2;
-        if (h > maxH) { h = Math.max(180, Math.round(maxH)); w = Math.round(h / 1.4142); }
+        if (h > maxH){ h = Math.max(180, Math.round(maxH)); w = Math.round(h / 1.4142); }
       }
-
-      qsa('.card', track).forEach(card => { card.style.width = w+'px'; card.style.height = h+'px'; card.style.flex = '0 0 auto'; });
+      qsa('.card', track).forEach(card => { card.style.width=w+'px'; card.style.height=h+'px'; card.style.flex='0 0 auto'; });
     }
 
     function measure(){
       const gapVar = getComputedStyle(document.documentElement).getPropertyValue('--gap');
       gapPx = parseInt(gapVar) || 32;
       setCardSize();
-      const widths = qsa('.card', track).map(c => c.getBoundingClientRect().width);
+      // groupA의 길이를 측정 → loopW
+      const cards = qsa('.card', groupA);
+      const widths = cards.map(c => c.getBoundingClientRect().width);
       loopW = widths.reduce((a,b)=>a+b,0) + gapPx * (widths.length - 1);
-    }
-
-    function cloneForLoop(){
-      // 원본 세트 길이의 2배 이상이 되도록 복제
-      while (track.scrollWidth < loopW * 2) {
-        qsa('.card', track).forEach(node => track.appendChild(node.cloneNode(true)));
-      }
-      // 링크 동작 유지
-      qsa('.card', track).forEach(card => card.addEventListener('click', () => {
-        const url = card.getAttribute('data-url'); if(url) location.href = url;
-      }));
+      // 그룹 초기 위치 설정
+      groupA.style.transform = `translate3d(0px,0,0)`;
+      groupB.style.transform = `translate3d(${loopW}px,0,0)`;
     }
 
     function animate(){
-      pos += speed + velocity;
-      velocity *= 0.92; if (Math.abs(velocity) < 0.01) velocity = 0;
-      if (pos >= loopW) pos -= loopW; else if (pos < 0) pos += loopW;
-      track.style.transform = `translateX(${-pos}px)`;
+      t += speed + velocity;                // 연속 좌표
+      velocity *= 0.92; if(Math.abs(velocity) < 0.01) velocity = 0;
+
+      const xA = -t;                        // groupA 위치 = -t
+      const xB = loopW - t;                 // groupB 위치 = loopW - t
+
+      // 왼쪽 밖으로 완전히 나간 그룹은 오른쪽 뒤로 재배치 (base += 2*loopW)
+      const recycleA = (xA <= -loopW);
+      const recycleB = (xB <= -loopW);
+      let baseA = 0;
+      let baseB = loopW;
+      if(recycleA){ baseA += 2*loopW; t -= loopW; } // t를 줄여 수치 폭주 방지
+      if(recycleB){ baseB += 2*loopW; t -= loopW; }
+
+      // 실제 위치 적용 (translate3d로 서브픽셀 흔들림 최소화)
+      groupA.style.transform = `translate3d(${(-t + baseA)}px,0,0)`;
+      groupB.style.transform = `translate3d(${(loopW - t + (baseB-loopW))}px,0,0)`;
+
       rafId = requestAnimationFrame(animate);
     }
 
-    function start(){ cancelAnimationFrame(rafId); measure(); cloneForLoop(); pos = 0; animate(); }
+    function start(){
+      cancelAnimationFrame(rafId);
+      mountGroups();
+      imagesReady(track).then(() => { measure(); t = 0; animate(); });
+    }
 
-    // 입력
-    track.addEventListener('wheel', (e) => { e.preventDefault(); const d = e.deltaX || e.deltaY; velocity += d * 0.15; }, {passive:false});
+    // 입력: 휠/터치 → 관성 속도
+    track.addEventListener('wheel', (e)=>{ e.preventDefault(); const d = e.deltaX || e.deltaY; velocity += d * 0.15; }, {passive:false});
     let startX = null;
     track.addEventListener('touchstart', (e)=>{ if(e.touches.length===1) startX = e.touches[0].clientX; }, {passive:true});
     track.addEventListener('touchmove', (e)=>{ if(startX!==null){ e.preventDefault(); const x2=e.touches[0].clientX; velocity += (startX - x2) * 0.18; startX = x2; } }, {passive:false});
     track.addEventListener('touchend', ()=>{ startX=null; }, {passive:true});
 
-    imagesReady(track).then(start);
-    window.addEventListener('resize', ()=>{ imagesReady(track).then(start); }, {passive:true});
+    window.addEventListener('resize', ()=>{ imagesReady(track).then(()=>{ measure(); }); }, {passive:true});
+
+    start();
   })();
   </script>
 
