@@ -134,41 +134,44 @@
     }
     @media (max-width: 600px) {
       .projects-panel {
-        align-items: stretch;
+        align-items: center;
+        justify-content: center;
         overflow-x: auto;
-        /* 가로 스크롤 활성화 */
+        /* 중앙 정렬 및 가로 스크롤 */
       }
       .projects-panel .content {
         margin-top: 12px;
         padding: 0 2vw 16px 2vw;
         gap: 10px;
-        flex-direction: row !important; /* 강제 가로 배치 */
-        align-items: flex-start;
-        width: max-content; /* 패널 개수만큼 가로로 확장 */
+        flex-direction: row !important;
+        align-items: center;
+        justify-content: center;
+        width: max-content;
         min-width: 100vw;
         overflow-x: auto;
         overflow-y: hidden;
         box-sizing: border-box;
         display: flex;
-        white-space: nowrap; /* 패널이 한 줄에 나열되도록 */
+        white-space: nowrap;
       }
       .panel.project {
-        width: 78vw;
-        min-width: 180px;
-        max-width: 92vw;
-        height: 48vw;
-        min-height: 120px;
-        max-height: 260px;
-        border-radius: 10px;
+        /* portrait 비율 유지 */
+        width: calc(60vw / 1.4142);
+        min-width: 120px;
+        max-width: 90vw;
+        height: 60vw;
+        min-height: 180px;
+        max-height: 340px;
+        border-radius: 14px;
         margin-bottom: 0;
         box-shadow: 0 2px 12px #0004;
         display: flex;
         align-items: center;
         justify-content: center;
-        flex: 0 0 auto; /* 가로로만 배치 */
+        flex: 0 0 auto;
       }
       .panel.project img {
-        border-radius: 8px;
+        border-radius: 10px;
         width: 100%;
         height: 100%;
         min-width: 0;
@@ -178,7 +181,7 @@
       }
       .project-cover {
         font-size: 1.05rem;
-        border-radius: 8px;
+        border-radius: 10px;
         padding: 0 4px;
       }
       #footer-placeholder {
@@ -233,62 +236,76 @@
       const content = document.querySelector('.projects-panel .content');
       let panels = Array.from(content.querySelectorAll('.panel.project'));
 
-      // 무한루프를 위해 패널 2배로 복제 (중복 복제 방지)
-      if (panels.length && panels.length === content.childElementCount) {
-        content.innerHTML += content.innerHTML;
-        panels = Array.from(content.querySelectorAll('.panel.project'));
+      // 이미지가 모두 로드될 때까지 대기
+      const images = Array.from(content.querySelectorAll('img'));
+      let loadedCount = 0;
+      function tryStart() {
+        loadedCount++;
+        if (loadedCount === images.length) startSlider();
       }
-
-      const panelWidth = panels[0].offsetWidth + 32; // 패널+gap
-      const totalWidth = panelWidth * panels.length;
-      let pos = 0;
-      let speed = 0.8; // 기본 자동 슬라이드 속도
-      let velocity = 0; // 스크롤 가속도
-      let startX = null;
-
-      // 자연스럽게 흘러가듯이 애니메이션
-      function animate() {
-        pos += speed + velocity;
-        velocity *= 0.92; // 감쇠(0.92~0.96 사이 조절)
-        if (Math.abs(velocity) < 0.01) velocity = 0;
-
-        if (pos < 0) pos += totalWidth / 2;
-        if (pos >= totalWidth / 2) pos -= totalWidth / 2;
-        content.style.transition = 'none';
-        content.style.transform = `translateX(-${pos}px)`;
-        requestAnimationFrame(animate);
-      }
-      animate();
-
-      // 스크롤(휠)로 더 빠르게 좌우 이동 (관성 적용)
-      content.addEventListener('wheel', function(e) {
-        e.preventDefault();
-        let delta = e.deltaX !== 0 ? e.deltaX : e.deltaY;
-        velocity += delta * 0.15; // 관성 가중치(0.1~0.2 사이 조절)
-      }, { passive: false });
-
-      // 터치 스와이프 지원 (모바일, 관성 적용)
-      content.addEventListener('touchstart', function(e) {
-        if (e.touches.length === 1) startX = e.touches[0].clientX;
-      });
-      content.addEventListener('touchmove', function(e) {
-        if (startX !== null) {
-          let diff = startX - e.touches[0].clientX;
-          velocity += diff * 0.18;
-          startX = e.touches[0].clientX;
+      images.forEach(img => {
+        if (img.complete) {
+          tryStart();
+        } else {
+          img.addEventListener('load', tryStart);
+          img.addEventListener('error', tryStart);
         }
       });
-      content.addEventListener('touchend', function() {
-        startX = null;
-      });
 
-      // 패널 클릭 시 이동
-      panels.forEach(panel => {
-        panel.addEventListener('click', function() {
-          const url = panel.getAttribute('data-url');
-          if (url) window.location.href = url;
+      function startSlider() {
+        // 무한루프를 위해 패널 2배로 복제 (중복 복제 방지)
+        if (panels.length && panels.length === content.childElementCount) {
+          content.innerHTML += content.innerHTML;
+          panels = Array.from(content.querySelectorAll('.panel.project'));
+        }
+
+        const panelWidth = panels[0].offsetWidth + parseInt(getComputedStyle(content).gap || 0, 10);
+        const totalWidth = panelWidth * panels.length;
+        let pos = 0;
+        let speed = 0.8;
+        let velocity = 0;
+        let startX = null;
+
+        function animate() {
+          pos += speed + velocity;
+          velocity *= 0.92;
+          if (Math.abs(velocity) < 0.01) velocity = 0;
+
+          if (pos < 0) pos += totalWidth / 2;
+          if (pos >= totalWidth / 2) pos -= totalWidth / 2;
+          content.style.transition = 'none';
+          content.style.transform = `translateX(-${pos}px)`;
+          requestAnimationFrame(animate);
+        }
+        animate();
+
+        content.addEventListener('wheel', function(e) {
+          e.preventDefault();
+          let delta = e.deltaX !== 0 ? e.deltaX : e.deltaY;
+          velocity += delta * 0.15;
+        }, { passive: false });
+
+        content.addEventListener('touchstart', function(e) {
+          if (e.touches.length === 1) startX = e.touches[0].clientX;
         });
-      });
+        content.addEventListener('touchmove', function(e) {
+          if (startX !== null) {
+            let diff = startX - e.touches[0].clientX;
+            velocity += diff * 0.18;
+            startX = e.touches[0].clientX;
+          }
+        });
+        content.addEventListener('touchend', function() {
+          startX = null;
+        });
+
+        panels.forEach(panel => {
+          panel.addEventListener('click', function() {
+            const url = panel.getAttribute('data-url');
+            if (url) window.location.href = url;
+          });
+        });
+      }
     });
   </script>
   <div id="footer-placeholder"></div>
