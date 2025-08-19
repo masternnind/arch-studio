@@ -1,91 +1,171 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Projects</title>
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
-    :root { --bg-dark:#181818; }
-    body{
-      font-family:'Roboto',sans-serif;
-      background:var(--bg-dark,#181818);
-      color:#dcdcdc; margin:0; padding:0;
-      min-height:100vh; width:100%;
-      line-height:1.6; display:flex; flex-direction:column;
-      overflow-x:auto; overflow-y:auto;
+    :root {
+      --bg-dark: #181818;
     }
-    #footer-placeholder{
-      position:fixed; left:0; right:0; bottom:0; width:100vw;
-      background:var(--bg-dark,#181818); z-index:100; min-height:56px;
-      display:flex; align-items:center; justify-content:center;
+    body {
+      font-family: 'Roboto', sans-serif;
+      background: var(--bg-dark, #181818);
+      color: #dcdcdc;
+      margin: 0;
+      padding: 0;
+      min-height: 100vh;
+      width: 100%;
+      line-height: 1.6;
+      display: flex;
+      flex-direction: column;
+      overflow-x: auto;
+      overflow-y: auto;
     }
-    .projects-panel{
-      width:100%; background:var(--bg-dark,#181818);
-      display:flex; justify-content:center; align-items:center; overflow:hidden;
+    #footer-placeholder {
+      position: fixed;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      width: 100vw;
+      background: var(--bg-dark, #181818);
+      z-index: 100;
+      min-height: 56px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
-    .projects-panel .content{
-      display:flex; flex-direction:row; gap:32px;
-      overflow:visible; scroll-behavior:smooth;
-      transition:transform .6s cubic-bezier(0.4,0,0.2,1);
-      margin-top:6vh; width:100vw; box-sizing:border-box; background:transparent;
-      padding-bottom:24px; justify-content:flex-start; align-items:flex-start; padding-left:7vw;
+    .projects-panel {
+      width: 100%;
+      background: var(--bg-dark, #181818);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      overflow: hidden;
     }
-    .panel.project{
-      flex:0 0 auto;
-      width:calc(60vh / 1.4142); height:60vh;          /* 웹 비율 */
-      display:flex; align-items:center; justify-content:center;
-      border-radius:20px; box-shadow:0 3px 20px #0006; overflow:hidden;
-      position:relative; cursor:pointer;
+    .projects-panel .content {
+      display: flex;
+      flex-direction: row;
+      gap: 32px;
+      overflow: visible;
+      scroll-behavior: smooth;
+      transition: transform 0.6s cubic-bezier(0.4,0,0.2,1);
+      margin-top: 6vh;
+      width: 100vw;
+      box-sizing: border-box;
+      background: transparent;
+      padding-bottom: 24px;
+      justify-content: flex-start;
+      align-items: flex-start;
+      padding-left: 7vw;
     }
-    .project-cover{
-      position:absolute; inset:0; background:rgba(24,24,24,.78); color:#fff;
-      display:flex; align-items:center; justify-content:center;
-      opacity:0; transition:opacity .3s; z-index:2; font-size:1.5rem; font-weight:700;
-      letter-spacing:1.5px; border-radius:inherit; text-align:center; padding:0 16px;
+    .panel.project {
+      flex: 0 0 auto;
+      width: calc(60vh / 1.4142);
+      height: 60vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 20px;
+      box-shadow: 0 3px 20px #0006;
+      overflow: hidden;
+      position: relative;
+      cursor: pointer;
     }
-    .panel.project:hover .project-cover, .panel.project:focus .project-cover{ opacity:1; }
-    .project-title{ font-size:1.4rem; font-weight:700; letter-spacing:1.5px; text-align:center; padding:0 16px; line-height:1.3; text-shadow:0 2px 8px #000a; }
-    .panel.project img{
-      width:100%; height:100%; object-fit:cover; display:block; border-radius:16px; box-shadow:0 2px 12px #0004; transition:transform .3s;
+    .project-cover {
+      position: absolute;
+      inset: 0;
+      background: rgba(24, 24, 24, 0.78);
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      transition: opacity 0.3s;
+      z-index: 2;
+      font-size: 1.5rem;
+      font-weight: 700;
+      letter-spacing: 1.5px;
+      border-radius: inherit;
+      text-align: center;
+      padding: 0 16px;
     }
-    .panel.project img:hover{ transform:scale(1.03); }
+    .panel.project:hover .project-cover,
+    .panel.project:focus .project-cover {
+      opacity: 1;
+    }
+    .project-title {
+      font-size: 1.4rem;
+      font-weight: 700;
+      letter-spacing: 1.5px;
+      text-align: center;
+      padding: 0 16px;
+      line-height: 1.3;
+      text-shadow: 0 2px 8px #000a;
+    }
+    .panel.project img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      border-radius: 16px;
+      box-shadow: 0 2px 12px #0004;
+      transition: transform 0.3s;
+    }
+    .panel.project img:hover {
+      transform: scale(1.03);
+    }
 
-    /* 태블릿: 원본 유지 */
-    @media (max-width:900px){
-      .panel.project img{ border-radius:8px; }
-      .projects-panel .content{ gap:16px; padding-left:2vw; margin-top:4vw; }
-    }
-
-    /* ★ 모바일: 웹과 같은 비율(60vh/1:√2), 중앙 정렬, row 유지, 트랙 이동에 최적화 */
-    @media (max-width:600px){
-      .projects-panel{ align-items:center; justify-content:center; overflow-x:hidden; }
-      .projects-panel .content{
-        margin-top:12px;
-        padding:0 2vw 16px 2vw;
-        gap:12px;
-        flex-direction:row !important;      /* ← row 유지 */
-        align-items:center; justify-content:center;  /* ← 중앙 정렬 */
-        width:max-content; min-width:auto;          /* 트랙 폭 = 자식 합 */
-        overflow:visible; box-sizing:border-box;
-        white-space:normal;
-        transform:none !important; transition:none !important; /* JS가 관리 */
+    /* 태블릿 보정은 기존 유지(필요시 조정 가능) */
+    @media (max-width: 900px) {
+      .panel.project img { border-radius: 8px; }
+      .projects-panel .content {
+        gap: 16px;
+        padding-left: 2vw;
+        margin-top: 4vw;
       }
-      .panel.project{
-        width:calc(60vh / 1.4142);  /* ← 웹과 동일한 비율 */
-        height:60vh;                /* ← 웹과 동일한 비율 */
-        border-radius:12px; margin-bottom:0; box-shadow:0 2px 12px #0004; flex:0 0 auto;
-        max-width:90vw; max-height:80vh;    /* 너무 커질 때 안전장치 */
-      }
-      .panel.project img{ border-radius:8px; }
-      .project-cover{ font-size:1.05rem; border-radius:10px; padding:0 4px; }
-      #footer-placeholder{ min-height:48px; height:48px; }
     }
 
-    /* 터치 환경에서 hover 확대로 인한 흔들림 방지 */
-    @media (hover:none){
-      .panel.project img{ transition:none; }
-      .panel.project img:hover{ transform:none; }
+    /* ★ 모바일: 웹과 동일한 트랙 레이아웃 + 비율, 중앙 정렬 */
+    @media (max-width: 600px) {
+      .projects-panel {
+        align-items: center;
+        justify-content: center;
+        overflow-x: hidden; /* 네이티브 가로 스크롤 제거 (JS가 이동) */
+      }
+      .projects-panel .content {
+        margin-top: 12px;
+        padding: 0 2vw 16px 2vw;
+        gap: 12px;
+        flex-direction: row !important;   /* row 유지 */
+        align-items: center;
+        justify-content: center;          /* 중앙 정렬 */
+        width: max-content;               /* 트랙 폭 = 자식 합 */
+        min-width: auto;
+        overflow: visible;
+        box-sizing: border-box;
+        /* transform/transition은 JS가 제어하므로 여기선 지정하지 않음 */
+      }
+      .panel.project {
+        width: calc(60vh / 1.4142); /* 웹과 같은 비율 */
+        height: 60vh;               /* 웹과 같은 비율 */
+        max-width: 90vw;            /* 너무 좁을 때 안전장치 */
+        max-height: 80vh;
+        border-radius: 12px;
+        margin-bottom: 0;
+        box-shadow: 0 2px 12px #0004;
+        flex: 0 0 auto;
+      }
+      .panel.project img { border-radius: 8px; }
+      .project-cover { font-size: 1.05rem; border-radius: 10px; padding: 0 4px; }
+      #footer-placeholder { min-height: 48px; height: 48px; }
+    }
+
+    /* 터치 환경에서 hover 확대로 인한 흔들림 방지 (선택) */
+    @media (hover:none) {
+      .panel.project img { transition: none; }
+      .panel.project img:hover { transform: none; }
     }
   </style>
 </head>
@@ -105,19 +185,27 @@
           <img src="../assets/img/projects/project1.png" alt="Project 1">
         </div>
         <div class="panel project" id="project2" data-url="projects/project2.html">
-          <div class="project-cover"><span class="project-title">Urban Harmony</span></div>
+          <div class="project-cover">
+            <span class="project-title">Urban Harmony</span>
+          </div>
           <img src="../assets/img/projects/project2.jpg" alt="Project 2">
         </div>
         <div class="panel project" id="project3" data-url="projects/project3.html">
-          <div class="project-cover"><span class="project-title">Nature Blend</span></div>
+          <div class="project-cover">
+            <span class="project-title">Nature Blend</span>
+          </div>
           <img src="../assets/img/projects/project3.jpg" alt="Project 3">
         </div>
         <div class="panel project" id="project4" data-url="projects/project4.html">
-          <div class="project-cover"><span class="project-title">Creative Office</span></div>
+          <div class="project-cover">
+            <span class="project-title">Creative Office</span>
+          </div>
           <img src="../assets/img/projects/project4.jpg" alt="Project 4">
         </div>
         <div class="panel project" id="project5" data-url="projects/project5.html">
-          <div class="project-cover"><span class="project-title">Minimal House</span></div>
+          <div class="project-cover">
+            <span class="project-title">Minimal House</span>
+          </div>
           <img src="../assets/img/projects/project5.jpg" alt="Project 5">
         </div>
       </div>
@@ -125,237 +213,91 @@
   </main>
 
   <script>
-  // 유틸: 이미지 로딩 대기
-  function imagesReady(container){
-    const imgs = [...container.querySelectorAll('img')];
-    if (!imgs.length) return Promise.resolve();
-    return Promise.all(imgs.map(img =>
-      img.complete ? Promise.resolve() :
-      new Promise(res => { img.addEventListener('load',res,{once:true}); img.addEventListener('error',res,{once:true}); })
-    ));
-  }
-
-  document.addEventListener('DOMContentLoaded', function() {
-    const track = document.querySelector('.projects-panel .content');
-    let rafId = 0, teardown = () => {};
-
-    // 공통: 패널 클릭 이동
-    function bindClicks(root){
-      [...root.querySelectorAll('.panel.project')].forEach(p=>{
-        p.addEventListener('click', ()=>{
-          const url = p.getAttribute('data-url');
-          if (url) location.href = url;
-        });
-      });
-    }
-    // 공통: gap 읽기
-    function getGapPx(){
-      const g = getComputedStyle(track).gap;
-      const n = parseInt(g || '0', 10);
-      return Number.isFinite(n) ? n : 0;
-    }
-
-    // --- 데스크톱/태블릿 모드 (원래 방식 유지) ---------------------------------
-    function initDesktop(){
-      let content = track; // 이름 맞추기
+    document.addEventListener('DOMContentLoaded', function() {
+      const content = document.querySelector('.projects-panel .content');
       let panels = Array.from(content.querySelectorAll('.panel.project'));
-      // 2배 복제
+
+      // 무한루프를 위해 패널 2배로 복제 (중복 복제 방지: 자식수=패널수일 때만)
       if (panels.length && panels.length === content.childElementCount) {
         content.innerHTML += content.innerHTML;
         panels = Array.from(content.querySelectorAll('.panel.project'));
       }
-      bindClicks(content);
 
-      const gap = getGapPx();
-      const panelWidth = panels[0].offsetWidth + gap;
-      const totalWidth  = panelWidth * panels.length;
+      // 패널 클릭 시 상세로 이동
+      panels.forEach(panel => {
+        panel.addEventListener('click', function() {
+          const url = panel.getAttribute('data-url');
+          if (url) window.location.href = url;
+        });
+      });
 
+      // gap을 CSS에서 읽어서 정확히 계산
+      let gap = 32, panelWidth = 0, totalWidth = 0;
+      function measure() {
+        const g = getComputedStyle(content).gap;
+        const n = parseInt(g || '32', 10);
+        gap = Number.isFinite(n) ? n : 32;
+        // 첫 패널 기준 폭 + gap
+        panelWidth = panels[0].offsetWidth + gap;
+        totalWidth = panelWidth * panels.length;
+      }
+      measure();
+
+      // 자연스럽게 흘러가듯이 애니메이션
       let pos = 0;
-      let speed = 0.8;
-      let velocity = 0;
+      let speed = 0.8;   // 기본 자동 슬라이드 속도
+      let velocity = 0;  // 스크롤/터치 관성
       let startX = null;
 
-      function animate(){
+      function animate() {
         pos += speed + velocity;
-        velocity *= 0.92; if (Math.abs(velocity) < 0.01) velocity = 0;
+        velocity *= 0.92;               // 감쇠(0.92~0.96 사이 조절 가능)
+        if (Math.abs(velocity) < 0.01) velocity = 0;
 
         if (pos < 0) pos += totalWidth / 2;
         if (pos >= totalWidth / 2) pos -= totalWidth / 2;
 
         content.style.transition = 'none';
         content.style.transform = `translateX(-${pos}px)`;
-        rafId = requestAnimationFrame(animate);
+        requestAnimationFrame(animate);
       }
       animate();
 
-      function onWheel(e){
+      // 스크롤(휠)로 좌우 이동 (관성 적용)
+      content.addEventListener('wheel', function(e) {
         e.preventDefault();
-        const d = e.deltaX !== 0 ? e.deltaX : e.deltaY;
-        velocity += d * 0.15;
-      }
-      function onTouchStart(e){ if (e.touches.length===1) startX = e.touches[0].clientX; }
-      function onTouchMove(e){
-        if (startX!==null){
-          const x2 = e.touches[0].clientX;
-          velocity += (startX - x2) * 0.18;
-          startX = x2;
-        }
-      }
-      function onTouchEnd(){ startX = null; }
+        const delta = e.deltaX !== 0 ? e.deltaX : e.deltaY;
+        velocity += delta * 0.15;       // 관성 가중치(0.1~0.2 사이 조절)
+      }, { passive: false });
 
-      content.addEventListener('wheel', onWheel, {passive:false});
-      content.addEventListener('touchstart', onTouchStart, {passive:true});
-      content.addEventListener('touchmove', onTouchMove, {passive:false});
-      content.addEventListener('touchend', onTouchEnd, {passive:true});
-
-      teardown = () => {
-        cancelAnimationFrame(rafId);
-        content.style.transform = '';
-        content.removeEventListener('wheel', onWheel);
-        content.removeEventListener('touchstart', onTouchStart);
-        content.removeEventListener('touchmove', onTouchMove);
-        content.removeEventListener('touchend', onTouchEnd);
-        // 데스크톱 모드는 DOM 복제를 되돌릴 필요 없음(표현상 문제 없음)
-      };
-    }
-
-    // --- 모바일 모드 (그룹 A/B 양방향 무한 루프 + 웹과 같은 비율) --------------
-    function initMobile(){
-      const content = track;
-      content.style.position = 'relative';
-      content.style.transform = 'none';
-      content.style.transition = 'none';
-
-      // 그룹 두 벌
-      const groupA = document.createElement('div');
-      const groupB = document.createElement('div');
-      const baseGroupStyle = {
-        position:'absolute', left:'0', top:'0', height:'100%',
-        display:'flex', alignItems:'center', gap: getComputedStyle(content).gap || '12px'
-      };
-      Object.assign(groupA.style, baseGroupStyle);
-      Object.assign(groupB.style, baseGroupStyle);
-
-      // 기존 카드들을 A로 이동, 복제하여 B에
-      const originals = [...content.querySelectorAll('.panel.project')];
-      groupA.innerHTML = ''; groupB.innerHTML = '';
-      originals.forEach(el => groupA.appendChild(el));
-      originals.forEach(el => groupB.appendChild(el.cloneNode(true)));
-      content.innerHTML = '';
-      content.appendChild(groupA);
-      content.appendChild(groupB);
-
-      bindClicks(content);
-
-      // 모바일에서도 웹과 같은 비율(60vh, 1:√2) 유지 – 너무 클 때만 안전 보정
-      function fixCardSize(){
-        const vh = Math.max(window.innerHeight, 420);
-        let h = Math.round(vh * 0.60);
-        let w = Math.round(h / 1.4142);
-        const maxH = Math.round(vh * 0.80); // 안전 보정(툴바 등)
-        if (h > maxH){ h = maxH; w = Math.round(h / 1.4142); }
-
-        [...content.querySelectorAll('.panel.project')].forEach(card=>{
-          card.style.height = h + 'px';
-          card.style.width  = w + 'px';
-          card.style.flex   = '0 0 auto';
-        });
-      }
-
-      let loopW = 0, unitW = 0;
-      function measure(){
-        fixCardSize();
-        const gap = getGapPx();
-        const widths = [...groupA.querySelectorAll('.panel.project')].map(c => c.getBoundingClientRect().width);
-        loopW = widths.reduce((a,b)=>a+b,0) + gap * (widths.length - 1);
-        unitW = loopW + gap; // 마지막–첫번째 사이도 동일 간격
-        groupA.style.transform = `translate3d(0px,0,0)`;
-        groupB.style.transform = `translate3d(${unitW}px,0,0)`;
-      }
-
-      let t = 0, speed = 0.8, velocity = 0;
-      function animate(){
-        t += speed + velocity;
-        velocity *= 0.92; if (Math.abs(velocity) < 0.01) velocity = 0;
-
-        let posA = -t;
-        let posB = unitW - t;
-
-        if (posA <= -unitW) posA += 2*unitW;
-        if (posB <= -unitW) posB += 2*unitW;
-        if (posA >=  unitW) posA -= 2*unitW;
-        if (posB >=  unitW) posB -= 2*unitW;
-
-        groupA.style.transform = `translate3d(${posA}px,0,0)`;
-        groupB.style.transform = `translate3d(${posB}px,0,0)`;
-
-        rafId = requestAnimationFrame(animate);
-      }
-
-      function onWheel(e){
-        e.preventDefault();
-        const d = e.deltaX !== 0 ? e.deltaX : e.deltaY;
-        velocity += d * 0.15;
-      }
-      let startX = null;
-      function onTouchStart(e){ if (e.touches.length===1) startX = e.touches[0].clientX; }
-      function onTouchMove(e){
-        if (startX!==null){
+      // 터치 스와이프 (모바일, 관성 적용)
+      content.addEventListener('touchstart', function(e) {
+        if (e.touches.length === 1) startX = e.touches[0].clientX;
+      }, {passive:true});
+      content.addEventListener('touchmove', function(e) {
+        if (startX !== null) {
           e.preventDefault();
           const x2 = e.touches[0].clientX;
-          velocity += (startX - x2) * 0.18;
+          const diff = startX - x2;
+          velocity += diff * 0.18;
           startX = x2;
         }
-      }
-      function onTouchEnd(){ startX = null; }
+      }, {passive:false});
+      content.addEventListener('touchend', function() {
+        startX = null;
+      }, {passive:true});
 
-      content.addEventListener('wheel', onWheel, {passive:false});
-      content.addEventListener('touchstart', onTouchStart, {passive:true});
-      content.addEventListener('touchmove', onTouchMove, {passive:false});
-      content.addEventListener('touchend', onTouchEnd, {passive:true});
-
-      imagesReady(content).then(()=>{ measure(); t = 0; animate(); });
-      window.addEventListener('resize', ()=>{ imagesReady(content).then(measure); }, {passive:true});
-
-      teardown = () => {
-        cancelAnimationFrame(rafId);
-        content.removeEventListener('wheel', onWheel);
-        content.removeEventListener('touchstart', onTouchStart);
-        content.removeEventListener('touchmove', onTouchMove);
-        content.removeEventListener('touchend', onTouchEnd);
-        // 모바일에서 DOM을 그룹으로 바꿨으므로, 원본으로 복구
-        const all = [...groupA.querySelectorAll('.panel.project')];
-        track.innerHTML = ''; // track = content
-        all.forEach(el => track.appendChild(el));
-      };
-    }
-
-    // --- 모드 감지 & 전환 ------------------------------------------------------
-    const mql = window.matchMedia('(max-width: 600px)');
-    function boot(){
-      teardown(); // 이전 모드 정리
-      if (mql.matches) initMobile(); else initDesktop();
-    }
-
-    // 최초 실행
-    boot();
-    // 뷰포트 변화(회전/리사이즈)에 대응
-    mql.addEventListener('change', boot);
-    window.addEventListener('orientationchange', boot);
-    window.addEventListener('resize', () => {
-      // 주소창/툴바 변동으로 매치 상태 바뀌는 경우 대비
-      const now = mql.matches;
-      // 강제 재부팅(모드 유지 시에도 길이 재측정 유도)
-      boot();
-    }, {passive:true});
-  });
-</script>
+      // 화면 크기/회전 변화 시 재측정 (모바일 주소창/툴바 변동 대응)
+      window.addEventListener('resize', measure, {passive:true});
+      window.addEventListener('orientationchange', measure, {passive:true});
+    });
+  </script>
 
   <div id="footer-placeholder"></div>
   <script>
     fetch('../components/footer.html')
-      .then(res=>res.text())
-      .then(html=>document.getElementById('footer-placeholder').innerHTML=html);
+      .then(res => res.text())
+      .then(html => document.getElementById('footer-placeholder').innerHTML = html);
   </script>
 </body>
 </html>
