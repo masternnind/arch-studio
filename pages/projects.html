@@ -1,14 +1,14 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Projects</title>
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
-    :root { --bg-dark: #181818; }
-
-    html, body { height: 100%; }
+    :root {
+      --bg-dark: #181818;
+    }
     body {
       font-family: 'Roboto', sans-serif;
       background: var(--bg-dark, #181818);
@@ -20,33 +20,33 @@
       line-height: 1.6;
       display: flex;
       flex-direction: column;
-      overflow-x: hidden;   /* 가로 오버플로우 숨김 */
-      overflow-y: auto;     /* 데스크톱 기본 스크롤 유지 */
+      overflow-x: auto;
+      overflow-y: auto;
     }
-
-    /* 고정 푸터 자리 */
     #footer-placeholder {
       position: fixed;
-      left: 0; right: 0; bottom: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
       width: 100vw;
       background: var(--bg-dark, #181818);
       z-index: 100;
       min-height: 56px;
-      display: flex; align-items: center; justify-content: center;
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
-
     .projects-panel {
       width: 100%;
       background: var(--bg-dark, #181818);
       display: flex;
       justify-content: center;
       align-items: center;
-      overflow: hidden;            /* 스트립만 보이도록 */
-      /* 스크롤 관련 힌트(모바일에서 수직 바운스 방지) */
-      overscroll-behavior: contain;
+      overflow: hidden; /* 데스크톱도 숨김(원래 효과 유지) */
     }
     .projects-panel .content {
-      display: flex; flex-direction: row;
+      display: flex;
+      flex-direction: row;
       gap: 32px;
       overflow: visible;
       scroll-behavior: smooth;
@@ -56,18 +56,19 @@
       box-sizing: border-box;
       background: transparent;
       padding-bottom: 24px;
-      justify-content: flex-start; align-items: flex-start;
+      justify-content: flex-start;
+      align-items: flex-start;
       padding-left: 7vw;
-
-      will-change: transform;      /* 애니메이션 힌트 */
-      transform: translateZ(0);    /* GPU 레이어 */
+      will-change: transform; /* 애니메이션 힌트 */
+      transform: translateZ(0); /* GPU 레이어 */
     }
-
     .panel.project {
       flex: 0 0 auto;
       width: calc(60vh / 1.4142);
       height: 60vh;
-      display: flex; align-items: center; justify-content: center;
+      display: flex;
+      align-items: center;
+      justify-content: center;
       border-radius: 20px;
       box-shadow: 0 3px 20px #0006;
       overflow: hidden;
@@ -77,103 +78,136 @@
       transform: translateZ(0);
     }
     .project-cover {
-      position: absolute; inset: 0;
+      position: absolute;
+      inset: 0;
       background: rgba(24, 24, 24, 0.78);
       color: #fff;
-      display: flex; align-items: center; justify-content: center;
-      opacity: 0; transition: opacity 0.3s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      transition: opacity 0.3s;
       z-index: 2;
-      font-size: 1.5rem; font-weight: 700; letter-spacing: 1.5px;
+      font-size: 1.5rem;
+      font-weight: 700;
+      letter-spacing: 1.5px;
       border-radius: inherit;
-      text-align: center; padding: 0 16px;
+      text-align: center;
+      padding: 0 16px;
     }
     .panel.project:hover .project-cover,
-    .panel.project:focus .project-cover { opacity: 1; }
-
+    .panel.project:focus .project-cover {
+      opacity: 1;
+    }
     .project-title {
-      font-size: 1.4rem; font-weight: 700; letter-spacing: 1.5px;
-      text-align: center; line-height: 1.3;
-      text-shadow: 0 2px 8px #000a; display: inline-block;
+      font-size: 1.4rem;
+      font-weight: 700;
+      letter-spacing: 1.5px;
+      text-align: center;
+      line-height: 1.3;
+      text-shadow: 0 2px 8px #000a;
+      display: inline-block;
     }
     .panel.project img {
-      width: 100%; height: 100%;
-      object-fit: cover; display: block;
-      border-radius: 16px; box-shadow: 0 2px 12px #0004;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      border-radius: 16px;
+      box-shadow: 0 2px 12px #0004;
       transition: transform 0.3s;
     }
-    .panel.project img:hover { transform: scale(1.03); }
+    .panel.project img:hover {
+      transform: scale(1.03);
+    }
 
-    /* 반응형: 태블릿 */
+    /* 반응형 */
     @media (max-width: 900px) {
       .panel.project {
         width: calc(50vw - 32px);
         height: 38vw;
-        min-width: 120px; max-width: 90vw;
-        min-height: 120px; max-height: 340px;
+        min-width: 120px;
+        max-width: 90vw;
+        min-height: 120px;
+        max-height: 340px;
         border-radius: 12px;
       }
-      .panel.project img { border-radius: 8px; }
+      .panel.project img {
+        border-radius: 8px;
+      }
       .projects-panel .content {
-        gap: 16px; padding-left: 2vw; margin-top: 4vw;
+        gap: 16px;
+        padding-left: 2vw;
+        margin-top: 4vw;
       }
     }
 
-    /* === 모바일: 세로 스크롤 잠그고, 패널 중앙 고정 + 가로만 허용 === */
+    /* === Mobile fix: unify strip motion, keep desktop behavior intact === */
     @media (max-width: 600px) {
-      /* 페이지 자체의 수직스크롤 방지(해당 섹션에서 가로 제스처만) */
-      body { overflow-y: hidden; } /* 이 페이지에서는 세로 스크롤 고정 */
-
+      /* 1) 컨테이너는 스크롤 막고, 전체 스트립을 JS가 translateX로 이동 */
       .projects-panel {
-        align-items: center; justify-content: center;
-        height: 100vh;                    /* 뷰포트 꽉 채워 중앙 고정 */
-        padding-top: env(safe-area-inset-top);
-        padding-bottom: calc(env(safe-area-inset-bottom) + 48px); /* 푸터 여유 */
-        overflow: hidden;
-        touch-action: pan-x;              /* 가로 스와이프만 허용 */
-        overscroll-behavior-y: contain;   /* iOS/안드 바운스 억제 */
+        align-items: center;
+        justify-content: center;
+        overflow: hidden; /* ← auto → hidden */
       }
 
+      /* 2) content를 데스크톱과 동일한 전제(한 줄 스트립)로 세팅 */
       .projects-panel .content {
-        margin-top: 0;
-        padding: 0 2vw;
+        margin-top: 12px;
+        padding: 0 2vw 16px 2vw;
         gap: 10px;
 
-        display: flex; flex-direction: row;
-        align-items: center; justify-content: flex-start;
+        display: flex;
+        flex-direction: row;        /* 한 줄 스트립 */
+        align-items: center;
+        justify-content: flex-start;
 
-        width: 100vw; min-width: 100vw;
-        overflow: visible; white-space: normal;
+        width: 100vw;               /* ← max-content 제거 */
+        min-width: 100vw;
+        overflow: visible;          /* ← auto 제거 (JS가 transform 관리) */
+        white-space: normal;        /* ← nowrap 제거 */
 
-        touch-action: pan-x;              /* 가로만 */
         will-change: transform;
         transform: translateZ(0);
       }
 
-      /* 패널 비율: 세로형(일관 유지) */
+      /* 3) 패널 비율 동일 유지 (세로형) */
       .panel.project {
         flex: 0 0 auto;
-        width: calc(60vw / 1.4142);
-        min-width: 120px; max-width: 90vw;
+        width: calc(60vw / 1.4142);  /* A시리즈 비율 유지 */
+        min-width: 120px;
+        max-width: 90vw;
 
         height: 60vw;
-        min-height: 180px; max-height: 340px;
+        min-height: 180px;
+        max-height: 340px;
 
         border-radius: 14px;
         box-shadow: 0 2px 12px #0004;
         will-change: transform;
         transform: translateZ(0);
       }
+
       .panel.project img {
         border-radius: 10px;
-        width: 100%; height: 100%;
-        min-width: 0; min-height: 0;
-        object-fit: cover; display: block;
+        width: 100%;
+        height: 100%;
+        min-width: 0;
+        min-height: 0;
+        object-fit: cover;
+        display: block;
       }
 
-      .project-cover { font-size: 1.05rem; border-radius: 10px; padding: 0 4px; }
+      .project-cover {
+        font-size: 1.05rem;
+        border-radius: 10px;
+        padding: 0 4px;
+      }
 
-      /* 고정 푸터 높이 */
-      #footer-placeholder { min-height: 48px; height: 48px; }
+      #footer-placeholder {
+        min-height: 48px;
+        height: 48px;
+      }
     }
 
     /* 터치 환경에서 hover 스케일로 레이아웃 흔들림 방지 */
@@ -202,7 +236,7 @@
           <div class="project-cover">
             <span class="project-title">Urban Harmony</span>
           </div>
-        <img src="../assets/img/projects/project2.jpg" alt="Project 2">
+          <img src="../assets/img/projects/project2.jpg" alt="Project 2">
         </div>
 
         <div class="panel project" id="project3" data-url="projects/project3.html">
@@ -234,17 +268,24 @@
       const content = document.querySelector('.projects-panel .content');
       let panels = Array.from(content.querySelectorAll('.panel.project'));
 
-      // 이미지 모두 로드 후 시작
+      // 이미지가 모두 로드될 때까지 대기
       const images = Array.from(content.querySelectorAll('img'));
       let loadedCount = 0;
-      const tryStart = () => { if (++loadedCount === images.length) startSlider(); };
+      function tryStart() {
+        loadedCount++;
+        if (loadedCount === images.length) startSlider();
+      }
       images.forEach(img => {
-        if (img.complete) tryStart();
-        else { img.addEventListener('load', tryStart); img.addEventListener('error', tryStart); }
+        if (img.complete) {
+          tryStart();
+        } else {
+          img.addEventListener('load', tryStart);
+          img.addEventListener('error', tryStart);
+        }
       });
 
       function startSlider() {
-        // 무한루프를 위해 2배로 복제 (중복 복제 방지)
+        // 무한루프를 위해 패널 2배로 복제 (중복 복제 방지)
         if (panels.length && panels.length === content.childElementCount) {
           content.innerHTML += content.innerHTML;
           panels = Array.from(content.querySelectorAll('.panel.project'));
@@ -272,24 +313,23 @@
 
         content.addEventListener('wheel', function(e) {
           e.preventDefault();
-          const delta = e.deltaX !== 0 ? e.deltaX : e.deltaY;
+          let delta = e.deltaX !== 0 ? e.deltaX : e.deltaY;
           velocity += delta * 0.15;
         }, { passive: false });
 
-        // 터치: 가로만 반영 (세로 흔들림 없음)
         content.addEventListener('touchstart', function(e) {
           if (e.touches.length === 1) startX = e.touches[0].clientX;
-        }, { passive: true });
-
+        });
         content.addEventListener('touchmove', function(e) {
           if (startX !== null) {
-            const diff = startX - e.touches[0].clientX;
+            let diff = startX - e.touches[0].clientX;
             velocity += diff * 0.18;
             startX = e.touches[0].clientX;
           }
-        }, { passive: true });
-
-        content.addEventListener('touchend', function() { startX = null; }, { passive: true });
+        });
+        content.addEventListener('touchend', function() {
+          startX = null;
+        });
 
         panels.forEach(panel => {
           panel.addEventListener('click', function() {
