@@ -7,9 +7,9 @@ const DOT_COLOR = 'rgba(180,200,255,0.8)';
 const LINE_COLOR = (a) => `rgba(180,200,255,${a})`;
 
 // 밀도: 100,000 CSS px 당 몇 개의 점
-const POINTS_PER_100K_CSSPX = 28;       // ← 체감 밀도 조절 포인트 (일관된 밀도)
-const MAX_POINTS_PER_100K = 70;
-const MIN_POINTS_PER_100K = 12;
+const POINTS_PER_100K_CSSPX = 38;       // ← 체감 밀도 조절 포인트 (일관된 밀도)
+const MAX_POINTS_PER_100K = 100;
+const MIN_POINTS_PER_100K = 30;
 
 // 연결 범위(가시 거리): CSS px
 const LINK_RANGE_CSS = 120;             // ← 연결 거리(기기 동일 체감)
