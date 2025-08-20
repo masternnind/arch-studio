@@ -9,6 +9,18 @@
     :root {
       --bg-dark: #181818;
     }
+
+    html, body {
+      margin: 0;
+      padding: 0;
+      width: 100vw;
+      height: 100vh;
+      overflow: hidden;        /* 세로 스크롤 제거 */
+      background: #181818;     /* 기존 배경색 */
+      background-size: cover;  /* 화면에 딱 맞게 */
+      background-position: center;
+      background-repeat: no-repeat;
+    }
     body {
       font-family: 'Roboto', sans-serif;
       background: var(--bg-dark, #181818);
