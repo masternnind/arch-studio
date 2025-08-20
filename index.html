@@ -7,81 +7,89 @@
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
 
+    :root{
+      --bg:#181818;
+      --fg:#dcdcdc;
+      --fg-dim:#b3b3b3;
+    }
+
     /* 화면에 꼭 맞게 채우고 세로 스크롤 완전 차단 */
     html, body {
       margin: 0;
       padding: 0;
       width: 100vw;
-      height: 100dvh;               /* 모바일 주소창 변동에도 안전 */
-      overflow: hidden;             /* 상하 스크롤 제거 */
-      background: #181818;
+      height: 100dvh;              /* 모바일 주소창 변동에도 안전 */
+      overflow: hidden;            /* 상하 스크롤 제거 */
+      background: var(--bg);
     }
     body {
-      font-family: 'Roboto', sans-serif;
-      color: #dcdcdc;
+      font-family: 'Roboto', system-ui, -apple-system, Segoe UI, Roboto, Apple SD Gothic Neo, Malgun Gothic, sans-serif;
+      color: var(--fg);
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+
       /* 모바일 바운스/풀투리프레시 방지 */
       overscroll-behavior: none;
       overscroll-behavior-y: none;
-      -webkit-overflow-scrolling: auto; /* iOS 관성 스크롤 비활성 */
-      touch-action: pan-x pinch-zoom;   /* 수평 제스처/핀치만 허용, 수직 금지 */
+      -webkit-overflow-scrolling: auto;
+      touch-action: pan-x pinch-zoom; /* 수평/핀치만 허용, 수직 금지 */
     }
 
-    #loading-overlay {
+    /* 로딩 오버레이 */
+    #loading-overlay{
       position: fixed;
       inset: 0;
-      background: #181818;
+      background: var(--bg);
       display: flex;
       align-items: center;
       justify-content: center;
       z-index: 2000;
-      transition: opacity 0.4s;
+      transition: opacity .4s;
     }
-    #loading-text {
+    #loading-text{
       font-size: 2.5rem;
       font-weight: 700;
       color: #fff;
-      letter-spacing: 0.1em;
+      letter-spacing: .1em;
+      user-select: none;
     }
 
-    #navbar-placeholder {
-      width: 100%;
-      /* 필요 시 상단 고정: position: fixed; top: 0; left: 0; right: 0; */
-    }
+    /* 네비게이션 영역(플레이스홀더) */
+    #navbar-placeholder{ width: 100%; }
 
-    /* 한 화면(100dvh)을 꽉 채우는 커버 섹션 */
-    .panel.cover {
-      min-height: 100dvh;           /* 100vh 대신 100dvh */
+    /* 한 화면(100dvh) 커버 섹션 */
+    .panel.cover{
+      min-height: 100dvh;
       height: 100dvh;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
+      display: grid;
+      place-items: center;
       position: relative;
       background: transparent;
     }
 
-    .content {
+    .content{
       text-align: center;
       z-index: 1;
       user-select: none;
+      padding: 0 3vw;
     }
-    #main-title {
-      font-size: 3rem;
+    #main-title{
+      font-size: clamp(28px, 6vw, 64px);
       font-weight: 900;
-      letter-spacing: 0.08em;
-      margin-bottom: 0.5rem;
+      letter-spacing: .08em;
+      margin: 0 0 .5rem 0;
       color: #fff;
-      text-shadow: 0 4px 24px rgba(0,0,0,0.25);
+      text-shadow: 0 4px 24px rgba(0,0,0,.25);
     }
-    .content p {
-      font-size: 1.2rem;
-      color: #b3b3b3;
-      margin-bottom: 2rem;
-      letter-spacing: 0.15em;
+    .content p{
+      font-size: clamp(14px, 2.6vw, 20px);
+      color: var(--fg-dim);
+      margin: 0 0 2rem 0;
+      letter-spacing: .15em;
     }
 
-    /* 전체 배경용 캔버스 */
-    #pensilCanvas {
+    /* 전체 배경 캔버스 */
+    #pensilCanvas{
       position: absolute;
       inset: 0;
       width: 100%;
@@ -94,7 +102,7 @@
 </head>
 <body>
   <!-- 로딩 오버레이 -->
-  <div id="loading-overlay">
+  <div id="loading-overlay" aria-hidden="true">
     <div id="loading-text">0%</div>
   </div>
 
@@ -103,7 +111,7 @@
   <script src="js/navbar-loader.js" defer></script>
 
   <!-- 메인(한 화면 고정) -->
-  <section id="page1" class="panel cover">
+  <section id="page1" class="panel cover" aria-label="Hero">
     <div class="content">
       <h1 id="main-title">YOUNGJAE KIM</h1>
       <p>| ARCHITECTURAL DESIGNER |</p>
@@ -111,29 +119,38 @@
     <canvas id="pensilCanvas"></canvas>
   </section>
 
-  <!-- GSAP (필요시) -->
+  <!-- GSAP (필요 시 유지) -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
   <script src="js/script.js"></script>
 
-  <!-- iOS/Safari 등 일부 환경용 폴백: 수직 스크롤 제스처 강제 차단 -->
+  <!-- iOS/Safari 등 일부 환경 폴백: 세로 스크롤 제스처 강제 차단 & 100dvh 동기화 -->
   <script>
-    // 페이지가 단일 화면 고정인 경우에만 사용
-    // 내부 요소의 세로 스크롤이 필요하면 제거하세요.
-    window.addEventListener('touchmove', function (e) {
-      if (e.touches && e.touches.length === 1) {
-        e.preventDefault(); // 수직 스크롤 제스처 차단
-      }
-    }, { passive: false });
+    // 폴백: 내부 요소가 세로 스크롤을 필요로 하지 않는 단일 화면일 때만 활성화
+    (function(){
+      let lockScroll = true; // 필요 시 false로 끄세요
 
-    // 캔버스/레이아웃 리사이즈 시 100dvh 기준으로 리사이즈
-    function resizeToViewport() {
-      document.documentElement.style.height = window.visualViewport
-        ? window.visualViewport.height + 'px'
-        : '100dvh';
-    }
-    window.addEventListener('resize', resizeToViewport);
-    window.addEventListener('orientationchange', resizeToViewport);
-    resizeToViewport();
+      if (lockScroll) {
+        // 수직 스크롤 제스처 차단
+        const preventVertical = (e) => {
+          if (e.touches && e.touches.length === 1) {
+            e.preventDefault();
+          }
+        };
+        window.addEventListener('touchmove', preventVertical, { passive: false });
+
+        // 뷰포트 변동에 맞춰 루트 높이 보정 (iOS 주소창 등)
+        function syncViewport(){
+          if (window.visualViewport) {
+            document.documentElement.style.height = window.visualViewport.height + 'px';
+          } else {
+            document.documentElement.style.height = '100dvh';
+          }
+        }
+        window.addEventListener('resize', syncViewport);
+        window.addEventListener('orientationchange', syncViewport);
+        syncViewport();
+      }
+    })();
   </script>
 </body>
 </html>
