@@ -1,19 +1,31 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
   <title>PORTFOLIO_YOUNGJAE.KIM</title>
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
 
-    body {
-      font-family: 'Roboto', sans-serif;
-      background: #181818;
-      color: #dcdcdc;
+    /* 화면에 꼭 맞게 채우고 세로 스크롤 완전 차단 */
+    html, body {
       margin: 0;
       padding: 0;
+      width: 100vw;
+      height: 100dvh;               /* 모바일 주소창 변동에도 안전 */
+      overflow: hidden;             /* 상하 스크롤 제거 */
+      background: #181818;
     }
+    body {
+      font-family: 'Roboto', sans-serif;
+      color: #dcdcdc;
+      /* 모바일 바운스/풀투리프레시 방지 */
+      overscroll-behavior: none;
+      overscroll-behavior-y: none;
+      -webkit-overflow-scrolling: auto; /* iOS 관성 스크롤 비활성 */
+      touch-action: pan-x pinch-zoom;   /* 수평 제스처/핀치만 허용, 수직 금지 */
+    }
+
     #loading-overlay {
       position: fixed;
       inset: 0;
@@ -30,11 +42,16 @@
       color: #fff;
       letter-spacing: 0.1em;
     }
+
     #navbar-placeholder {
       width: 100%;
+      /* 필요 시 상단 고정: position: fixed; top: 0; left: 0; right: 0; */
     }
+
+    /* 한 화면(100dvh)을 꽉 채우는 커버 섹션 */
     .panel.cover {
-      min-height: 100vh;
+      min-height: 100dvh;           /* 100vh 대신 100dvh */
+      height: 100dvh;
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -42,9 +59,11 @@
       position: relative;
       background: transparent;
     }
+
     .content {
       text-align: center;
       z-index: 1;
+      user-select: none;
     }
     #main-title {
       font-size: 3rem;
@@ -60,6 +79,8 @@
       margin-bottom: 2rem;
       letter-spacing: 0.15em;
     }
+
+    /* 전체 배경용 캔버스 */
     #pensilCanvas {
       position: absolute;
       inset: 0;
@@ -67,6 +88,7 @@
       height: 100%;
       z-index: 0;
       pointer-events: none;
+      display: block;
     }
   </style>
 </head>
@@ -80,7 +102,7 @@
   <div id="navbar-placeholder"></div>
   <script src="js/navbar-loader.js" defer></script>
 
-  <!-- 메인 컨테이너 (스크롤 관련 div 제거) -->
+  <!-- 메인(한 화면 고정) -->
   <section id="page1" class="panel cover">
     <div class="content">
       <h1 id="main-title">YOUNGJAE KIM</h1>
@@ -89,8 +111,29 @@
     <canvas id="pensilCanvas"></canvas>
   </section>
 
-  <!-- GSAP CDN 추가 (ScrollTrigger는 필요없으면 삭제 가능) -->
+  <!-- GSAP (필요시) -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
   <script src="js/script.js"></script>
+
+  <!-- iOS/Safari 등 일부 환경용 폴백: 수직 스크롤 제스처 강제 차단 -->
+  <script>
+    // 페이지가 단일 화면 고정인 경우에만 사용
+    // 내부 요소의 세로 스크롤이 필요하면 제거하세요.
+    window.addEventListener('touchmove', function (e) {
+      if (e.touches && e.touches.length === 1) {
+        e.preventDefault(); // 수직 스크롤 제스처 차단
+      }
+    }, { passive: false });
+
+    // 캔버스/레이아웃 리사이즈 시 100dvh 기준으로 리사이즈
+    function resizeToViewport() {
+      document.documentElement.style.height = window.visualViewport
+        ? window.visualViewport.height + 'px'
+        : '100dvh';
+    }
+    window.addEventListener('resize', resizeToViewport);
+    window.addEventListener('orientationchange', resizeToViewport);
+    resizeToViewport();
+  </script>
 </body>
 </html>
