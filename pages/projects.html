@@ -144,59 +144,41 @@
 
     /* === Mobile fix: unify strip motion, keep desktop behavior intact === */
     @media (max-width: 600px) {
-      /* 1) 컨테이너는 스크롤 막고, 전체 스트립을 JS가 translateX로 이동 */
-      .projects-panel {
-        align-items: center;
-        justify-content: center;
-        overflow: hidden; /* ← auto → hidden */
-      }
+  .projects-panel {
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    overflow-y: hidden;   /* ✅ 세로 스크롤 막기 */
+  }
 
-      /* 2) content를 데스크톱과 동일한 전제(한 줄 스트립)로 세팅 */
-      .projects-panel .content {
-        margin-top: 12px;
-        padding: 0 2vw 16px 2vw;
-        gap: 10px;
+  .projects-panel .content {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
 
-        display: flex;
-        flex-direction: row;        /* 한 줄 스트립 */
-        align-items: center;
-        justify-content: flex-start;
+    width: 100vw;
+    min-width: 100vw;
+    overflow: hidden;     /* ✅ 세로 스크롤 차단 */
+    overflow-y: hidden;
 
-        width: 100vw;               /* ← max-content 제거 */
-        min-width: 100vw;
-        overflow: visible;          /* ← auto 제거 (JS가 transform 관리) */
-        white-space: normal;        /* ← nowrap 제거 */
+    will-change: transform;
+    transform: translateZ(0);
+  }
 
-        will-change: transform;
-        transform: translateZ(0);
-      }
+  .panel.project {
+    flex: 0 0 auto;
+    width: calc(60vw / 1.4142);
+    height: 60vw;
+    min-height: 180px;
+    max-height: 340px;
 
-      /* 3) 패널 비율 동일 유지 (세로형) */
-      .panel.project {
-        flex: 0 0 auto;
-        width: calc(60vw / 1.4142);  /* A시리즈 비율 유지 */
-        min-width: 120px;
-        max-width: 90vw;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+}
 
-        height: 60vw;
-        min-height: 180px;
-        max-height: 340px;
-
-        border-radius: 14px;
-        box-shadow: 0 2px 12px #0004;
-        will-change: transform;
-        transform: translateZ(0);
-      }
-
-      .panel.project img {
-        border-radius: 10px;
-        width: 100%;
-        height: 100%;
-        min-width: 0;
-        min-height: 0;
-        object-fit: cover;
-        display: block;
-      }
 
       .project-cover {
         font-size: 1.05rem;
