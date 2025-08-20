@@ -2,98 +2,376 @@
 <html lang="ko">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Inspiration</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+  <title>Inspirations • Youngjae Kim</title>
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700;900&display=swap');
 
-    :root {
-      --bg-dark: #181818;
-      --text-dark: #dcdcdc;
-      --panel-bg: #202020;
-      --panel-border: #444;
-    }
-
-    body {
-      font-family: 'Roboto', sans-serif;
-      background: var(--bg-dark, #181818);
-      color: var(--text-dark, #dcdcdc);
-      margin: 0;
-      padding: 0;
-      min-height: 100vh;
-      width: 100%;
-      line-height: 1.6;
-      overflow-x: hidden;
-      overflow-y: auto;
+    :root{
+      --bg:#0b0b10;
+      --fg:#e8eef9;
+      --muted:#aeb9cc;
+      --line:#283042;
+      --accent:#7cc4ff;
+      --radius:18px;
+      --gap:24px; /* 타일 간격 (JS GAP와 동일하게 유지) */
     }
 
-    /* 인스퍼레이션 페이지 전용 스타일 */
-    .inspiration-panel {
-      width: 100%;
-      background: var(--bg-dark, #181818);
-      display: flex;
-      justify-content: center;
-      align-items: flex-start;
+    html,body{margin:0;padding:0}
+    body{
+      background:var(--bg);
+      color:var(--fg);
+      font-family:'Roboto',system-ui,Apple SD Gothic Neo,Malgun Gothic,sans-serif;
+      min-height:100vh; overflow-x:hidden;
     }
-    .inspiration-panel .content {
-      margin-top: 200px; /* 충분한 상단 여백으로 조정 */
-      width: 80vw;      /* 뷰포트 전체 너비 */
-      max-width: none;   /* 최대 너비 제한 해제 */
-      box-sizing: border-box;
-      background: transparent;
+    a{color:inherit;text-decoration:none}
+    #navbar-placeholder{position:relative; z-index:20}
+
+    /* ===== HERO (상단 타이틀만, 여백 최소화) ===== */
+    .hero{
+      padding:10vh 0 4vh;
+      text-align:center;
     }
-    .inspiration-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); /* 이미지 최소 크기를 220px로 키움 */
-      gap: 30px;
-      justify-content: center;
-      align-items: start;
-      padding: 0 0 20px 0; /* 좌우 여백을 완전히 제거 */
+    .hero-title{
+      font-weight:900; letter-spacing:.02em; line-height:1.05;
+      font-size:clamp(38px,8.2vw,108px);
+      background:linear-gradient(180deg,#eaf2ff 0%,#8fbfff 60%,#a8cfff 100%);
+      -webkit-background-clip:text;background-clip:text;color:transparent;
+      filter: drop-shadow(0 10px 30px rgba(124,196,255,.18));
+      margin:0;
     }
-    .image-container {
-      position: relative;
-      overflow: hidden;
-      width: 100%;
-      aspect-ratio: 4 / 3;
-      background: #f0f0f0;
-      border-radius: 10px;
-      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-      /* 높이도 1.5배 커짐 (aspect-ratio 유지) */
+    .hero-sub{margin:12px 0 0; color:var(--muted); font-size:clamp(13px,2.2vw,16px);}
+
+    /* ===== FULL-BLEED RUNNER ===== */
+    .lanes{
+      position:relative; width:100vw; overflow:hidden;
+      background:linear-gradient(180deg,#0b0f14,#0a0d17);
+      border-top:1px solid #151a28; border-bottom:1px solid #151a28;
+      padding:2vh 0 2vh;
     }
-    .image-container img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      position: relative;
-      z-index: 2;
-      transition: transform 0.3s, opacity 0.3s;
-      opacity: 1;
+    .lane{
+      width:100vw; overflow:hidden;
+      display:flex; align-items:center;
+      gap:var(--gap);
+      padding:0; margin:0;
     }
-    .inspiration-image:hover {
-      transform: scale(1.1);
+    .lane + .lane{ margin-top:2vh; }
+
+    /* 스트립(트랙) */
+    .track{
+      display:flex; align-items:center; flex:0 0 auto;
+      gap:var(--gap);
+      will-change:transform;
     }
+
+    /* 큰 타일: vh기반 높이 + 종횡비 */
+    .tile{
+      position:relative; flex:0 0 auto;
+      height:28vh; aspect-ratio:16/10;
+      border-radius:var(--radius); overflow:hidden; background:#11192a;
+      border:1px solid #24324b; box-shadow:0 14px 40px rgba(0,0,0,.35);
+      cursor:zoom-in; transform:translateZ(0);
+    }
+    .lane.middle .tile{ height:32vh; }
+    @media (max-width:640px){
+      .tile{ height:26vh; }
+      .lane.middle .tile{ height:30vh; }
+    }
+
+    .tile img{
+      width:100%; height:100%; object-fit:cover; display:block;
+      transform:scale(1.04); transition:transform 3.6s ease;
+      filter:saturate(.98) contrast(1.04);
+    }
+    .tile:hover img{ transform:scale(1.12) }
+
+    /* ===== COVER STACK(옵션) ===== */
+    .stack{
+      padding:10vh 0 12vh; text-align:center;
+    }
+    .stack .title{ color:var(--muted); letter-spacing:.08em; text-transform:uppercase; margin-bottom:18px }
+    .stack-wrap{
+      position:relative; height:64vh; max-height:760px; min-height:420px;
+      perspective:1200px; display:flex; align-items:center; justify-content:center;
+    }
+    .card{
+      position:absolute; width:min(62vw,840px); height:calc(min(62vw,840px)*0.62);
+      border-radius:22px; overflow:hidden; border:1px solid #27324a; background:#0e1422;
+      box-shadow:0 18px 60px rgba(0,0,0,.5);
+      transform-style:preserve-3d; cursor:zoom-in;
+      transition: transform .25s ease, box-shadow .25s ease, opacity .25s ease;
+    }
+    .card img{ width:100%; height:100%; object-fit:cover; display:block }
+    .card:nth-child(1){ transform: translateZ(220px) }
+    .card:nth-child(2){ transform: translateZ(120px) translateY(24px) }
+    .card:nth-child(3){ transform: translateZ(40px)  translateY(46px); opacity:.9 }
+    .card:nth-child(n+4){ transform: translateZ(0px) translateY(64px) scale(.98); opacity:.6 }
+    .stack-wrap:hover .card{ box-shadow:0 24px 80px rgba(0,0,0,.6) }
+
+    /* ===== 라이트박스 ===== */
+    .lightbox{ position:fixed; inset:0; background:rgba(2,5,12,.72); display:none; align-items:center; justify-content:center; z-index:50; }
+    .lightbox.open{ display:flex }
+    .lightbox__inner{ position:relative; max-width:min(92vw,1280px); max-height:86vh; background:#0b0d12; border:1px solid #2a2f3a; border-radius:14px; box-shadow:0 30px 100px rgba(0,0,0,.6); overflow:hidden }
+    .lightbox__img{ max-width:100%; max-height:74vh; display:block; border-bottom:1px solid #222836; }
+    .lightbox__meta{ display:flex; flex-wrap:wrap; gap:10px; align-items:center; justify-content:space-between; padding:12px 14px; color:#cfd7e6; }
+    .pill{ padding:4px 8px; border-radius:999px; background:#1b2230; font-size:12px; color:#cfe3ff; border:1px solid #2b3241 }
+    .nav-btn{ position:absolute; top:50%; transform:translateY(-50%); background:rgba(0,0,0,.3); border:1px solid #3c4252; color:#eaf2ff; padding:8px 10px; border-radius:10px; cursor:pointer }
+    .nav-btn.left{ left:-56px } .nav-btn.right{ right:-56px }
+    @media (max-width:768px){ .nav-btn.left{ left:8px } .nav-btn.right{ right:8px } }
+
+    /* 푸터 자리 */
+    #footer-placeholder{margin-top:6vh}
   </style>
 </head>
-<body style="min-height:100vh;display:flex;flex-direction:column;">
-  <!-- 네비게이션 바 -->
+<body>
+  <!-- Navbar -->
   <div id="navbar-placeholder"></div>
   <script src="../js/navbar-loader.js" defer></script>
 
-  <main style="flex:1 0 auto;display:flex;flex-direction:column;">
-    <section class="inspiration-panel" style="flex:1 0 auto;">
-      <div class="content">
-        <div class="inspiration-grid"></div>
-      </div>
+  <main>
+    <!-- HERO -->
+    <section class="hero">
+      <h1 class="hero-title">INSPIRATIONS</h1>
+      <p class="hero-sub">Full-bleed, seamless, infinite runner</p>
+    </section>
+
+    <!-- FULL-BLEED RUNNER -->
+    <section class="lanes">
+      <div class="lane top" id="laneA" data-speed="0.8"></div>
+      <div class="lane middle" id="laneB" data-speed="1.1"></div>
+      <div class="lane bottom" id="laneC" data-speed="1.4"></div>
+    </section>
+
+    <!-- COVER STACK (옵션) -->
+    <section class="stack">
+      <div class="title">Curated Covers</div>
+      <div class="stack-wrap" id="stackWrap"></div>
     </section>
   </main>
-  <script src="../js/inspiration.js"></script>
 
-  <!-- 푸터 영역 -->
+  <!-- 라이트박스 -->
+  <div id="lightbox" class="lightbox" role="dialog" aria-modal="true" aria-label="이미지 미리보기">
+    <button class="nav-btn left" id="prevBtn" aria-label="이전">◀</button>
+    <div class="lightbox__inner">
+      <img id="lbImg" class="lightbox__img" alt="" />
+      <div class="lightbox__meta">
+        <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
+          <span id="lbTitle" class="pill"></span>
+          <span id="lbInfo" class="pill"></span>
+        </div>
+        <a id="lbLink" class="pill" href="#" target="_blank" rel="noopener">원본 보기</a>
+      </div>
+    </div>
+    <button class="nav-btn right" id="nextBtn" aria-label="다음">▶</button>
+  </div>
+
+  <!-- DATA + LOGIC -->
+  <script>
+    const IMG_PATH = '../assets/img/inspirations/';
+    const JSON_PATH = IMG_PATH + 'images.json';
+    const GAP = 24; // CSS --gap 과 동일
+
+    let items = [];    // {id,src,name}
+    let filtered = []; // lightbox용
+
+    fetch(JSON_PATH)
+      .then(r => { if(!r.ok) throw new Error('Failed to load image list'); return r.json(); })
+      .then(list => {
+        items = (list||[]).map((f,i)=>({ id:i, src: IMG_PATH+f, name:f }));
+        filtered = items.slice();
+        buildRunner(items);
+        buildStack(items);
+      })
+      .catch(err => console.error(err));
+
+    /* ========= FULL-BLEED RUNNER ========= */
+    const laneA = document.getElementById('laneA');
+    const laneB = document.getElementById('laneB');
+    const laneC = document.getElementById('laneC');
+
+    function buildRunner(list){
+      const shuffled = shuffle(list.slice());
+      const third = Math.ceil(shuffled.length/3);
+      const a = shuffled.slice(0,third);
+      const b = shuffled.slice(third, 2*third);
+      const c = shuffled.slice(2*third);
+
+      mountLane(laneA, a);
+      mountLane(laneB, b);
+      mountLane(laneC, c);
+
+      // unitWidth는 startSlider -> measureStrip에서 세팅됨
+      animateLanes();
+    }
+
+    // 단일 스트립 + startSlider 방식
+    function mountLane(laneEl, arr){
+      laneEl.innerHTML = '';
+      const strip = document.createElement('div');
+      strip.className = 'track strip';
+      fillTrack(strip, arr);
+      laneEl.appendChild(strip);
+
+      // 이미지 로딩 완료 후 복제 및 길이 측정
+      const imgs = strip.querySelectorAll('img');
+      let left = imgs.length;
+
+      const done = ()=>{ if(--left === 0) startSlider(laneEl); };
+      if (left === 0){ startSlider(laneEl); }
+      else {
+        imgs.forEach(img=>{
+          if (img.complete) done();
+          else {
+            img.addEventListener('load', done, {once:true});
+            img.addEventListener('error', done, {once:true});
+          }
+        });
+      }
+
+      addEventListener('resize', ()=> measureStrip(laneEl), {passive:true});
+    }
+
+    function fillTrack(containerEl, arr){
+      containerEl.innerHTML = '';
+      arr.forEach(it=>{
+        const t = document.createElement('div');
+        t.className = 'tile';
+        const img = document.createElement('img');
+        img.src = it.src; img.alt = it.name; img.loading='lazy'; img.decoding='async';
+        t.appendChild(img);
+        t.addEventListener('click', ()=> openLightbox(filtered.indexOf(it)));
+        containerEl.appendChild(t);
+      });
+    }
+
+    // 요청하신 복제 로직 접목
+    function startSlider(laneEl){
+      const strip = laneEl.querySelector('.strip');
+      if (!strip) return;
+
+      // 이미 복제되었는지 확인 후 1회만 복제
+      if (!strip.dataset.duplicated){
+        strip.innerHTML += strip.innerHTML;
+        strip.dataset.duplicated = '1';
+      }
+
+      // 복제 후 한 사이클 길이 계산(원본 길이)
+      measureStrip(laneEl);
+    }
+
+    // 원본 세그먼트의 길이(unit)만 합산
+    function measureStrip(laneEl){
+      const strip = laneEl.querySelector('.strip');
+      if (!strip) return;
+
+      const tiles = Array.from(strip.children);
+      const originalCount = Math.floor(tiles.length / 2) || tiles.length;
+
+      let unit = -GAP;
+      for (let i=0; i<originalCount; i++){
+        const rect = tiles[i].getBoundingClientRect();
+        unit += rect.width + GAP;
+      }
+      laneEl.dataset.unitWidth = Math.max(1, Math.round(unit));
+    }
+
+    let rafId=null;
+    function animateLanes(){
+      cancelAnimationFrame(rafId);
+      const lanes = [
+        { el: laneA, dir:-1, speed: parseFloat(laneA.dataset.speed)||0.8, offset:0 },
+        { el: laneB, dir:+1, speed: parseFloat(laneB.dataset.speed)||1.1, offset:0 },
+        { el: laneC, dir:-1, speed: parseFloat(laneC.dataset.speed)||1.4, offset:0 },
+      ];
+
+      function tick(){
+        lanes.forEach(L=>{
+          const unit = parseFloat(L.el.dataset.unitWidth||'0'); if(!unit) return;
+          L.offset += L.dir * L.speed;
+
+          // [-unit, 0) 범위로 모듈러링 → 원본 길이를 기준으로 무한 순환
+          if (L.offset <= -unit) L.offset += unit;
+          if (L.offset > 0)      L.offset -= unit;
+
+          const strip = L.el.querySelector('.strip');
+          if (strip) strip.style.transform = `translateX(${L.offset}px)`;
+        });
+        rafId = requestAnimationFrame(tick);
+      }
+      tick();
+    }
+
+    /* ========= COVER STACK ========= */
+    const stackWrap = document.getElementById('stackWrap');
+    function buildStack(list){
+      const picks = list.slice(0,6);
+      picks.forEach((it,i)=>{
+        const card = document.createElement('div');
+        card.className='card';
+        const img = document.createElement('img');
+        img.src=it.src; img.alt=it.name; img.loading='lazy';
+        card.appendChild(img);
+        card.style.zIndex = 100 - i;
+        card.addEventListener('click', ()=> openLightbox(filtered.indexOf(it)));
+        stackWrap.appendChild(card);
+      });
+      // 미세 틸트
+      let rect;
+      function onMove(x,y){
+        rect = rect || stackWrap.getBoundingClientRect();
+        const cx = rect.left + rect.width/2, cy = rect.top + rect.height/2;
+        const dx = (x - cx)/rect.width, dy = (y - cy)/rect.height;
+        const rx = dy * -8, ry = dx * 10;
+        stackWrap.style.transform = `rotateX(${rx}deg) rotateY(${ry}deg)`;
+      }
+      stackWrap.addEventListener('mousemove', e=> onMove(e.clientX, e.clientY));
+      stackWrap.addEventListener('mouseleave', ()=> stackWrap.style.transform='rotateX(0) rotateY(0)');
+      stackWrap.addEventListener('touchmove', e=>{ const t=e.touches[0]; onMove(t.clientX, t.clientY); }, {passive:true});
+      stackWrap.addEventListener('touchend', ()=> stackWrap.style.transform='rotateX(0) rotateY(0)');
+    }
+
+    /* ========= Lightbox ========= */
+    const lb = document.getElementById('lightbox');
+    const lbImg = document.getElementById('lbImg');
+    const lbTitle = document.getElementById('lbTitle');
+    const lbInfo = document.getElementById('lbInfo');
+    const lbLink = document.getElementById('lbLink');
+    const prevBtn = document.getElementById('prevBtn');
+    const nextBtn = document.getElementById('nextBtn');
+    let activeIndex = -1;
+
+    function openLightbox(idx){
+      if (idx<0) return;
+      activeIndex = idx;
+      const it = filtered[idx];
+      lbImg.src = it.src; lbImg.alt = it.name;
+      lbTitle.textContent = it.name;
+      lbInfo.textContent = 'Source: images.json';
+      lbLink.href = it.src;
+      lb.classList.add('open'); document.body.style.overflow='hidden';
+    }
+    function closeLightbox(){ lb.classList.remove('open'); document.body.style.overflow='' }
+    lb.addEventListener('click', e=>{ if(e.target===lb) closeLightbox(); });
+    document.addEventListener('keydown', e=>{
+      if(!lb.classList.contains('open')) return;
+      if(e.key==='Escape') closeLightbox();
+      if(e.key==='ArrowRight') nav(1);
+      if(e.key==='ArrowLeft')  nav(-1);
+    });
+    function nav(step){ if (activeIndex<0) return; activeIndex = (activeIndex + step + filtered.length) % filtered.length; openLightbox(activeIndex); }
+    prevBtn.addEventListener('click', ()=> nav(-1));
+    nextBtn.addEventListener('click', ()=> nav(1));
+
+    /* ========= Helpers ========= */
+    function shuffle(arr){ for(let i=arr.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [arr[i],arr[j]]=[arr[j],arr[i]] } return arr }
+  </script>
+
+  <!-- Footer -->
   <div id="footer-placeholder"></div>
   <script>
     fetch('../components/footer.html')
-      .then(res => res.text())
-      .then(html => document.getElementById('footer-placeholder').innerHTML = html);
+      .then(r=>r.text())
+      .then(html=> document.getElementById('footer-placeholder').innerHTML = html);
   </script>
 </body>
 </html>
