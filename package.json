@@ -1,9 +1,0 @@
-{
-  "private": true,
-  "scripts": {
-    "prebuild": "node scripts/fetch-content.js"
-  },
-  "dependencies": {
-    "@sanity/client": "^6.18.2"
-  }
-}
